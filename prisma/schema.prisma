@@ -4,14 +4,9 @@
 generator client {
   provider = "prisma-client-js"
 }
-
 datasource db {
-  provider = "postgres"
-  // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-  // Further reading:
-  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model Example {
@@ -63,4 +58,12 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Article {
+  id      Int   @id @default(autoincrement())
+  title   String
+  content String
+  publicshed  Boolean @default(false)
+  createdAt DateTime@default(now())
 }
