@@ -1,7 +1,7 @@
 import { resolve } from "path";
 import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
-
+import { TRPCError } from "@trpc/server";
 
 export const articleRouter = router({
   getAllArticles: publicProcedure.query(async ({ ctx }) => {
@@ -64,7 +64,12 @@ export const articleRouter = router({
           },
         });
       } catch (error) {
+        console.log("-------------------------------------");
+        console.log("だめです");
         console.log(error);
+
+        console.log("-------------------------------------");
+        throw new TRPCError({ code: "BAD_REQUEST" });
       }
     }),
 
