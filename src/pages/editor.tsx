@@ -7,7 +7,6 @@ const Editor: NextPage = () => {
       <div className="grid grid-cols-6">
         <div className="col-span-1"></div>
         <div className="col-span-4">
-
           <Tiptap />
         </div>
         <div className="col-span-1"></div>
@@ -15,5 +14,4 @@ const Editor: NextPage = () => {
     </>
   );
 };
-
 export default Editor;

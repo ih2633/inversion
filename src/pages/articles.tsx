@@ -10,6 +10,7 @@ import ArticleForm from "@/components/article/form";
 import DeleteArticleButton from "@/components/article/deleteButton";
 import Card from "@/components/article/Card";
 
+
 const list: NextPage = () => {
   const { data: articles } = trpc.article.getAllArticles.useQuery();
   console.log({ articles });
@@ -39,6 +40,7 @@ const list: NextPage = () => {
         <div className="col-span-1 bg-blue-300">
 
         </div>
+
       </div>
     </>
   );

@@ -1,4 +1,3 @@
-import { resolve } from "path";
 import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
@@ -18,6 +17,7 @@ export const articleRouter = router({
             }
           }
         }
+
       });
       return articles;
     } catch (error) {

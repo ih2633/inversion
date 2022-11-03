@@ -1,12 +1,17 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-generator client {
-  provider = "prisma-client-js"
-}
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+
+generator js {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+
 }
 
 model Example {
@@ -16,11 +21,12 @@ model Example {
 }
 
 model Article {
-  id                String  @id @default(cuid())
+
+  id                String @id @default(cuid())
   title             String
-  content           String   
-  createdAt         DateTime @default(now()) 
-  updatedAt         DateTime @default(now()) @updatedAt
+  content           String   @db.Text
+  createdAt         DateTime @default(now()) @db.Timestamp(0)
+  updatedAt         DateTime @default(now()) @updatedAt @db.Timestamp(0)
   user              User      @relation(fields: [userId], references:[id])
   userId            String
   favorite          Favorite?
@@ -35,7 +41,9 @@ model Category {
 }
 
 model Favorite{
+
   id              String  @id @default(cuid())
+
   article         Article @relation(fields: [articleId], references:[id])
   articleId       String @unique
   user            User[]
@@ -86,3 +94,4 @@ model VerificationToken {
   expires    DateTime
   @@unique([identifier, token])
 }
+

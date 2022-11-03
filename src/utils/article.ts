@@ -16,5 +16,5 @@ export const articleOptimisticUpdates = (router, ctx) => {
     },
   });
 
-  return mutation
+  return mutation;
 };

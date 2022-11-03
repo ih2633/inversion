@@ -12,7 +12,6 @@ export const Tiptap: React.FC = () => {
   const { data: categorys } = trpc.category.getList.useQuery();
   const editor = useEditor({
     extensions: [StarterKit],
-
     editorProps: {
       attributes: {
         class: "prose prose-sm sm:prose  p-7  focus:outline-none ",

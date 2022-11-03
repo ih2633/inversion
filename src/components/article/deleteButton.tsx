@@ -8,6 +8,7 @@ import { articleOptimisticUpdates } from "@/utils/article"
 const DeleteArticleButton = (props) => {
   const { handleSubmit } = useForm();
   const ctx = trpc.useContext()
+
   const mutation = articleOptimisticUpdates(trpc.article.delete, ctx);
   const onSubmit = () => {
     console.log(props.id);

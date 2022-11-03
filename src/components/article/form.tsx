@@ -6,13 +6,13 @@ import { articleOptimisticUpdates } from "@/utils/article";
 const ArticleForm = () => {
   const {register, handleSubmit } = useForm();
 
+
   const { data: categorys } = trpc.category.getList.useQuery();
   console.log({ categorys });
 
   const ctx = trpc.useContext();
 
   const mutation = articleOptimisticUpdates(trpc.article.addArticle, ctx);
-
   const onSubmit = (data) => {
     console.log(data);
     const { title, content, category } = data;
