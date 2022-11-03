@@ -1,9 +1,15 @@
 import { type NextPage } from "next";
-import Link from "next/link"
-import { trpc } from "@/utils/trpc";
+import { useForm } from "react-hook-form";
+import superjson from "superjson";
+import { trpc } from "../utils/trpc";
+import { appRouter } from "@/server/trpc/router/_app";
+
+import { articleOptimisticUpdates } from "@/utils/article";
+
 import ArticleForm from "@/components/article/form";
 import DeleteArticleButton from "@/components/article/deleteButton";
-import UpdateArticleButton from "@/components/article/updateButton";
+import Card from "@/components/article/Card";
+
 
 const list: NextPage = () => {
   const { data: articles } = trpc.article.getAllArticles.useQuery();
@@ -11,36 +17,30 @@ const list: NextPage = () => {
 
   return (
     <>
-      <div className="mx-32 flex">
-        <div className="mt-24">
-          <ArticleForm />
-        </div>
-        <div className="m-12">
-          <p>articles path</p>
-          <div className="space-y-5">
-            {articles?.map((article) => {
-              return (
-                <div key={article.id}>
-                  <article className="container w-96 rounded-2xl bg-white p-5 shadow-2xl">
-                    <Link href={`/article/${article.id}`}>
-                      <h1 className="font-bold text-yellow-500">
-                        {article.title}
-                      </h1>
-                    </Link>
-                    <h6 className="mb-5 text-sm text-gray-300">
-                      {article.createdAt.toDateString()}
-                    </h6>
-                    <p>{article.id}</p>
-                    <div className="flex w-full justify-between">
-                      <UpdateArticleButton id={article.id} />
-                      <DeleteArticleButton id={article.id} />
-                    </div>
-                  </article>
-                </div>
-              );
-            })}
+      <div className="grid grid-cols-6">
+        <div className="col-span-1">
+          <div className="mt-24">
+            <ArticleForm />
           </div>
         </div>
+        <div className="col-span-4">
+          <div className="m-12">
+            <p>articles path</p>
+            <div>
+              {articles?.map((article) => {
+                return (
+                  <>
+                    <Card article={article} />
+                  </>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        <div className="col-span-1 bg-blue-300">
+
+        </div>
+
       </div>
     </>
   );

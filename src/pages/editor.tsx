@@ -14,5 +14,4 @@ const Editor: NextPage = () => {
     </>
   );
 };
-
 export default Editor;

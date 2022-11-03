@@ -1,4 +1,5 @@
 import { EditorContent, useEditor } from "@tiptap/react";
+import { useState } from "react";
 import Link from "next/link";
 import StarterKit from "@tiptap/starter-kit";
 import { useForm } from "react-hook-form";
@@ -24,11 +25,16 @@ export const Tiptap: React.FC = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    const content = JSON.stringify(editor.getJSON());
+    const content = editor?.getHTML()
     console.log(content);
+    console.log(typeof content)
     const { title, category } = data;
-    mutation.mutate({ title, content, category });
+    mutation.mutate(
+      { title, content, category }
+    );
   };
+
+  console.log(mutation.isSuccess);
 
   if (!editor) return null;
 

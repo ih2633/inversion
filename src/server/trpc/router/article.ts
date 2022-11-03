@@ -9,6 +9,15 @@ export const articleRouter = router({
         orderBy: {
           createdAt: "desc",
         },
+        include: {
+          user: {
+            select: {
+              name: true,
+              image: true
+            }
+          }
+        }
+
       });
       return articles;
     } catch (error) {
