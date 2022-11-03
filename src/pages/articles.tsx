@@ -8,31 +8,36 @@ import { articleOptimisticUpdates } from "@/utils/article";
 
 import ArticleForm from "@/components/article/form";
 import DeleteArticleButton from "@/components/article/deleteButton";
+import Card from "@/components/article/Card";
 
 const list: NextPage = () => {
-
   const { data: articles } = trpc.article.getAllArticles.useQuery();
   console.log({ articles });
 
   return (
     <>
-      <div className="flex mx-32">
-        <div className="mt-24">
-          <ArticleForm />
+      <div className="grid grid-cols-6">
+        <div className="col-span-1">
+          <div className="mt-24">
+            <ArticleForm />
+          </div>
         </div>
-        <div className="m-12">
-          <p>articles path</p>
-          <ul>
-            {articles?.map((article) => {
-              return (
-                <li className="ml-5 mt-4" key={article.id}>
-                  <p>{article.title}</p>
-                  <p>{article.content}</p>
-                  <DeleteArticleButton id={article.id} />
-                </li>
-              );
-            })}
-          </ul>
+        <div className="col-span-4">
+          <div className="m-12">
+            <p>articles path</p>
+            <div>
+              {articles?.map((article) => {
+                return (
+                  <>
+                    <Card article={article} />
+                  </>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        <div className="col-span-1 bg-blue-300">
+
         </div>
       </div>
     </>

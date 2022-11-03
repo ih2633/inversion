@@ -8,7 +8,6 @@ import { articleOptimisticUpdates } from "@/utils/article";
 
 export const Tiptap: React.FC = () => {
   const { register, handleSubmit } = useForm();
-  const [isSuccess, setSuccess] = useState(false);
 
   const { data: categorys } = trpc.category.getList.useQuery();
   const editor = useEditor({
@@ -27,8 +26,9 @@ export const Tiptap: React.FC = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    const content = JSON.stringify(editor.getJSON());
+    const content = editor?.getHTML()
     console.log(content);
+    console.log(typeof content)
     const { title, category } = data;
     mutation.mutate(
       { title, content, category }

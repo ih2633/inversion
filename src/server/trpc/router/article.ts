@@ -10,6 +10,14 @@ export const articleRouter = router({
         orderBy: {
           createdAt: "desc",
         },
+        include: {
+          user: {
+            select: {
+              name: true,
+              image: true
+            }
+          }
+        }
       });
       return articles;
     } catch (error) {
@@ -20,7 +28,7 @@ export const articleRouter = router({
   getArticleById: publicProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -79,7 +87,7 @@ export const articleRouter = router({
   delete: protectedProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
