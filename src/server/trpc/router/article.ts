@@ -3,9 +3,18 @@ import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 
 export const articleRouter = router({
+  /**
+   *
+   */
   getAllArticles: publicProcedure.query(async ({ ctx }) => {
     try {
       const articles = await ctx.prisma.article.findMany({
+        
+        // 開発中のみコメントアウト
+        // where: {
+        //   publish: true
+        // },
+        
         orderBy: {
           createdAt: "desc",
         },
@@ -13,11 +22,20 @@ export const articleRouter = router({
           user: {
             select: {
               name: true,
-              image: true
+              image: true,
+            },
+          },
+          tags: {
+            select: {
+              name: true
+            }
+          },
+          category: {
+            select: {
+              name:true
             }
           }
-        }
-
+        },
       });
       return articles;
     } catch (error) {
@@ -25,6 +43,13 @@ export const articleRouter = router({
     }
   }),
 
+  /**
+   *
+   */
+
+  /**
+   *
+   */
   getArticleById: publicProcedure
     .input(
       z.object({
@@ -51,7 +76,8 @@ export const articleRouter = router({
       z.object({
         title: z.string(),
         content: z.string(),
-        category: z.string(),
+        categoryId: z.string(),
+        sendTags: z.array(z.object({name: z.string()})),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -63,12 +89,16 @@ export const articleRouter = router({
           },
           select: { id: true },
         });
+
         await ctx.prisma.article.create({
           data: {
             title: input.title,
             content: input.content,
             userId: userId?.id,
-            categoryId: input.category,
+            categoryId: input.categoryId,
+            tags: {
+              create: input.sendTags,
+            },
           },
         });
       } catch (error) {
@@ -101,4 +131,15 @@ export const articleRouter = router({
         console.log(error);
       }
     }),
+
+  /**
+   * 開発テスト様
+   */
+  allDelete: protectedProcedure.mutation(async ({ ctx }) => {
+    try {
+      await ctx.prisma.article.deleteMany({});
+    } catch (error) {
+      console.log(error);
+    }
+  }),
 });

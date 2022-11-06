@@ -1044,10 +1044,12 @@ css-selector-tokenizer@^0.8.0:
   dependencies:
     cssesc "^3.0.0"
     fastparse "^1.1.2"
+
 css-what@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/css-what/-/css-what-6.1.0.tgz#fb5effcf76f1ddea2c81bdfaa4de44e79bac70f4"
   integrity sha512-HTUrgRJ7r4dsZKU6GjmpfRK1O76h97Z8MfS1G0FozR+oF2kG6Vfe8JE6zwrkbxigziPHinCJ+gCPjA9EaBDtRw==
+
 cssesc@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
@@ -1062,7 +1064,6 @@ daisyui@^2.37.0:
   version "2.37.0"
   resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.37.0.tgz#9bca69fa3c9608bdfb0dfe1990444a9e847a372e"
   integrity sha512-dwnPE4OC3UDGoarb7DM+XoiQWyccmTj7wMHR0ugZX1/4fIevhbHl7jr8b3jh1b9bOBff4ZXgbi6Mj6B6HgOymg==
-
   dependencies:
     color "^4.2"
     css-selector-tokenizer "^0.8.0"
@@ -1964,11 +1965,6 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-lexical@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/lexical/-/lexical-0.6.0.tgz#60f86008aca7e6ecc50338bc442eb590338163ea"
-  integrity sha512-0nhl2wsPR34fYphPPDdA9LGPx90klIsLokdx43Rl4UzvmGNK66todNkwkm0qsSSLgEVu8lBpGwo1Hwf58MfbuA==
-
 lilconfig@^2.0.5, lilconfig@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/lilconfig/-/lilconfig-2.0.6.tgz#32a384558bd58af3d4c6e077dd1ad1d397bc69d4"
@@ -2550,6 +2546,11 @@ react-html-parser@^2.0.2:
   integrity sha512-XeerLwCVjTs3njZcgCOeDUqLgNIt/t+6Jgi5/qPsO/krUWl76kWKXMeVs2LhY2gwM6X378DkhLjur0zUQdpz0g==
   dependencies:
     htmlparser2 "^3.9.0"
+
+react-icons@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.6.0.tgz#f83eda179af5d02c047449a20b702c858653d397"
+  integrity sha512-rR/L9m9340yO8yv1QT1QurxWQvWpbNHqVX0fzMln2HEb9TEIrQRGsqiNFQfiv9/JEUbyHmHPlNTB2LWm2Ttz0g==
 
 react-is@^16.13.1:
   version "16.13.1"

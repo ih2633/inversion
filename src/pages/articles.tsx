@@ -9,6 +9,7 @@ import { articleOptimisticUpdates } from "@/utils/article";
 import ArticleForm from "@/components/article/form";
 import DeleteArticleButton from "@/components/article/deleteButton";
 import Card from "@/components/article/Card";
+import Navbar from "@/components/Navbar"
 
 
 const list: NextPage = () => {
@@ -17,16 +18,17 @@ const list: NextPage = () => {
 
   return (
     <>
-      <div className="grid grid-cols-6">
+      <Navbar />
+      <div className="grid grid-cols-7 bg-gray-100">
         <div className="col-span-1">
           <div className="mt-24">
             <ArticleForm />
           </div>
         </div>
-        <div className="col-span-4">
+        <div className="col-span-4 border-x-2">
           <div className="m-12">
-            <p>articles path</p>
-            <div>
+            <p className="m-3 prose prose-lg">新着記事</p>
+            <div className="space-y-4">
               {articles?.map((article) => {
                 return (
                   <>
@@ -37,7 +39,7 @@ const list: NextPage = () => {
             </div>
           </div>
         </div>
-        <div className="col-span-1 bg-blue-300">
+        <div className="col-span-2">
 
         </div>
 
