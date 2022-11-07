@@ -1,69 +1,48 @@
 import { type NextPage } from "next";
-import superjson from "superjson";
-import { trpc } from "@/utils/trpc";
-import { appRouter } from "@/server/trpc/router/_app";
 import { useForm } from "react-hook-form";
+import superjson from "superjson";
+import { trpc } from "../utils/trpc";
+import { appRouter } from "@/server/trpc/router/_app";
+
+import { articleOptimisticUpdates } from "@/utils/article";
+
+import ArticleForm from "@/components/article/form";
+import DeleteArticleButton from "@/components/article/deleteButton";
+import Card from "@/components/article/Card";
+import Navbar from "@/components/Navbar"
+
 
 const list: NextPage = () => {
-  const { register, handleSubmit } = useForm();
-  const mutation = trpc.article.addArticle.useMutation();
-  const onSubmit = (data) => {
-    console.log(data);
-    const { title, content } = data;
-    mutation.mutate({ title, content });
-  };
-
   const { data: articles } = trpc.article.getAllArticles.useQuery();
   console.log({ articles });
 
-  const { data: categorys } = trpc.category.getList.useQuery();
-  console.log(categorys);
-
   return (
     <>
-      <div className="m-12">
-        <p>articles path</p>
-        <ul>
-          {articles?.map((article) => {
-            return (
-              <li className="ml-5 mt-4" key={article.id}>
-                <p>{article.title}</p>
-                <p>{article.content}</p>
-              </li>
-            );
-          })}
-        </ul>
-        <div className="mt-24">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <label htmlFor="category-select">SetCategory</label>
-              <select className="border-4" name="categorys" id="category-select" {...register("category")}>
-                {categorys?.map((category) => {
-                  return (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="title">Title</label>
-              <input className="border-4" id="title" {...register("title")} />
-            </div>
-            <div>
-              <label htmlFor="content">Content</label>
-              <input
-                className="border-4"
-                id="content"
-                {...register("content")}
-              />
-            </div>
-            <button className="border-4" type="submit">
-              送信
-            </button>
-          </form>
+      <Navbar />
+      <div className="grid grid-cols-7 bg-gray-100">
+        <div className="col-span-1">
+          <div className="mt-24">
+            <ArticleForm />
+          </div>
         </div>
+        <div className="col-span-4 border-x-2">
+          <div className="m-12">
+            <p className="m-3 prose prose-lg">新着記事</p>
+            <div className="space-y-4">
+              {articles?.map((article) => {
+                return (
+                  <>
+                    <Card article={article} />
+                  </>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        <div className="col-span-2">
+
+        </div>
+
       </div>
     </>
   );
