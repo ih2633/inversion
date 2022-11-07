@@ -9,12 +9,11 @@ export const articleRouter = router({
   getAllArticles: publicProcedure.query(async ({ ctx }) => {
     try {
       const articles = await ctx.prisma.article.findMany({
-        
         // 開発中のみコメントアウト
         // where: {
         //   publish: true
         // },
-        
+
         orderBy: {
           createdAt: "desc",
         },
@@ -27,14 +26,14 @@ export const articleRouter = router({
           },
           tags: {
             select: {
-              name: true
-            }
+              name: true,
+            },
           },
           category: {
             select: {
-              name:true
-            }
-          }
+              name: true,
+            },
+          },
         },
       });
       return articles;
@@ -77,7 +76,8 @@ export const articleRouter = router({
         title: z.string(),
         content: z.string(),
         categoryId: z.string(),
-        sendTags: z.array(z.object({name: z.string()})),
+        sendTags: z.array(z.string()),
+        publish: z.boolean(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -96,8 +96,14 @@ export const articleRouter = router({
             content: input.content,
             userId: userId?.id,
             categoryId: input.categoryId,
+            publish: input.publish,
             tags: {
-              create: input.sendTags,
+              connectOrCreate: input.sendTags.map((x) => {
+                return {
+                  where: { name: x },
+                  create: { name: x },
+                };
+              }),
             },
           },
         });
