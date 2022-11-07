@@ -1,8 +1,6 @@
 import { type NextPage } from "next";
 import { useState, useEffect, useMemo } from "react";
-import Document from "@tiptap/extension-document";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
+
 // Option 1: Browser + server-side
 import { generateHTML } from "@tiptap/html";
 import ReactHtmlParser from "react-html-parser";

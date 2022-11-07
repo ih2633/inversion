@@ -7,9 +7,7 @@ import { trpc } from "@/utils/trpc";
 import { articleOptimisticUpdates } from "@/utils/article";
 
 export const Tiptap: React.FC = () => {
-  const { register, handleSubmit, control } = useForm({
-    defaultValues: false
-  });
+  const { register, handleSubmit, control } = useForm({});
 
   const { data: categorys } = trpc.category.getList.useQuery();
 
@@ -31,16 +29,16 @@ export const Tiptap: React.FC = () => {
 
     const content = editor?.getHTML();
 
-    const { title, category, tag0, tag1, tag2, tag3, tag4 } = data;
-    const tags = [tag0, tag1, tag2, tag3, tag4].filter((x) => Boolean(x));
+    const { title, category, tag0, tag1, tag2, tag3, tag4, publish } = data;
+    const sendTags = [tag0, tag1, tag2, tag3, tag4].filter((x) => Boolean(x));
 
-    const sendTags = []
-    tags.forEach((x) => {
-        const tmpObj = {name: x};
-        sendTags.push(tmpObj)
+    // const sendTags = []
+    // tags.forEach((x) => {
+    //     const tmpObj = {name: x};
+    //     sendTags.push(tmpObj)
 
-    });
-    console.log(tags)
+    // });
+    // console.log(tags)
     console.log(sendTags);
     const categoryId = categoryCheck(categorys, category);
     console.log(categoryId);
@@ -52,7 +50,7 @@ export const Tiptap: React.FC = () => {
 
     const isOver = title.length > 0;
     if (isOver) {
-      mutation.mutate({ title, content, categoryId, sendTags });
+      mutation.mutate({ title, content, categoryId, sendTags, publish });
     } else {
       // タイトル文字数のエラーいれる
       console.error("エラー：");
@@ -113,7 +111,7 @@ export const Tiptap: React.FC = () => {
             </select>
           </div>
 
-          <div className="flex w-full items-end bg-red-200">
+          <div className="flex w-full items-end ">
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Title</span>
@@ -130,7 +128,7 @@ export const Tiptap: React.FC = () => {
                 <span className="label-text">Publish</span>
               </label>
               <Controller
-                name="checkbox"
+                name="publish"
                 control={control}
                 defaultValue={false}
                 render={({ field }) => (
