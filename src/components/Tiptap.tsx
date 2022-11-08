@@ -1,10 +1,13 @@
 import { EditorContent, useEditor } from "@tiptap/react";
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import { Node } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 import { useForm, Controller } from "react-hook-form";
 import { trpc } from "@/utils/trpc";
 import { articleOptimisticUpdates } from "@/utils/article";
+import { v4 as uuidv4 } from 'uuid';
+
 
 export const Tiptap: React.FC = () => {
   const { register, handleSubmit, control } = useForm({});
@@ -15,9 +18,13 @@ export const Tiptap: React.FC = () => {
     extensions: [StarterKit],
     editorProps: {
       attributes: {
-        class: "prose prose-sm sm:prose  p-7  focus:outline-none ",
+        class:
+          "prose prose-sm sm:prose lg:prose-xl xl:prose-3xl tracking-wider  w-full m-auto p-8 focus:outline-none ",
       },
     },
+    autofocus: true,
+    editable: true,
+    injectCSS: false,
   });
 
   const ctx = trpc.useContext();
@@ -27,7 +34,15 @@ export const Tiptap: React.FC = () => {
   const onSubmit = (data) => {
     console.log({ data })
 
-    const content = editor?.getHTML();
+    const content2 = editor?.getHTML();
+
+    let headingId = 0
+
+    const content = content2?.replace(/<h3>/g, () => {
+      headingId = headingId + 1; 
+      return `<h3 id="heading${headingId}">`;
+    })
+
 
     const { title, category, tag0, tag1, tag2, tag3, tag4, publish } = data;
     const sendTags = [tag0, tag1, tag2, tag3, tag4].filter((x) => Boolean(x));
@@ -72,7 +87,7 @@ export const Tiptap: React.FC = () => {
 
   return (
     <>
-      <div className="">
+      <div className="w-full ">
         {mutation.isSuccess && (
           <div className="modal modal-open" id="my-modal-2">
             <div className="modal-box">
@@ -135,7 +150,7 @@ export const Tiptap: React.FC = () => {
                   <input
                     {...field}
                     type="checkbox"
-                    className="toggle h-10 w-16"
+                    className="toggle-success toggle h-10 w-16"
                   />
                 )}
               />
@@ -180,25 +195,16 @@ export const Tiptap: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex ">
-            <div className=" w-screen">
-              <label className="label">
-                <span className="label-text">Content</span>{" "}
-              </label>
-              <EditorContent
-                className="h-screen  w-auto  overflow-y-scroll border-2"
-                editor={editor}
-              />
-            </div>
-            <div className="sticky top-10">
-              <div className=" ml-5 mt-5 flex flex-col space-y-3">
+          <div className=" ">
+            <div className="sticky">
+              <div className=" ml-5 mt-5 flex space-x-3">
                 <button
                   className="h-12 w-24 rounded-xl border-2 border-gray-400"
                   onClick={() =>
-                    editor.chain().focus().toggleHeading({ level: 1 }).run()
+                    editor.chain().focus().toggleHeading({ level: 3 }).run()
                   }
                 >
-                  h1
+                  h3
                 </button>
                 <button
                   className="h-12 w-24 rounded-xl border-2 border-gray-400"
@@ -230,6 +236,15 @@ export const Tiptap: React.FC = () => {
                   SEND
                 </button>
               </div>
+            </div>
+            <div className=" w-auto">
+              <label className="label">
+                <span className="label-text">Content</span>{" "}
+              </label>
+              <EditorContent
+                className="h-screen overflow-y-scroll border-2"
+                editor={editor}
+              />
             </div>
           </div>
         </div>

@@ -9,7 +9,7 @@ const Card = (props) => {
   const date = props.article.createdAt.toLocaleDateString();
   console.log(date);
 
-  const isSkill = props.article.category.name === "Skill"
+  const isSkill = props.article.category.name === "Skill";
   console.log(props.article.tags);
 
   return (
@@ -57,7 +57,7 @@ const Card = (props) => {
             </ul>
             <div className=" flex justify-between ">
               <div>
-                <p className="text-gray-600">by {props.article.user.name}</p>
+                <Link href={`/user/${props.article.user.id}`} className="text-gray-600">by {props.article.user.name}</Link>
               </div>
               <p className="prose-md prose mr-12  tracking-wider text-gray-500">
                 {date}
