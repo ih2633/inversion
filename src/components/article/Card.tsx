@@ -9,7 +9,7 @@ const Card = (props) => {
   const date = props.article.createdAt.toLocaleDateString();
   console.log(date);
 
-  const isSkill = props.article.category.name === "Skill"
+  const isSkill = props.article.category.name === "Skill";
   console.log(props.article.tags);
 
   return (

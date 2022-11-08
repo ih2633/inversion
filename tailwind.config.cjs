@@ -3,7 +3,24 @@
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      typography: {
+        "3xl": {
+          css: {
+            fontSize: "1.875rem",
+            h1: {
+              fontSize: "4rem",
+              fontFamily: ["Montserrat", "sans-serif"],
+            },
+            p: {
+              fontSize: "1.5rem",
+              fontFamily: ["Roboto", "sans-serif"],
+            },
+            // ...
+          },
+        },
+      },
+    },
   },
   daisyui: {
     themes: [
