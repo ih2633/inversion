@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function UserCard(props) {
   return (
@@ -16,7 +17,7 @@ export default function UserCard(props) {
             </div>
           </div>
           <div className="ml-5">
-            <p className="text-2xl font-bold">{props.user.name}</p>
+            <Link href={`/user/${props.article.user.id}`} className="text-2xl font-bold">{props.user.name}</Link>
           </div>
         </div>
       </div>
