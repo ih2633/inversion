@@ -60,6 +60,24 @@ export const articleRouter = router({
         const { id } = input;
         const article = await ctx.prisma.article.findUnique({
           where: { id },
+          include: {
+            user: {
+              select: {
+                name: true,
+                image: true,
+              },
+            },
+            tags: {
+              select: {
+                name: true,
+              },
+            },
+            category: {
+              select: {
+                name: true,
+              },
+            },
+          },
         });
         return article;
       } catch (error) {
@@ -138,14 +156,4 @@ export const articleRouter = router({
       }
     }),
 
-  /**
-   * 開発テスト様
-   */
-  allDelete: protectedProcedure.mutation(async ({ ctx }) => {
-    try {
-      await ctx.prisma.article.deleteMany({});
-    } catch (error) {
-      console.log(error);
-    }
-  }),
 });
