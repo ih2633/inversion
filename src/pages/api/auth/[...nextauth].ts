@@ -19,16 +19,8 @@ export const authOptions: NextAuthOptions = {
   // },
   // Configure one or more authentication providers
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (token) {
-        session.id = token.id;
-      }
+    async session({ session, user }) {
+        session.user.id = user.id as string;
       return session;
     },
   },

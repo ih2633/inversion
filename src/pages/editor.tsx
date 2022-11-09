@@ -1,7 +1,11 @@
 import type { NextPage } from "next";
 import { Tiptap } from "@/components/Tiptap";
+import { useSession } from "next-auth/react";
 
 const Editor: NextPage = () => {
+  const { data: session } = useSession()
+
+  console.log({session})
   return (
     <>
       <div className="grid grid-cols-7">
