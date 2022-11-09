@@ -9,12 +9,10 @@ import UserArticle from "@/components/article/UserArticles";
 const Article: NextPage = () => {
   const router = useRouter();
 
-  const { userId } = router.query;
+  const userId = router.query.userId as string;
   console.log({userId});
 
-  const { data: user, isSuccess } = trpc.user.getMyArticles.useQuery({
-    id: userId as string,
-  });
+  const { data: user, isSuccess } = trpc.user.getMyArticles.useQuery({userId});
 
   return (
     <div className="h-screen">
