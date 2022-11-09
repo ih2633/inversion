@@ -48,7 +48,10 @@ const Card = (props) => {
             </Link>
             <ul className="flex space-x-2 text-gray-400">
               {props.article.tags.map((x) => {
-                return <li key={x.index}>#{x.name}</li>;
+                return (
+                  <Link key={x.index} href={`/tag/${x.name}`}>
+                  <li >#{x.name}</li>
+                </Link>);
               })}
             </ul>
             <div className=" flex justify-between ">
