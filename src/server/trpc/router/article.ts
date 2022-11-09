@@ -10,9 +10,9 @@ export const articleRouter = router({
     try {
       const articles = await ctx.prisma.article.findMany({
         // 開発中のみコメントアウト
-        // where: {
-        //   publish: true
-        // },
+        where: {
+          publish: true
+        },
 
         orderBy: {
           createdAt: "desc",

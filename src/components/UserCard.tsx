@@ -17,7 +17,7 @@ export default function UserCard(props) {
             </div>
           </div>
           <div className="ml-5">
-            <Link href={`/user/${props.article.user.id}`} className="text-2xl font-bold">{props.user.name}</Link>
+            <Link href={`/user/${props.user.id}`} className="text-2xl font-bold">{props.user.name}</Link>
           </div>
         </div>
       </div>

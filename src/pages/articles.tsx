@@ -1,20 +1,20 @@
 import { type NextPage } from "next";
-import { useForm } from "react-hook-form";
-import superjson from "superjson";
+import { useState } from "react";
 import { trpc } from "../utils/trpc";
-import { appRouter } from "@/server/trpc/router/_app";
-
-import { articleOptimisticUpdates } from "@/utils/article";
-
 import ArticleForm from "@/components/article/form";
-import DeleteArticleButton from "@/components/article/deleteButton";
-import Card from "@/components/article/Card";
-import Navbar from "@/components/Navbar"
+import Cards from "@/components/article/Cards";
+import Navbar from "@/components/Navbar";
 
+import { useSelectCategory } from "@/hooks/selectCategory";
+import SelectCategoryButton from "@/components/article/SelectCategoryButton"
 
-const list: NextPage = () => {
-  const { data: articles } = trpc.article.getAllArticles.useQuery();
+const List: NextPage = () => {
+  const [selectCategory, filterCategory] = useSelectCategory();
+
+  const { data: articles, isSuccess } = trpc.article.getAllArticles.useQuery();
   console.log({ articles });
+
+  console.log({ selectCategory });
 
   return (
     <>
@@ -27,25 +27,19 @@ const list: NextPage = () => {
         </div>
         <div className="col-span-4 border-x-2">
           <div className="m-12">
-            <p className="m-3 prose prose-lg">新着記事</p>
-            <div className="space-y-4">
-              {articles?.map((article) => {
-                return (
-                  <>
-                    <Card article={article} />
-                  </>
-                );
-              })}
+            <div className="mb-4 flex items-center space-x-5">
+              <p className=" text-xl">新着記事</p>
+              <SelectCategoryButton selectCategory={selectCategory} filterCategory={filterCategory} />
             </div>
+            {isSuccess && articles && (
+              <Cards articles={articles} selectCategory={selectCategory} />
+            )}
           </div>
         </div>
-        <div className="col-span-2">
-
-        </div>
-
+        <div className="col-span-2"></div>
       </div>
     </>
   );
 };
 
-export default list;
+export default List;
