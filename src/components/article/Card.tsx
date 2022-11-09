@@ -10,7 +10,7 @@ const Card = (props) => {
 
   return (
     <>
-      <div
+      <section
         className={` items-start rounded-xl bg-gradient-to-r
       ${
         isSkill
@@ -50,13 +50,19 @@ const Card = (props) => {
               {props.article.tags.map((x) => {
                 return (
                   <Link key={x.index} href={`/tag/${x.name}`}>
-                  <li >#{x.name}</li>
-                </Link>);
+                    <li>#{x.name}</li>
+                  </Link>
+                );
               })}
             </ul>
             <div className=" flex justify-between ">
               <div>
-                <Link href={`/user/${props.article.user.id}`} className="text-gray-600">by {props.article.user.name}</Link>
+                <Link
+                  href={`/user/${props.article.user.id}`}
+                  className="text-gray-600"
+                >
+                  by {props.article.user.name}
+                </Link>
               </div>
               <p className="prose-md prose mr-12  tracking-wider text-gray-500">
                 {date}
@@ -64,7 +70,7 @@ const Card = (props) => {
             </div>
           </div>
         </span>
-      </div>
+      </section>
     </>
   );
 };

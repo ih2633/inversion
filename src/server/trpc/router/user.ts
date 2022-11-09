@@ -7,19 +7,32 @@ export const userRouter = router({
   getMyArticles: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
+        userId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
       try {
-        const { id } = input;
+        const { userId } = input;
         const article = await ctx.prisma.user.findUnique({
           where: {
-            id: id,
+            id: userId,
           },
           include: {
-            articles: true,
-          }
+            articles: {
+              include: {
+                tags: {
+                  select: {
+                    name: true,
+                  },
+                },
+                category: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
         });
         return article;
       } catch (error) {

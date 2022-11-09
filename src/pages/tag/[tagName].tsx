@@ -23,7 +23,6 @@ const TagList: NextPage = () => {
 
   return (
     <>
-      <Navbar />
       <div className="grid grid-cols-7 bg-gray-100">
         <div className="col-span-1">
           <div className="mt-24">
