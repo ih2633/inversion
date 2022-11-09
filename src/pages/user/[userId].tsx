@@ -19,7 +19,7 @@ const Article: NextPage = () => {
   return (
     <div className="h-screen">
       <section className="bg-slate-50 pt-16">
-        <div className="mx-auto w-full px-4">
+        <div className="mx-auto w-4/5 px-4">
           <div className="relative mb-6 mt-16 flex w-full min-w-0 flex-col break-words rounded-lg bg-white shadow-xl">
             <div className="px-6">
               <div className="flex flex-wrap justify-center mt-12">
