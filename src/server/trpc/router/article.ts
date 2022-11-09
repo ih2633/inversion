@@ -10,9 +10,9 @@ export const articleRouter = router({
     try {
       const articles = await ctx.prisma.article.findMany({
         // 開発中のみコメントアウト
-        // where: {
-        //   publish: true
-        // },
+        where: {
+          publish: true
+        },
 
         orderBy: {
           createdAt: "desc",
@@ -46,7 +46,54 @@ export const articleRouter = router({
   /**
    *
    */
-
+  selectArticleTag: publicProcedure
+    .input(
+      z.object({
+        tagName: z.string(),
+      })
+  )
+    .query(async ({ ctx, input }) => {
+      try {
+        const { tagName } = input;
+        const articles = await ctx.prisma.article.findMany({
+          where: {
+            publish: {
+              equals: true
+            },
+            tags: {
+              some: {
+                name: tagName
+              }
+            }
+          },
+            orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
+          tags: {
+            select: {
+              name: true,
+            },
+          },
+          category: {
+            select: {
+              name: true,
+            },
+          },
+        },
+        }) 
+        return articles
+      } catch(error) {
+        console.log(error)
+    }
+  }),
   /**
    *
    */

@@ -35,7 +35,7 @@ const Article: NextPage = () => {
   return (
     <>
       <div className="h-screen w-screen bg-violet-50 text-gray-700">
-        <div className=" container mx-auto bg-red-200 ">
+        <div className=" container mx-auto">
           <div className="mx-auto mt-12">
             {isSuccess && article && (
               <>
@@ -48,8 +48,8 @@ const Article: NextPage = () => {
               <div className="col-span-4 w-full">
                 {isSuccess && article ? (
                   <>
-                    <div className=" prose-sm prose mx-auto w-full whitespace-pre-wrap break-words rounded-2xl bg-white p-8 tracking-wider focus:outline-none sm:prose lg:prose-xl xl:prose-3xl">
-                      <div className="flex justify-between items-center">
+                    <div className=" mx-auto w-full whitespace-pre-wrap break-words rounded-2xl bg-white p-8 focus:outline-none">
+                      <div className="flex items-center justify-between">
                         <div
                           className={`${
                             isSkill ? "badge-primary" : "badge-secondary"
@@ -57,18 +57,24 @@ const Article: NextPage = () => {
                         >
                           {article?.category?.name}
                         </div>
-                        <div className="flex space-x-3">
-                          <p>投稿日: {createDate}</p>
-                          <p>最終更新日: {updateDate}</p>
+                        <div className="text-gray-400 space-y-2 ">
+                          <p className="">
+                            投稿日: {createDate}
+                          </p>
+                          <p className="">
+                            更新日: {updateDate}
+                          </p>
                         </div>
                       </div>
-                      <div className="flex space-x-2 text-gray-400">
-                        {article.tags.map((x) => {
-                          return <p key={x.name}>#{x.name}</p>;
-                        })}
-                      </div>
-                      <div className="blogContents">
-                        {ReactHtmlParser(article.content)}
+                      <div className=" prose-sm prose tracking-wider sm:prose lg:prose-xl xl:prose-3xl">
+                        <div className="flex space-x-2 text-gray-400">
+                          {article.tags.map((x) => {
+                            return <p key={x.name}>#{x.name}</p>;
+                          })}
+                        </div>
+                        <div className="blogContents">
+                          {ReactHtmlParser(article.content)}
+                        </div>
                       </div>
                     </div>
                   </>
