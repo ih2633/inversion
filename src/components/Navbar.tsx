@@ -19,12 +19,14 @@ const Navbar: React.FC = () => {
           <div className="avatar ">
             <div className=" w-12 rounded-full shadow-lg ring ring-offset-2 ring-offset-base-100 ">
               {session?.user ? (
+                <Link href={`/user/${session.user.name}`}>
                 <Image
                   className="rounded-full"
                   fill={true}
                   alt="avatar"
                   src={`${session?.user?.image}`}
-                />
+                  />
+                </Link>
               ) : (
                 <div>はいってない</div>
               )}
