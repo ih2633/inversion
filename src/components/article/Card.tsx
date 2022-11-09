@@ -4,13 +4,9 @@ import Image from "next/image";
 import { trpc } from "@/utils/trpc";
 
 const Card = (props) => {
-  console.log({ props });
-
   const date = props.article.createdAt.toLocaleDateString();
-  console.log(date);
-
   const isSkill = props.article.category.name === "Skill";
-  console.log(props.article.tags);
+
 
   return (
     <>
