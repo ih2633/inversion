@@ -11,7 +11,7 @@ export const articleRouter = router({
       const articles = await ctx.prisma.article.findMany({
         // 開発中のみコメントアウト
         where: {
-          publish: true
+          publish: true,
         },
 
         orderBy: {
@@ -51,63 +51,63 @@ export const articleRouter = router({
       z.object({
         tagName: z.string(),
       })
-  )
+    )
     .query(async ({ ctx, input }) => {
       try {
         const { tagName } = input;
         const articles = await ctx.prisma.article.findMany({
           where: {
             publish: {
-              equals: true
+              equals: true,
             },
             tags: {
               some: {
-                name: tagName
-              }
-            }
-          },
-            orderBy: {
-          createdAt: "desc",
-        },
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              image: true,
+                name: tagName,
+              },
             },
           },
-          tags: {
-            select: {
-              name: true,
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+            tags: {
+              select: {
+                name: true,
+              },
+            },
+            category: {
+              select: {
+                name: true,
+              },
             },
           },
-          category: {
-            select: {
-              name: true,
-            },
-          },
-        },
-        }) 
-        return articles
-      } catch(error) {
-        console.log(error)
-    }
-  }),
+        });
+        return articles;
+      } catch (error) {
+        console.log(error);
+      }
+    }),
   /**
    *
    */
   getArticleById: publicProcedure
     .input(
       z.object({
-        id: z.string(),
+        articleId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
       try {
-        const { id } = input;
+        const { articleId } = input;
         const article = await ctx.prisma.article.findUnique({
-          where: { id },
+          where: { id:articleId },
           include: {
             user: {
               select: {
@@ -183,6 +183,31 @@ export const articleRouter = router({
         throw new TRPCError({ code: "BAD_REQUEST" });
       }
     }),
+  /**
+   * 
+   */
+  searchWordForContent: publicProcedure
+    .input(
+      z.object({
+        search: z.string()
+      })
+  )
+    .query(async ({ ctx, input }) => {
+      try {
+        const search = input.search as string
+        const article = await ctx.prisma.article.findMany({
+          where: {
+            content: {
+              has: search,
+          }
+        }
+        })
+        return article
+      } catch (error) {
+        console.log(error)
+    }
+  }),
+
 
   /**
    *
@@ -204,5 +229,4 @@ export const articleRouter = router({
         console.log(error);
       }
     }),
-
 });

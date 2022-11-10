@@ -48,7 +48,8 @@ model Favorite {
 
   article   Article @relation(fields: [articleId], references: [id])
   articleId String  @unique
-  user      User[]
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
   amount    Int     @default(0)
 }
 

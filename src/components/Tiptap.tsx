@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const Tiptap: React.FC = () => {
   const { register, handleSubmit, control } = useForm({});
 
-  const { data: categorys } = trpc.category.getList.useQuery();
+  const { data: categories } = trpc.category.getList.useQuery();
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -55,7 +55,7 @@ export const Tiptap: React.FC = () => {
     // });
     // console.log(tags)
     console.log(sendTags);
-    const categoryId = categoryCheck(categorys, category);
+    const categoryId = categoryCheck(categories, category);
     console.log(categoryId);
 
     const noMatch = categoryId === undefined;
@@ -72,15 +72,15 @@ export const Tiptap: React.FC = () => {
     }
   };
 
-  const categoryCheck = (categorysArray, categoryId) => {
-    const categorys = categorysArray
+  const categoryCheck = (categoriesArray, categoryId) => {
+    const categories = categoriesArray
       .map((category) => {
         const id = category.id;
         return id;
       })
       .find((x) => x === categoryId);
 
-    return categorys;
+    return categories;
   };
 
   if (!editor) return null;
@@ -116,7 +116,7 @@ export const Tiptap: React.FC = () => {
               {...register("category")}
             >
               <option disabled selected></option>
-              {categorys?.map((category) => {
+              {categories?.map((category) => {
                 return (
                   <option key={category.id} value={category.id}>
                     {category.name}
