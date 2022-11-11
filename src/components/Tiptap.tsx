@@ -2,6 +2,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { Node } from "@tiptap/core";
+import { tokenize } from 'wakachigaki'
 import StarterKit from "@tiptap/starter-kit";
 import { useForm, Controller } from "react-hook-form";
 import { trpc } from "@/utils/trpc";
@@ -9,10 +10,11 @@ import { articleOptimisticUpdates } from "@/utils/article";
 import { v4 as uuidv4 } from 'uuid';
 
 
+
 export const Tiptap: React.FC = () => {
   const { register, handleSubmit, control } = useForm({});
 
-  const { data: categorys } = trpc.category.getList.useQuery();
+  const { data: categories } = trpc.category.getList.useQuery();
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -31,7 +33,7 @@ export const Tiptap: React.FC = () => {
 
   const mutation = articleOptimisticUpdates(trpc.article.addArticle, ctx);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log({ data })
 
     const content2 = editor?.getHTML();
@@ -39,24 +41,32 @@ export const Tiptap: React.FC = () => {
     let headingId = 0
 
     const content = content2?.replace(/<h3>/g, () => {
-      headingId = headingId + 1; 
+      headingId = headingId + 1;
       return `<h3 id="heading${headingId}">`;
-    })
+    }) as string
 
+    console.log({ content })
+    console.log(typeof content)
+
+    // const preSpritContent = content?.replace(/<.+?>/g, "") as string
+    // console.log({ preSpritContent })
+  
+
+    // const wakachi = tokenize(preSpritContent)
+    // const splitContent = wakachi.join(" ")
+
+    const wakachi = tokenize(content)
+    const preSpritContent = wakachi.join(" ")
+
+    const splitContent = preSpritContent?.replace(/<.+?>/g, "") as string
+
+    console.log({splitContent})
 
     const { title, category, tag0, tag1, tag2, tag3, tag4, publish } = data;
     const sendTags = [tag0, tag1, tag2, tag3, tag4].filter((x) => Boolean(x));
 
-    // const sendTags = []
-    // tags.forEach((x) => {
-    //     const tmpObj = {name: x};
-    //     sendTags.push(tmpObj)
+    const categoryId = categoryCheck(categories, category);
 
-    // });
-    // console.log(tags)
-    console.log(sendTags);
-    const categoryId = categoryCheck(categorys, category);
-    console.log(categoryId);
 
     const noMatch = categoryId === undefined;
     if (noMatch) {
@@ -65,22 +75,22 @@ export const Tiptap: React.FC = () => {
 
     const isOver = title.length > 0;
     if (isOver) {
-      mutation.mutate({ title, content, categoryId, sendTags, publish });
+      mutation.mutate({ title, content, categoryId, sendTags, publish, splitContent });
     } else {
       // タイトル文字数のエラーいれる
       console.error("エラー：");
     }
   };
 
-  const categoryCheck = (categorysArray, categoryId) => {
-    const categorys = categorysArray
+  const categoryCheck = (categoriesArray, categoryId) => {
+    const categories = categoriesArray
       .map((category) => {
         const id = category.id;
         return id;
       })
       .find((x) => x === categoryId);
 
-    return categorys;
+    return categories;
   };
 
   if (!editor) return null;
@@ -111,12 +121,11 @@ export const Tiptap: React.FC = () => {
             <label className="label">
               <span className="label-text">Category</span>
             </label>
-            <select
+            <select defaultValue=""
               className="select-bordered select w-full max-w-xs"
               {...register("category")}
             >
-              <option disabled selected></option>
-              {categorys?.map((category) => {
+              {categories?.map((category) => {
                 return (
                   <option key={category.id} value={category.id}>
                     {category.name}

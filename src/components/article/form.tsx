@@ -7,8 +7,8 @@ const ArticleForm = () => {
   const {register, handleSubmit } = useForm();
 
 
-  const { data: categorys } = trpc.category.getList.useQuery();
-  console.log({ categorys });
+  const { data: categories } = trpc.category.getList.useQuery();
+  console.log({ categories });
 
   const ctx = trpc.useContext();
 
@@ -59,7 +59,7 @@ const ArticleForm = () => {
             <option disabled selected>
               select content
             </option>
-            {categorys?.map((category) => {
+            {categories?.map((category) => {
               return (
                 <option key={category.id} value={category.id}>
                   {category.name}

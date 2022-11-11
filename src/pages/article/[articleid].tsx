@@ -12,22 +12,17 @@ import Toc from "@/components/Toc"
 import UserCard from "@/components/UserCard"
 
 const Article: NextPage = () => {
-  const [isRendered, setRendered] = useState(false)
-
   const router = useRouter();
 
-  const { articleid } = router.query;
-  console.log(articleid);
+  const articleId = router.query.articleId as string;
+  console.log(articleId);
 
-  const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({
-    id: articleid as string
-  },
-  );
-    const createDate = article?.createdAt.toLocaleDateString();
-  console.log(createDate);
-  const updateDate = article?.updatedAt.toLocaleDateString();
+  const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({ articleId });
+  const createdAt = article?.createdAt.toLocaleDateString();
 
-  console.log({article})
+  const updatedAt = article?.updatedAt.toLocaleDateString();
+
+  console.log({ article })
 
   const isSkill = article?.category?.name === "Skill";
 
@@ -51,18 +46,17 @@ const Article: NextPage = () => {
                     <div className=" mx-auto w-full whitespace-pre-wrap break-words rounded-2xl bg-white p-8 focus:outline-none">
                       <div className="flex items-center justify-between">
                         <div
-                          className={`${
-                            isSkill ? "badge-primary" : "badge-secondary"
-                          } badge-outline badge h-8 w-20`}
+                          className={`${isSkill ? "badge-primary" : "badge-secondary"
+                            } badge-outline badge h-8 w-20`}
                         >
                           {article?.category?.name}
                         </div>
                         <div className="text-gray-400 space-y-2 ">
                           <p className="">
-                            投稿日: {createDate}
+                            投稿日: {createdAt}
                           </p>
                           <p className="">
-                            更新日: {updateDate}
+                            更新日: {updatedAt}
                           </p>
                         </div>
                       </div>

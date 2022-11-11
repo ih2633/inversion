@@ -13,7 +13,7 @@ const UpdateArticleButton = (props) => {
     const { title, content, category } = data;
     mutation.mutate({ title, content, category, id });
   };
-    const { data: categorys } = trpc.category.getList.useQuery();
+    const { data: categories } = trpc.category.getList.useQuery();
   return (
     <>
       <label htmlFor="my-modal" className="btn-success btn">
@@ -59,7 +59,7 @@ const UpdateArticleButton = (props) => {
                   <option disabled selected>
                     select content
                   </option>
-                  {categorys?.map((category) => {
+                  {categories?.map((category) => {
                     return (
                       <option key={category.id} value={category.id}>
                         {category.name}
