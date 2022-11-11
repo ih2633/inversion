@@ -48,7 +48,7 @@ model Favorite {
   id       String           @id @default(cuid())
   article   Article @relation(fields: [articleId], references: [id])
   articleId String  @unique
-  user      User[]
+  users      User[]
 }
 
 // Necessary for Next auth

@@ -36,6 +36,15 @@ export const articleRouter = router({
               name: true,
             },
           },
+          favorite: {
+            include: {
+              _count: {
+                select: {
+                  users: true,
+                },
+              },
+            },
+          },
         },
       });
       return articles;

@@ -2,6 +2,8 @@ import { type NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { trpc } from "@/utils/trpc";
+import FavoriteButton from "@/components/article/FavoriteButton"
+
 
 const UserArticle = (props) => {
   console.log({ props });
