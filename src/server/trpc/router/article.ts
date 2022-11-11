@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
+import cuid from "cuid";
 
 export const articleRouter = router({
   /**
@@ -107,7 +108,7 @@ export const articleRouter = router({
       try {
         const { articleId } = input;
         const article = await ctx.prisma.article.findUnique({
-          where: { id:articleId },
+          where: { id: articleId },
           include: {
             user: {
               select: {
@@ -145,7 +146,7 @@ export const articleRouter = router({
         categoryId: z.string(),
         sendTags: z.array(z.string()),
         publish: z.boolean(),
-        splitContent: z.string()
+        splitContent: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -174,36 +175,35 @@ export const articleRouter = router({
                 };
               }),
             },
+            favorite: {
+              create: { id: cuid() },
+            },
           },
         });
       } catch (error) {
-        console.log("-------------------------------------");
-        console.log("だめです");
-        console.log(error);
-
-        console.log("-------------------------------------");
         throw new TRPCError({ code: "BAD_REQUEST" });
       }
     }),
   /**
-   * 
+   *
    */
   searchWordForContent: publicProcedure
     .input(
       z.object({
-        search: z.string()
+        search: z.string(),
       })
-  )
+    )
     .query(async ({ ctx, input }) => {
       try {
-        const search = input.search as string
-        console.log(search)
+        const search = input.search as string;
+        console.log(search);
         const article = await ctx.prisma.article.findMany({
           where: {
             publish: {
               equals: true,
             },
-            splitContent: { contains: search ,
+            splitContent: {
+              contains: search,
             },
           },
           orderBy: {
@@ -229,12 +229,11 @@ export const articleRouter = router({
             },
           },
         });
-        return article
+        return article;
       } catch (error) {
-        console.log(error)
-    }
-  }),
-
+        console.log(error);
+      }
+    }),
 
   /**
    *
