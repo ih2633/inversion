@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { trpc } from "@/utils/trpc";
+import { MdOutlineFavoriteBorder } from 'react-icons/md'
 
 const Card = (props) => {
   const createdAt = props.article.createdAt.toLocaleDateString();
@@ -64,9 +65,12 @@ const Card = (props) => {
                   by {props.article.user.name}
                 </Link>
               </div>
+              <div className="flex items-center">
+          
+                <MdOutlineFavoriteBorder />
               <p className="prose-md prose mr-12  tracking-wider text-gray-500">
                 {createdAt}
-              </p>
+                </p></div>
             </div>
           </div>
         </span>
