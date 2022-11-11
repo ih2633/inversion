@@ -18,9 +18,9 @@ const Article: NextPage = () => {
   console.log(articleId);
 
   const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({ articleId });
-  const createDate = article?.createdAt.toLocaleDateString();
-  console.log(createDate);
-  const updateDate = article?.updatedAt.toLocaleDateString();
+  const createdAt = article?.createdAt.toLocaleDateString();
+
+  const updatedAt = article?.updatedAt.toLocaleDateString();
 
   console.log({ article })
 
@@ -53,10 +53,10 @@ const Article: NextPage = () => {
                         </div>
                         <div className="text-gray-400 space-y-2 ">
                           <p className="">
-                            投稿日: {createDate}
+                            投稿日: {createdAt}
                           </p>
                           <p className="">
-                            更新日: {updateDate}
+                            更新日: {updatedAt}
                           </p>
                         </div>
                       </div>

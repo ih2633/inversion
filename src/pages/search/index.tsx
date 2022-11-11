@@ -1,20 +1,20 @@
 import { useForm } from "react-hook-form";
 import { useEffect } from "react"
+import { useRouter } from 'next/router'
 
 import { trpc } from "@/utils/trpc";
 
-const ArticleForm = () => {
-  const { register, handleSubmit, watch } = useForm();
-
-  const { data: categories } = trpc.category.getList.useQuery();
-  console.log({ categories });
-
+const SearchArticle = () => {
+  const { register, handleSubmit } = useForm();
+  const router = useRouter()
 
   const onSubmit = (data) => {
     console.log(data);
     const { search } = data;
-    const { data: article, isSuccess } = trpc.article.searchWordForContent.useQuery({search})
-    if (isSuccess) { console.log(article) }
+    router.push({
+      pathname: 'search/[searchWords]',
+      query: { searchWords : search}
+    })
   
   };
 
@@ -48,4 +48,4 @@ const ArticleForm = () => {
   );
 };
 
-export default ArticleForm;
+export default SearchArticle;

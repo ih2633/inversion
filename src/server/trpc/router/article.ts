@@ -145,6 +145,7 @@ export const articleRouter = router({
         categoryId: z.string(),
         sendTags: z.array(z.string()),
         publish: z.boolean(),
+        splitContent: z.string()
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -164,6 +165,7 @@ export const articleRouter = router({
             userId: userId?.id,
             categoryId: input.categoryId,
             publish: input.publish,
+            splitContent: input.splitContent,
             tags: {
               connectOrCreate: input.sendTags.map((x) => {
                 return {
@@ -195,13 +197,38 @@ export const articleRouter = router({
     .query(async ({ ctx, input }) => {
       try {
         const search = input.search as string
+        console.log(search)
         const article = await ctx.prisma.article.findMany({
           where: {
-            content: {
-              has: search,
-          }
-        }
-        })
+            publish: {
+              equals: true,
+            },
+            splitContent: { contains: search ,
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+            tags: {
+              select: {
+                name: true,
+              },
+            },
+            category: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        });
         return article
       } catch (error) {
         console.log(error)

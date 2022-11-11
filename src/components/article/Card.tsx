@@ -4,7 +4,7 @@ import Image from "next/image";
 import { trpc } from "@/utils/trpc";
 
 const Card = (props) => {
-  const date = props.article.createdAt.toLocaleDateString();
+  const createdAt = props.article.createdAt.toLocaleDateString();
   const isSkill = props.article.category.name === "Skill";
 
 
@@ -49,7 +49,7 @@ const Card = (props) => {
             <ul className="flex space-x-2 text-gray-400">
               {props.article.tags.map((x) => {
                 return (
-                  <Link key={x.index} href={`/tag/${x.name}`}>
+                  <Link key={x.name} href={`/tag/${x.name}`}>
                     <li>#{x.name}</li>
                   </Link>
                 );
@@ -65,7 +65,7 @@ const Card = (props) => {
                 </Link>
               </div>
               <p className="prose-md prose mr-12  tracking-wider text-gray-500">
-                {date}
+                {createdAt}
               </p>
             </div>
           </div>
