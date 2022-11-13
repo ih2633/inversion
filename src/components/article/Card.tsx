@@ -49,7 +49,8 @@ const Card = (props) => {
             <ul className="flex space-x-2 text-gray-400">
               {props.article.tags.map((x) => {
                 return (
-                  <Link key={x.name} href={`/tag/${x.name}`}>
+                  // ページネーションの修正予定あり
+                  <Link key={x.name} href={`/tag/${x.name}?skip=0&take=20`}>
                     <li>#{x.name}</li>
                   </Link>
                 );

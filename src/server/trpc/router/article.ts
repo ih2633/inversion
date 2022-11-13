@@ -10,6 +10,7 @@ export const articleRouter = router({
   getAllArticles: publicProcedure.query(async ({ ctx }) => {
     try {
       const articles = await ctx.prisma.article.findMany({
+        take: 15,
         // 開発中のみコメントアウト
         where: {
           publish: true,
@@ -64,12 +65,16 @@ export const articleRouter = router({
     .input(
       z.object({
         tagName: z.string(),
+        skip: z.string(),
+        take: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
       try {
-        const { tagName } = input;
+        const { tagName, skip, take } = input;
         const articles = await ctx.prisma.article.findMany({
+          skip: Number(skip),
+          take: Number(take),
           where: {
             publish: {
               equals: true,
@@ -99,6 +104,18 @@ export const articleRouter = router({
             category: {
               select: {
                 name: true,
+              },
+            },
+            favorite: {
+              include: {
+                users: {
+                  select: { id: true },
+                },
+                _count: {
+                  select: {
+                    users: true,
+                  },
+                },
               },
             },
           },
@@ -140,9 +157,21 @@ export const articleRouter = router({
                 name: true,
               },
             },
+            favorite: {
+              include: {
+                users: {
+                  select: { id: true },
+                },
+                _count: {
+                  select: {
+                    users: true,
+                  },
+                },
+              },
+            },
           },
         });
-        console.log("きてない")
+        console.log("きてない");
         return article;
       } catch (error) {
         console.log(error);
@@ -239,6 +268,18 @@ export const articleRouter = router({
             category: {
               select: {
                 name: true,
+              },
+            },
+            favorite: {
+              include: {
+                users: {
+                  select: { id: true },
+                },
+                _count: {
+                  select: {
+                    users: true,
+                  },
+                },
               },
             },
           },
