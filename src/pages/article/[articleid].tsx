@@ -11,10 +11,10 @@ import UserCard from "@/components/UserCard";
 
 const Article: NextPage = () => {
   const router = useRouter();
-  
-    const articleId = router.query.articleId as string;
-    console.log({ articleId });
 
+
+  const articleId = router.query.articleId as string;
+  console.log({ articleId });
 
   const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({
     articleId,
