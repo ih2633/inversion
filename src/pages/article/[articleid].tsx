@@ -1,31 +1,31 @@
 import { type NextPage } from "next";
 import { useState, useEffect, useMemo } from "react";
 
-
-
 // Option 1: Browser + server-side
 import { generateHTML } from "@tiptap/html";
 import ReactHtmlParser from "react-html-parser";
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
-import Toc from "@/components/Toc"
-import UserCard from "@/components/UserCard"
+import Toc from "@/components/Toc";
+import UserCard from "@/components/UserCard";
 
 const Article: NextPage = () => {
   const router = useRouter();
+  
+    const articleId = router.query.articleId as string;
+    console.log({ articleId });
 
-  const articleId = router.query.articleId as string;
-  console.log(articleId);
 
-  const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({ articleId });
+  const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({
+    articleId,
+  });
   const createdAt = article?.createdAt.toLocaleDateString();
 
   const updatedAt = article?.updatedAt.toLocaleDateString();
 
-  console.log({ article })
+  console.log({ article });
 
   const isSkill = article?.category?.name === "Skill";
-
 
   return (
     <>
@@ -46,18 +46,15 @@ const Article: NextPage = () => {
                     <div className=" mx-auto w-full whitespace-pre-wrap break-words rounded-2xl bg-white p-8 focus:outline-none">
                       <div className="flex items-center justify-between">
                         <div
-                          className={`${isSkill ? "badge-primary" : "badge-secondary"
-                            } badge-outline badge h-8 w-20`}
+                          className={`${
+                            isSkill ? "badge-primary" : "badge-secondary"
+                          } badge-outline badge h-8 w-20`}
                         >
                           {article?.category?.name}
                         </div>
-                        <div className="text-gray-400 space-y-2 ">
-                          <p className="">
-                            投稿日: {createdAt}
-                          </p>
-                          <p className="">
-                            更新日: {updatedAt}
-                          </p>
+                        <div className="space-y-2 text-gray-400 ">
+                          <p className="">投稿日: {createdAt}</p>
+                          <p className="">更新日: {updatedAt}</p>
                         </div>
                       </div>
                       <div className=" prose-sm prose tracking-wider sm:prose lg:prose-xl xl:prose-3xl">

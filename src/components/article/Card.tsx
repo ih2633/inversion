@@ -2,12 +2,11 @@ import { type NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { trpc } from "@/utils/trpc";
-
+import FavoriteButton from "@/components/article/FavoriteButton";
 
 const Card = (props) => {
   const createdAt = props.article.createdAt.toLocaleDateString();
   const isSkill = props.article.category.name === "Skill";
-
 
   return (
     <>
@@ -66,7 +65,7 @@ const Card = (props) => {
                 </Link>
               </div>
               <div className="flex items-center">
-    
+                <FavoriteButton favorite={props.article.favorite} />
                 <p className="prose-md prose mr-12  tracking-wider text-gray-500">
                   {createdAt}
                 </p>

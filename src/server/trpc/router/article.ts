@@ -24,6 +24,7 @@ export const articleRouter = router({
               id: true,
               name: true,
               image: true,
+              favorites: true,
             },
           },
           tags: {
@@ -38,6 +39,9 @@ export const articleRouter = router({
           },
           favorite: {
             include: {
+              users: {
+                select: { id: true },
+              },
               _count: {
                 select: {
                   users: true,
@@ -138,6 +142,7 @@ export const articleRouter = router({
             },
           },
         });
+        console.log("きてない")
         return article;
       } catch (error) {
         console.log(error);

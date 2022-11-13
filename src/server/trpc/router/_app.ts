@@ -3,14 +3,16 @@ import { authRouter } from "./auth";
 import { exampleRouter } from "./example";
 import { articleRouter } from "./article";
 import { categoryRouter } from "./category";
-import { userRouter } from "./user"
+import { userRouter } from "./user";
+import { favoriteRouter } from "./favorite";
 
 export const appRouter = router({
   example: exampleRouter,
   auth: authRouter,
   article: articleRouter,
   category: categoryRouter,
-  user: userRouter
+  user: userRouter,
+  favorite: favoriteRouter,
 });
 
 // export type definition of API
