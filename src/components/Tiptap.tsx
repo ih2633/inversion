@@ -1,49 +1,68 @@
 import { EditorContent, useEditor } from "@tiptap/react";
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import { Node } from "@tiptap/core";
+import { tokenize } from "wakachigaki";
 import StarterKit from "@tiptap/starter-kit";
 import { useForm, Controller } from "react-hook-form";
 import { trpc } from "@/utils/trpc";
 import { articleOptimisticUpdates } from "@/utils/article";
+import { v4 as uuidv4 } from "uuid";
 
 export const Tiptap: React.FC = () => {
-  const { register, handleSubmit, control } = useForm({
-    defaultValues: false
-  });
+  const { register, handleSubmit, control } = useForm({});
 
-  const { data: categorys } = trpc.category.getList.useQuery();
+  const { data: categories } = trpc.category.getList.useQuery();
 
   const editor = useEditor({
     extensions: [StarterKit],
     editorProps: {
       attributes: {
-        class: "prose prose-sm sm:prose  p-7  focus:outline-none ",
+        class:
+          "prose prose-sm sm:prose lg:prose-xl xl:prose-3xl tracking-wider  w-full m-auto p-8 focus:outline-none ",
       },
     },
+    autofocus: true,
+    editable: true,
+    injectCSS: false,
   });
 
   const ctx = trpc.useContext();
 
   const mutation = articleOptimisticUpdates(trpc.article.addArticle, ctx);
 
-  const onSubmit = (data) => {
-    console.log({ data })
+  const onSubmit = async (data) => {
+    console.log({ data });
 
-    const content = editor?.getHTML();
+    const content2 = editor?.getHTML();
 
-    const { title, category, tag0, tag1, tag2, tag3, tag4 } = data;
-    const tags = [tag0, tag1, tag2, tag3, tag4].filter((x) => Boolean(x));
+    let headingId = 0;
 
-    const sendTags = []
-    tags.forEach((x) => {
-        const tmpObj = {name: x};
-        sendTags.push(tmpObj)
+    const content = content2?.replace(/<h3>/g, () => {
+      headingId = headingId + 1;
+      return `<h3 id="heading${headingId}">`;
+    }) as string;
 
-    });
-    console.log(tags)
-    console.log(sendTags);
-    const categoryId = categoryCheck(categorys, category);
-    console.log(categoryId);
+    console.log({ content });
+    console.log(typeof content);
+
+    // const preSpritContent = content?.replace(/<.+?>/g, "") as string
+    // console.log({ preSpritContent })
+
+    // const wakachi = tokenize(preSpritContent)
+    // const splitContent = wakachi.join(" ")
+
+    const wakachi = tokenize(content);
+    const preSpritContent = wakachi.join(" ");
+
+    const splitContent = preSpritContent?.replace(/<.+?>/g, "") as string;
+
+    console.log({ splitContent });
+
+    const { title, category, tag0, tag1, tag2, tag3, tag4, publish } = data;
+    const sendTags = [tag0, tag1, tag2, tag3, tag4].filter((x) => Boolean(x));
+
+    const categoryId = categoryCheck(categories, category);
 
     const noMatch = categoryId === undefined;
     if (noMatch) {
@@ -52,29 +71,36 @@ export const Tiptap: React.FC = () => {
 
     const isOver = title.length > 0;
     if (isOver) {
-      mutation.mutate({ title, content, categoryId, sendTags });
+      mutation.mutate({
+        title,
+        content,
+        categoryId,
+        sendTags,
+        publish,
+        splitContent,
+      });
     } else {
       // タイトル文字数のエラーいれる
       console.error("エラー：");
     }
   };
 
-  const categoryCheck = (categorysArray, categoryId) => {
-    const categorys = categorysArray
+  const categoryCheck = (categoriesArray, categoryId) => {
+    const categories = categoriesArray
       .map((category) => {
         const id = category.id;
         return id;
       })
       .find((x) => x === categoryId);
 
-    return categorys;
+    return categories;
   };
 
   if (!editor) return null;
 
   return (
     <>
-      <div className="">
+      <div className="w-full ">
         {mutation.isSuccess && (
           <div className="modal modal-open" id="my-modal-2">
             <div className="modal-box">
@@ -99,11 +125,11 @@ export const Tiptap: React.FC = () => {
               <span className="label-text">Category</span>
             </label>
             <select
+              defaultValue=""
               className="select-bordered select w-full max-w-xs"
               {...register("category")}
             >
-              <option disabled selected></option>
-              {categorys?.map((category) => {
+              {categories?.map((category) => {
                 return (
                   <option key={category.id} value={category.id}>
                     {category.name}
@@ -113,7 +139,7 @@ export const Tiptap: React.FC = () => {
             </select>
           </div>
 
-          <div className="flex w-full items-end bg-red-200">
+          <div className="flex w-full items-end ">
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Title</span>
@@ -130,14 +156,14 @@ export const Tiptap: React.FC = () => {
                 <span className="label-text">Publish</span>
               </label>
               <Controller
-                name="checkbox"
+                name="publish"
                 control={control}
                 defaultValue={false}
                 render={({ field }) => (
                   <input
                     {...field}
                     type="checkbox"
-                    className="toggle h-10 w-16"
+                    className="toggle-success toggle h-10 w-16"
                   />
                 )}
               />
@@ -182,25 +208,16 @@ export const Tiptap: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex ">
-            <div className=" w-screen">
-              <label className="label">
-                <span className="label-text">Content</span>{" "}
-              </label>
-              <EditorContent
-                className="h-screen  w-auto  overflow-y-scroll border-2"
-                editor={editor}
-              />
-            </div>
-            <div className="sticky top-10">
-              <div className=" ml-5 mt-5 flex flex-col space-y-3">
+          <div className=" ">
+            <div className="sticky">
+              <div className=" ml-5 mt-5 flex space-x-3">
                 <button
                   className="h-12 w-24 rounded-xl border-2 border-gray-400"
                   onClick={() =>
-                    editor.chain().focus().toggleHeading({ level: 1 }).run()
+                    editor.chain().focus().toggleHeading({ level: 3 }).run()
                   }
                 >
-                  h1
+                  h3
                 </button>
                 <button
                   className="h-12 w-24 rounded-xl border-2 border-gray-400"
@@ -232,6 +249,15 @@ export const Tiptap: React.FC = () => {
                   SEND
                 </button>
               </div>
+            </div>
+            <div className=" w-auto">
+              <label className="label">
+                <span className="label-text">Content</span>{" "}
+              </label>
+              <EditorContent
+                className="h-screen overflow-y-scroll border-2"
+                editor={editor}
+              />
             </div>
           </div>
         </div>

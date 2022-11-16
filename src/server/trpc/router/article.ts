@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
+import cuid from "cuid";
 
 export const articleRouter = router({
   /**
@@ -9,32 +10,46 @@ export const articleRouter = router({
   getAllArticles: publicProcedure.query(async ({ ctx }) => {
     try {
       const articles = await ctx.prisma.article.findMany({
-        
+        take: 15,
         // 開発中のみコメントアウト
-        // where: {
-        //   publish: true
-        // },
-        
+        where: {
+          publish: true,
+        },
+
         orderBy: {
           createdAt: "desc",
         },
         include: {
           user: {
             select: {
+              id: true,
               name: true,
               image: true,
+              favorites: true,
             },
           },
           tags: {
             select: {
-              name: true
-            }
+              name: true,
+            },
           },
           category: {
             select: {
-              name:true
-            }
-          }
+              name: true,
+            },
+          },
+          favorite: {
+            include: {
+              users: {
+                select: { id: true },
+              },
+              _count: {
+                select: {
+                  users: true,
+                },
+              },
+            },
+          },
         },
       });
       return articles;
@@ -46,22 +61,117 @@ export const articleRouter = router({
   /**
    *
    */
-
+  selectArticleTag: publicProcedure
+    .input(
+      z.object({
+        tagName: z.string(),
+        skip: z.string(),
+        take: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const { tagName, skip, take } = input;
+        const articles = await ctx.prisma.article.findMany({
+          skip: Number(skip),
+          take: Number(take),
+          where: {
+            publish: {
+              equals: true,
+            },
+            tags: {
+              some: {
+                name: tagName,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+            tags: {
+              select: {
+                name: true,
+              },
+            },
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            favorite: {
+              include: {
+                users: {
+                  select: { id: true },
+                },
+                _count: {
+                  select: {
+                    users: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+        return articles;
+      } catch (error) {
+        console.log(error);
+      }
+    }),
   /**
    *
    */
   getArticleById: publicProcedure
     .input(
       z.object({
-        id: z.string(),
+        articleId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
       try {
-        const { id } = input;
+        const { articleId } = input;
         const article = await ctx.prisma.article.findUnique({
-          where: { id },
+          where: { id: articleId },
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+            tags: {
+              select: {
+                name: true,
+              },
+            },
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            favorite: {
+              include: {
+                users: {
+                  select: { id: true },
+                },
+                _count: {
+                  select: {
+                    users: true,
+                  },
+                },
+              },
+            },
+          },
         });
+        console.log("きてない");
         return article;
       } catch (error) {
         console.log(error);
@@ -77,7 +187,9 @@ export const articleRouter = router({
         title: z.string(),
         content: z.string(),
         categoryId: z.string(),
-        sendTags: z.array(z.object({name: z.string()})),
+        sendTags: z.array(z.string()),
+        publish: z.boolean(),
+        splitContent: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -96,18 +208,85 @@ export const articleRouter = router({
             content: input.content,
             userId: userId?.id,
             categoryId: input.categoryId,
+            publish: input.publish,
+            splitContent: input.splitContent,
             tags: {
-              create: input.sendTags,
+              connectOrCreate: input.sendTags.map((x) => {
+                return {
+                  where: { name: x },
+                  create: { name: x },
+                };
+              }),
+            },
+            favorite: {
+              create: { id: cuid() },
             },
           },
         });
       } catch (error) {
-        console.log("-------------------------------------");
-        console.log("だめです");
-        console.log(error);
-
-        console.log("-------------------------------------");
         throw new TRPCError({ code: "BAD_REQUEST" });
+      }
+    }),
+  /**
+   *
+   */
+  searchWordForContent: publicProcedure
+    .input(
+      z.object({
+        search: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const search = input.search as string;
+        console.log(search);
+        const article = await ctx.prisma.article.findMany({
+          where: {
+            publish: {
+              equals: true,
+            },
+            splitContent: {
+              contains: search,
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+            tags: {
+              select: {
+                name: true,
+              },
+            },
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            favorite: {
+              include: {
+                users: {
+                  select: { id: true },
+                },
+                _count: {
+                  select: {
+                    users: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+        return article;
+      } catch (error) {
+        console.log(error);
       }
     }),
 
@@ -131,15 +310,4 @@ export const articleRouter = router({
         console.log(error);
       }
     }),
-
-  /**
-   * 開発テスト様
-   */
-  allDelete: protectedProcedure.mutation(async ({ ctx }) => {
-    try {
-      await ctx.prisma.article.deleteMany({});
-    } catch (error) {
-      console.log(error);
-    }
-  }),
 });

@@ -3,8 +3,8 @@
 
 generator client {
   provider = "prisma-client-js"
-}
 
+}
 datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
@@ -30,6 +30,7 @@ model Article {
   categoryId   String
   publish      Boolean   @default(false)
   tags         Tag[]
+
 }
 
 model Category {
