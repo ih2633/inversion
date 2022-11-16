@@ -5,6 +5,7 @@ import { articleRouter } from "./article";
 import { categoryRouter } from "./category";
 import { userRouter } from "./user";
 import { favoriteRouter } from "./favorite";
+import { profileRouter } from "./profile";
 
 export const appRouter = router({
   example: exampleRouter,
@@ -13,6 +14,7 @@ export const appRouter = router({
   category: categoryRouter,
   user: userRouter,
   favorite: favoriteRouter,
+  profile: profileRouter,
 });
 
 // export type definition of API
