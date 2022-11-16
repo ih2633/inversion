@@ -32,6 +32,7 @@ export const userRouter = router({
                 },
               },
             },
+            profile: true
           },
         });
         return article;

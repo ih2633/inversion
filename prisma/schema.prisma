@@ -3,12 +3,12 @@
 
 generator client {
   provider = "prisma-client-js"
+
 }
 datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
-
 
 model Example {
   id        String   @id @default(cuid())
@@ -17,6 +17,7 @@ model Example {
 }
 
 model Article {
+
   id         String           @id  @default(cuid())
   title      String
   content    String           
@@ -39,16 +40,27 @@ model Category {
 }
 
 model Tag {
-  id       String           @id @default(cuid())
-  name     String @unique
+
+  id       String    @id @default(cuid())
+  name     String    @unique
+
   articles Article[]
 }
 
 model Favorite {
-  id       String           @id @default(cuid())
+
+  id        String  @id @default(cuid())
   article   Article @relation(fields: [articleId], references: [id])
   articleId String  @unique
-  users      User[]
+  users     User[]
+}
+
+model Profile {
+  id              String  @id @default(cuid())
+  profileUserName String?
+  profileText     String?
+  user            User    @relation(fields: [userId], references: [id])
+  userId          String  @unique
 }
 
 // Necessary for Next auth
@@ -88,6 +100,7 @@ model User {
   sessions      Session[]
   articles      Article[]
   favorites     Favorite[]
+  profile       Profile?
 }
 
 model VerificationToken {
