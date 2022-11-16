@@ -4,7 +4,7 @@ import { TRPCError } from "@trpc/server";
 
 
 export const userRouter = router({
-  getMyArticles: protectedProcedure
+  getUserPublishArticles: publicProcedure
     .input(
       z.object({
         userId: z.string(),
@@ -19,6 +19,9 @@ export const userRouter = router({
           },
           include: {
             articles: {
+              where: {
+                publish: true
+              },
               include: {
                 tags: {
                   select: {
@@ -32,7 +35,7 @@ export const userRouter = router({
                 },
               },
             },
-            profile: true
+            profile: true,
           },
         });
         return article;
