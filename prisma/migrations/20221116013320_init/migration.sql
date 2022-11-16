@@ -10,6 +10,7 @@ CREATE TABLE "Article" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
+    "splitContent" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
@@ -35,8 +36,16 @@ CREATE TABLE "Tag" (
 CREATE TABLE "Favorite" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "articleId" TEXT NOT NULL,
-    "amount" INTEGER NOT NULL DEFAULT 0,
     CONSTRAINT "Favorite_articleId_fkey" FOREIGN KEY ("articleId") REFERENCES "Article" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Profile" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "profileUserName" TEXT,
+    "profileText" TEXT,
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "Profile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -105,6 +114,9 @@ CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Favorite_articleId_key" ON "Favorite"("articleId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Profile_userId_key" ON "Profile"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
