@@ -1,15 +1,13 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"　
+generator client {
+  provider = "prisma-client-js"
 }
 
-generator js {
-  provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model Example {
@@ -19,18 +17,19 @@ model Example {
 }
 
 model Article {
-  id         String           @id @default(cuid())
-  title      String
-  content    String           @db.Text
-  createdAt  DateTime         @default(now()) @db.Timestamp(0)
-  updatedAt  DateTime         @default(now()) @updatedAt @db.Timestamp(0)
-  user       User             @relation(fields: [userId], references: [id])
-  userId     String
-  favorite   Favorite?
-  category   Category?         @relation(fields: [categoryId], references: [id])
-  categoryId String
-  publish    Boolean          @default(false)
-  tags       Tag[]
+  id           String    @id @default(cuid())
+  title        String
+  content      String
+  splitContent String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now()) @updatedAt
+  user         User      @relation(fields: [userId], references: [id])
+  userId       String
+  favorite     Favorite? @relation
+  category     Category  @relation(fields: [categoryId], references: [id])
+  categoryId   String
+  publish      Boolean   @default(false)
+  tags         Tag[]
 }
 
 model Category {
@@ -40,18 +39,24 @@ model Category {
 }
 
 model Tag {
-  id       String           @id @default(cuid())
-  name     String           @unique
+  id       String    @id @default(cuid())
+  name     String    @unique
   articles Article[]
 }
 
 model Favorite {
-  id String @id @default(cuid())
-
+  id        String  @id @default(cuid())
   article   Article @relation(fields: [articleId], references: [id])
   articleId String  @unique
-  user      User[]
-  amount    Int     @default(0)
+  users     User[]
+}
+
+model Profile {
+  id              String  @id @default(cuid())
+  profileUserName String?
+  profileText     String?
+  user            User    @relation(fields: [userId], references: [id])
+  userId          String  @unique
 }
 
 // Necessary for Next auth
@@ -91,6 +96,7 @@ model User {
   sessions      Session[]
   articles      Article[]
   favorites     Favorite[]
+  profile       Profile?
 }
 
 model VerificationToken {
