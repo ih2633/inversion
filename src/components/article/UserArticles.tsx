@@ -2,11 +2,12 @@ import { type NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { trpc } from "@/utils/trpc";
+import FavoriteButton from "@/components/article/FavoriteButton"
+
 
 const UserArticle = (props) => {
   console.log({ props });
-    const date = props.article.updatedAt.toLocaleDateString();
-  console.log(date);
+  const updatedAt = props.article.updatedAt.toLocaleDateString();
   const isSkill = props.article.category.name === "Skill";
 
   return (
@@ -38,7 +39,7 @@ const UserArticle = (props) => {
           <div className=" flex justify-between ">
             <div></div>
             <p className="prose-md prose mr-12 tracking-wider text-gray-500">
-              最終更新日: {date}
+              最終更新日: {updatedAt}
             </p>
           </div>
         </div>

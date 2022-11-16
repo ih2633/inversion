@@ -1,12 +1,12 @@
 import { useState, useCallback } from "react";
 
 export const useSelectCategory = () => {
-  const [selectCategory, setSelectCategory] = useState("all");
+  const [selectCategory, setSelectCategory] = useState("All");
 
   const filterCategory = useCallback(
     (category: string) => {
       if (selectCategory === category) {
-        setSelectCategory("all");
+        setSelectCategory("All");
       } else {
         switch (category) {
           case "Skill":
