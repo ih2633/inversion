@@ -5,6 +5,7 @@ import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
+
 const SettingProfile: NextPage = () => {
   const [isAuth, setIsAuth] = useState(false);
 
@@ -39,7 +40,7 @@ const SettingProfile: NextPage = () => {
   return (
     <>
 
-      <div className="flex w-3/5 flex-col mx-auto">
+      <div className="flex w-3/5 flex-col mx-auto ">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-control w-full max-w-xs">
             <label className="label">
@@ -58,7 +59,7 @@ const SettingProfile: NextPage = () => {
             </label>
             <textarea
               placeholder="Profile"
-              className="textarea-bordered textarea w-full"
+              className="textarea-bordered textarea w-full  h-72"
               {...register("profile")}
             ></textarea>
           </div>

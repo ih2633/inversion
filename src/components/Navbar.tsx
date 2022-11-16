@@ -1,26 +1,31 @@
 import react from "react";
-import { useSession } from "next-auth/react"
+import { useSession, signIn } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
+import { AiOutlineHome } from "react-icons/ai";
 
 const Navbar: React.FC = () => {
   const { data: session } = useSession();
   console.log({ session })
-  if (session){
+  if (session) {
     console.log(session?.user?.image)
   }
 
   return (
     <>
       <div className="flex h-20 items-center justify-between border-b-2">
-        <div>aaa</div>
-        <div className="mr-5 flex space-x-7">
-          <Link href="/editor" className="btn-accent btn">
-            Edit
-          </Link>
-          <div className="avatar ">
-            <div className=" w-12 rounded-full shadow-lg ring ring-offset-2 ring-offset-base-100 ">
-              {session?.user ? (
+        <Link href="/">
+
+          <AiOutlineHome className="w-16 h-16 text-slate-500 hover:text-slate-800 ml-24 hover:bg-gray-200 p-2 rounded-xl" />
+        </Link>
+        {session ? (
+          <div className="mr-20 flex space-x-7">
+            <Link href="/editor" className="btn-accent btn">
+              Edit
+            </Link>
+            <div className="avatar ">
+              <div className=" w-12 rounded-full shadow-lg ring ring-offset-2 ring-offset-base-100 ">
+
                 <Link href={`/user/${session.user.id}`}>
                   <Image
                     className="rounded-full"
@@ -29,12 +34,13 @@ const Navbar: React.FC = () => {
                     src={`${session?.user?.image}`}
                   />
                 </Link>
-              ) : (
-                <div>はいってない</div>
-              )}
-            </div>
-          </div>
-        </div>
+              </div>
+            </div> </div>
+        ) : (
+          <button className="btn btn-info text-gray-100 mr-20" onClick={()=> signIn()}>SingIn</button>
+        )}
+
+
       </div>
     </>
   );
