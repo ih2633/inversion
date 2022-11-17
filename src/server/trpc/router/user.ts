@@ -20,9 +20,12 @@ export const userRouter = router({
           include: {
             articles: {
               where: {
-                publish: true
+                publish: true,
               },
-              include: {
+              select: {
+                title: true,
+                id: true,
+                publish: true,
                 tags: {
                   select: {
                     name: true,
@@ -33,6 +36,58 @@ export const userRouter = router({
                     name: true,
                   },
                 },
+                updatedAt: true,
+                createdAt: true,
+                favorite: true,
+              },
+            },
+            profile: true,
+          },
+        });
+        return article;
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+  
+  /**
+   * 
+   */
+  getUserAllArticles: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const { userId } = input;
+        const article = await ctx.prisma.user.findUnique({
+          where: {
+            id: userId,
+          },
+          include: {
+            articles: {
+              where: {
+                publish: false,
+              },
+              select: {
+                title: true,
+                id: true,
+                publish: true,
+                tags: {
+                  select: {
+                    name: true,
+                  },
+                },
+                category: {
+                  select: {
+                    name: true,
+                  },
+                },
+                updatedAt: true,
+                createdAt: true,
+                favorite: true,
               },
             },
             profile: true,
