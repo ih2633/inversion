@@ -9,13 +9,14 @@ import { trpc } from "@/utils/trpc";
 import { articleOptimisticUpdates } from "@/utils/article";
 import { v4 as uuidv4 } from "uuid";
 
-export const Tiptap: React.FC = () => {
+export const ReEdit: React.FC = () => {
   const { register, handleSubmit, control } = useForm({});
 
   const { data: categories } = trpc.category.getList.useQuery();
 
   const editor = useEditor({
     extensions: [StarterKit],
+    content:`<p>aaaaaaaaaaaaaaaaaaaaaaaaaaa</p>`,
     editorProps: {
       attributes: {
         class:
