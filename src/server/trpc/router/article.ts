@@ -131,6 +131,7 @@ export const articleRouter = router({
   getArticleById: publicProcedure
     .input(
       z.object({
+        userId: z.string().optional(),
         articleId: z.string(),
       })
     )
@@ -155,6 +156,7 @@ export const articleRouter = router({
             category: {
               select: {
                 name: true,
+                id: true,
               },
             },
             favorite: {
@@ -227,6 +229,7 @@ export const articleRouter = router({
         throw new TRPCError({ code: "BAD_REQUEST" });
       }
     }),
+
   /**
    *
    */
@@ -308,6 +311,60 @@ export const articleRouter = router({
         });
       } catch (error) {
         console.log(error);
+      }
+    }),
+  
+  /**
+   *
+   */
+  updateArticle: protectedProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        content: z.string(),
+        categoryId: z.string(),
+        sendTags: z.array(z.string()),
+        publish: z.boolean(),
+        splitContent: z.string(),
+        articleId: z.string(),
+        userId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log("categoryのtrpcきたよ");
+        const userId = await ctx.prisma.user.findUnique({
+          where: {
+            email: ctx?.session?.user?.email as string | undefined,
+          },
+          select: { id: true },
+        });
+        await ctx.prisma.article.update({
+          where: {
+            id: input.articleId
+          },
+          data: {
+            title: input.title,
+            content: input.content,
+            userId: userId?.id,
+            categoryId: input.categoryId,
+            publish: input.publish,
+            splitContent: input.splitContent,
+            tags: {
+              connectOrCreate: input.sendTags.map((x) => {
+                return {
+                  where: { name: x },
+                  create: { name: x },
+                };
+              }),
+            },
+            favorite: {
+              create: { id: cuid() },
+            },
+          },
+        });
+      } catch (error) {
+        throw new TRPCError({ code: "BAD_REQUEST" });
       }
     }),
 });

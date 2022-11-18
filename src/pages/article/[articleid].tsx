@@ -16,9 +16,7 @@ const Article: NextPage = () => {
   const articleId = router.query.articleId as string;
   console.log({ articleId });
 
-  const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({
-    articleId,
-  });
+  const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({articleId}, {enabled: router.isReady});
   const createdAt = article?.createdAt.toLocaleDateString();
 
   const updatedAt = article?.updatedAt.toLocaleDateString();
