@@ -29,7 +29,6 @@ const UserPage: NextPage = () => {
     if (status !== "loading") {
       const isAuth = sessionId === userId;
       setIsAuth(isAuth);
-
     }
   }, [userId, status, sessionId]);
 
@@ -131,7 +130,7 @@ const UserPage: NextPage = () => {
                               return (
                                 <div key={article.id} className=" ">
                                   <div className=" flex justify-center">
-                                    <UserArticle article={article} />
+                                    <UserArticle article={article} isAuth={isAuth}/>
                                   </div>
                                 </div>
                               );
