@@ -26,6 +26,7 @@ export const userRouter = router({
                 title: true,
                 id: true,
                 publish: true,
+                userId: true,
                 tags: {
                   select: {
                     name: true,
@@ -38,7 +39,18 @@ export const userRouter = router({
                 },
                 updatedAt: true,
                 createdAt: true,
-                favorite: true,
+                favorite: {
+                  include: {
+                    users: {
+                      select: { id: true },
+                    },
+                    _count: {
+                      select: {
+                        users: true,
+                      },
+                    },
+                  },
+                },
               },
             },
             profile: true,
@@ -62,7 +74,7 @@ export const userRouter = router({
     .query(async ({ ctx, input }) => {
       try {
         const { userId } = input;
-        const article = await ctx.prisma.user.findUnique({
+        const articles = await ctx.prisma.user.findUnique({
           where: {
             id: userId,
           },
@@ -75,6 +87,7 @@ export const userRouter = router({
                 title: true,
                 id: true,
                 publish: true,
+                userId: true,
                 tags: {
                   select: {
                     name: true,
@@ -87,13 +100,24 @@ export const userRouter = router({
                 },
                 updatedAt: true,
                 createdAt: true,
-                favorite: true,
+                favorite: {
+                  include: {
+                    users: {
+                      select: { id: true },
+                    },
+                    _count: {
+                      select: {
+                        users: true,
+                      },
+                    },
+                  },
+                },
               },
             },
             profile: true,
           },
         });
-        return article;
+        return articles;
       } catch (error) {
         console.log(error);
       }

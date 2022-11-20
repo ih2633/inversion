@@ -16,8 +16,14 @@ const Editor: NextPage = () => {
 
   console.log(query)
   const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({ userId, articleId },{enabled: router.isReady});
-
   console.log({ article })
+
+  useEffect(() => {
+    if (router.isReady) {
+      
+    }
+  })
+
   return (
     <>
       <div className="grid grid-cols-7">

@@ -299,21 +299,27 @@ export const articleRouter = router({
   delete: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
+        userId: z.string(),
+        articleId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       try {
+        const isAuth = input.userId === ctx.session.user.id;
+        console.log("authまできた")
+        if (!isAuth) {
+          throw new TRPCError({ code: "UNAUTHORIZED" });
+        }
         await ctx.prisma.article.delete({
           where: {
-            id: input.id,
+            id: input.articleId,
           },
         });
       } catch (error) {
         console.log(error);
       }
     }),
-  
+
   /**
    *
    */
@@ -327,26 +333,23 @@ export const articleRouter = router({
         publish: z.boolean(),
         splitContent: z.string(),
         articleId: z.string(),
-        userId: z.string()
+        userId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       try {
         console.log("categoryのtrpcきたよ");
-        const userId = await ctx.prisma.user.findUnique({
-          where: {
-            email: ctx?.session?.user?.email as string | undefined,
-          },
-          select: { id: true },
-        });
+        const isAuth = input.userId === ctx.session.user.id;
+        if (!isAuth) {
+          throw new TRPCError({ code: "UNAUTHORIZED" });
+        }
         await ctx.prisma.article.update({
           where: {
-            id: input.articleId
+            id: input.articleId,
           },
           data: {
             title: input.title,
             content: input.content,
-            userId: userId?.id,
             categoryId: input.categoryId,
             publish: input.publish,
             splitContent: input.splitContent,
