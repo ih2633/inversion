@@ -1,16 +1,15 @@
 import { type NextPage } from "next";
 import Link from "next/link";
-import Image from "next/image";
-import { AiOutlineMore } from "react-icons/ai";
-import { trpc } from "@/utils/trpc";
 import FavoriteButton from "@/components/article/FavoriteButton"
 import { MenuArticleButton } from "../MenuArticleButton";
+import { useSession } from "next-auth/react";
 
 
-const UserArticle = (props) => {
-  console.log({ props });
+const UserArticle = (props) =>  {
+  const { data: session } = useSession();
   const updatedAt = props.article.updatedAt.toLocaleDateString();
   const isSkill = props.article.category.name === "Skill";
+
 
   return (
     <>
@@ -42,19 +41,17 @@ const UserArticle = (props) => {
               </ul>
             </div>
 
-            <div className="my-auto mr-10">
-              <MenuArticleButton userId={props.article.userId} articleId={props.article.id} />
-            </div>
+            {session && (
+              <div className="my-auto mr-10">
+                <MenuArticleButton
+                  userId={props.article.userId}
+                  articleId={props.article.id}
+                />
+              </div>
+            )}
           </div>
           <div className="flex justify-between">
-            <div>
-              <Link
-                href={`/edit/${props.article.userId}/${props.article.id}`}
-                className="bg-secondary-content px-2 py-1"
-              >
-                UPDATE
-              </Link>
-            </div>
+            <div></div>
             <div className=" flex justify-end ">
               <FavoriteButton favorite={props.article.favorite} />
               <p className="prose-md prose mr-12 tracking-wider text-gray-500">
