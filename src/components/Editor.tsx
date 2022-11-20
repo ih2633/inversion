@@ -2,7 +2,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useState, useEffect } from "react"
 
-export const Editor = (props) => {
+export const Editor = (props: any) => {
   const editor = useEditor({
     extensions: [StarterKit],
     editorProps: {
@@ -16,11 +16,10 @@ export const Editor = (props) => {
     injectCSS: false,
   });
 
-
   useEffect(() => {
     const contentHTML = editor?.getHTML();
     props.setContentHtml(contentHTML);
-  })
+  });
   if (!editor) return null;
 
   return (
@@ -35,7 +34,7 @@ export const Editor = (props) => {
         />
       </div>
       <div className="mt-32 ml-6">
-        <div className=" flex-col flex space-y-3">
+        <div className=" flex flex-col space-y-3">
           <button
             className="h-12 w-24 rounded-xl  border-2 border-gray-400"
             onClick={() =>
@@ -46,9 +45,7 @@ export const Editor = (props) => {
           </button>
           <button
             className="h-12 w-24 rounded-xl border-2 border-gray-400"
-            onClick={() =>
-              editor.chain().focus().toggleBulletList().run()
-            }
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
           >
             リスト
           </button>
@@ -70,10 +67,8 @@ export const Editor = (props) => {
           >
             斜体
           </button>
-     
         </div>
       </div>
     </div>
-
-  )
+  );
 };

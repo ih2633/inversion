@@ -3,9 +3,7 @@ import { useState } from "react";
 import Card from "./Card";
 import Pagenation from "../Pagenation";
 
-const Cards = (props) => {
-
-
+const Cards = (props: any) => {
   return (
     <>
       <div className="space-y-4">
@@ -17,7 +15,6 @@ const Cards = (props) => {
           }
         })}
       </div>
-
     </>
   );
 };
