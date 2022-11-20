@@ -5,7 +5,7 @@ import { MenuArticleButton } from "../MenuArticleButton";
 import { useSession } from "next-auth/react";
 
 
-const UserArticle = (props) =>  {
+const UserArticle = (props:any) =>  {
   const { data: session } = useSession();
   const updatedAt = props.article.updatedAt.toLocaleDateString();
   const isSkill = props.article.category.name === "Skill";

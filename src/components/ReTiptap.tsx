@@ -2,7 +2,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useState, useEffect } from "react"
 
-export const ReTiptap = (props) => {
+export const ReTiptap = (props: any) => {
   const editor = useEditor({
     extensions: [StarterKit],
     editorProps: {
@@ -14,14 +14,13 @@ export const ReTiptap = (props) => {
     autofocus: true,
     editable: true,
     injectCSS: false,
-    content: props.content
+    content: props.content,
   });
-
 
   useEffect(() => {
     const contentHTML = editor?.getHTML();
     props.setContentHtml(contentHTML);
-  })
+  });
 
   if (!editor) return null;
 
@@ -37,7 +36,7 @@ export const ReTiptap = (props) => {
         />
       </div>
       <div className="mt-32 ml-6">
-        <div className=" flex-col flex space-y-3">
+        <div className=" flex flex-col space-y-3">
           <button
             className="h-12 w-24 rounded-xl  border-2 border-gray-400"
             onClick={() =>
@@ -48,9 +47,7 @@ export const ReTiptap = (props) => {
           </button>
           <button
             className="h-12 w-24 rounded-xl border-2 border-gray-400"
-            onClick={() =>
-              editor.chain().focus().toggleBulletList().run()
-            }
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
           >
             リスト
           </button>
@@ -72,10 +69,8 @@ export const ReTiptap = (props) => {
           >
             斜体
           </button>
-     
         </div>
       </div>
     </div>
-
-  )
+  );
 };

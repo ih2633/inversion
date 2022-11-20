@@ -5,7 +5,7 @@ import { trpc } from "@/utils/trpc";
 import { userArticleOptimisticUpdates } from "@/utils/article";
 
 
-const DeleteArticleButton = (props) => {
+const DeleteArticleButton = (props:any) => {
   const { handleSubmit } = useForm();
   const ctx = trpc.useContext()
     console.log(props);

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { trpc } from "@/utils/trpc";
 import { articleOptimisticUpdates } from "@/utils/article";
 
-const UpdateArticleButton = (props) => {
+const UpdateArticleButton = (props: any) => {
   const { register, handleSubmit } = useForm();
   const ctx = trpc.useContext();
   const mutation = articleOptimisticUpdates(trpc.article.update, ctx);
@@ -13,10 +13,10 @@ const UpdateArticleButton = (props) => {
     const { title, content, category } = data;
     mutation.mutate({ title, content, category, id });
   };
-    const { data: categories } = trpc.category.getList.useQuery();
+  const { data: categories } = trpc.category.getList.useQuery();
   return (
     <>
-      <label htmlFor="my-modal" className="btn-success btn">
+      <label htmlFor="my-modal" className="btn btn-success">
         Update
       </label>
       {/* Put this part before </body> tag */}
@@ -74,12 +74,10 @@ const UpdateArticleButton = (props) => {
                   cancel
                 </label>
                 <button
-                  className="my-modal btn-outline btn-info btn ml-12"
+                  className="my-modal btn-outline btn btn-info ml-12"
                   type="submit"
                 >
-                  <label htmlFor="my-modal">
-                    submit
-                  </label>
+                  <label htmlFor="my-modal">submit</label>
                 </button>
               </div>
             </form>
