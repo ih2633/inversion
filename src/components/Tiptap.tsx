@@ -1,31 +1,18 @@
-import { EditorContent, useEditor } from "@tiptap/react";
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { Node } from "@tiptap/core";
 import { tokenize } from "wakachigaki";
-import StarterKit from "@tiptap/starter-kit";
 import { useForm, Controller } from "react-hook-form";
 import { trpc } from "@/utils/trpc";
 import { articleOptimisticUpdates } from "@/utils/article";
 import { v4 as uuidv4 } from "uuid";
+import { Editor } from "./Editor"
 
 export const Tiptap: React.FC = () => {
   const { register, handleSubmit, control } = useForm({});
+  const [contentHtml, setContentHtml] = useState("")
 
   const { data: categories } = trpc.category.getList.useQuery();
-
-  const editor = useEditor({
-    extensions: [StarterKit],
-    editorProps: {
-      attributes: {
-        class:
-          "prose prose-sm sm:prose lg:prose-xl xl:prose-3xl tracking-wider  w-full m-auto p-8 focus:outline-none ",
-      },
-    },
-    autofocus: true,
-    editable: true,
-    injectCSS: false,
-  });
 
   const ctx = trpc.useContext();
 
@@ -34,11 +21,11 @@ export const Tiptap: React.FC = () => {
   const onSubmit = async (data) => {
     console.log({ data });
 
-    const content2 = editor?.getHTML();
+    contentHtml
 
     let headingId = 0;
 
-    const content = content2?.replace(/<h3>/g, () => {
+    const content = contentHtml?.replace(/<h3>/g, () => {
       headingId = headingId + 1;
       return `<h3 id="heading${headingId}">`;
     }) as string;
@@ -96,7 +83,7 @@ export const Tiptap: React.FC = () => {
     return categories;
   };
 
-  if (!editor) return null;
+
 
   return (
     <>
@@ -104,39 +91,43 @@ export const Tiptap: React.FC = () => {
         {mutation.isSuccess && (
           <div className="modal modal-open" id="my-modal-2">
             <div className="modal-box">
-              <h3 className="text-lg font-bold">
-                Congratulations random Internet user!
-              </h3>
-              <p className="py-4">
-                You've been selected for a chance to get one year of
-                subscription to use Wikipedia for free!
-              </p>
+              <h3 className="text-lg font-bold">投稿完了!</h3>
               <div className="modal-action">
-                <Link href="/articles" className="btn">
-                  Yay!
+                <Link href="/" className="btn">
+                  HOME
                 </Link>
               </div>
             </div>
           </div>
         )}
-        <div className="ml-5">
-          <div>
-            <label className="label">
-              <span className="label-text">Category</span>
-            </label>
-            <select
-              defaultValue=""
-              className="select-bordered select w-full max-w-xs"
-              {...register("category")}
+        <div className="ml-5 ">
+          <div className="flex items-end justify-between ">
+            <div>
+              <label className="label">
+                <span className="label-text">Category</span>
+              </label>
+              {categories && (
+                <select
+                  defaultValue={categories[0]?.name}
+                  className="select-bordered select w-full max-w-xs"
+                  {...register("category")}
+                >
+                  {categories?.map((category) => {
+                    return (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              )}
+            </div>
+            <button
+              className="btn mr-24 border-8 border-teal-300 bg-teal-300 font-bold text-gray-600 shadow-xl  hover:border-teal-400 hover:bg-teal-400"
+              onClick={handleSubmit(onSubmit)}
             >
-              {categories?.map((category) => {
-                return (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                );
-              })}
-            </select>
+              投稿
+            </button>
           </div>
 
           <div className="flex w-full items-end ">
@@ -207,59 +198,7 @@ export const Tiptap: React.FC = () => {
               />
             </div>
           </div>
-
-          <div className=" ">
-            <div className="sticky">
-              <div className=" ml-5 mt-5 flex space-x-3">
-                <button
-                  className="h-12 w-24 rounded-xl border-2 border-gray-400"
-                  onClick={() =>
-                    editor.chain().focus().toggleHeading({ level: 3 }).run()
-                  }
-                >
-                  h3
-                </button>
-                <button
-                  className="h-12 w-24 rounded-xl border-2 border-gray-400"
-                  onClick={() =>
-                    editor.chain().focus().toggleBulletList().run()
-                  }
-                >
-                  リスト
-                </button>
-                <button
-                  className="h-12 w-24 rounded-xl border-2 border-gray-400"
-                  onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-                >
-                  コードブロック
-                </button>
-                <button
-                  className="h-12 w-24 rounded-xl border-2 border-gray-400"
-                  onClick={() => editor.chain().focus().toggleStrike().run()}
-                >
-                  打ち消し線
-                </button>
-                <button
-                  className="h-12 w-24 rounded-xl border-2 border-gray-400"
-                  onClick={() => editor.chain().focus().toggleItalic().run()}
-                >
-                  斜体
-                </button>
-                <button className="btn" onClick={handleSubmit(onSubmit)}>
-                  SEND
-                </button>
-              </div>
-            </div>
-            <div className=" w-auto">
-              <label className="label">
-                <span className="label-text">Content</span>{" "}
-              </label>
-              <EditorContent
-                className="h-screen overflow-y-scroll border-2"
-                editor={editor}
-              />
-            </div>
-          </div>
+          <Editor setContentHtml={setContentHtml} />
         </div>
       </div>
     </>

@@ -131,6 +131,7 @@ export const articleRouter = router({
   getArticleById: publicProcedure
     .input(
       z.object({
+        userId: z.string().optional(),
         articleId: z.string(),
       })
     )
@@ -155,6 +156,7 @@ export const articleRouter = router({
             category: {
               select: {
                 name: true,
+                id: true,
               },
             },
             favorite: {
@@ -227,6 +229,7 @@ export const articleRouter = router({
         throw new TRPCError({ code: "BAD_REQUEST" });
       }
     }),
+
   /**
    *
    */
@@ -296,18 +299,75 @@ export const articleRouter = router({
   delete: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
+        userId: z.string(),
+        articleId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       try {
+        const isAuth = input.userId === ctx.session.user.id;
+        console.log("authまできた")
+        if (!isAuth) {
+          throw new TRPCError({ code: "UNAUTHORIZED" });
+        }
         await ctx.prisma.article.delete({
           where: {
-            id: input.id,
+            id: input.articleId,
           },
         });
       } catch (error) {
         console.log(error);
+      }
+    }),
+
+  /**
+   *
+   */
+  updateArticle: protectedProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        content: z.string(),
+        categoryId: z.string(),
+        sendTags: z.array(z.string()),
+        publish: z.boolean(),
+        splitContent: z.string(),
+        articleId: z.string(),
+        userId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log("categoryのtrpcきたよ");
+        const isAuth = input.userId === ctx.session.user.id;
+        if (!isAuth) {
+          throw new TRPCError({ code: "UNAUTHORIZED" });
+        }
+        await ctx.prisma.article.update({
+          where: {
+            id: input.articleId,
+          },
+          data: {
+            title: input.title,
+            content: input.content,
+            categoryId: input.categoryId,
+            publish: input.publish,
+            splitContent: input.splitContent,
+            tags: {
+              connectOrCreate: input.sendTags.map((x) => {
+                return {
+                  where: { name: x },
+                  create: { name: x },
+                };
+              }),
+            },
+            favorite: {
+              create: { id: cuid() },
+            },
+          },
+        });
+      } catch (error) {
+        throw new TRPCError({ code: "BAD_REQUEST" });
       }
     }),
 });
