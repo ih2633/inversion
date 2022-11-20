@@ -1,31 +1,31 @@
 import { type NextPage } from "next";
 import { useForm } from "react-hook-form";
-
+import { AiOutlineDelete } from "react-icons/ai";
 import { trpc } from "@/utils/trpc";
-import { articleOptimisticUpdates } from "@/utils/article"
+import { userArticleOptimisticUpdates } from "@/utils/article";
 
 
-const DeleteArticleButton = (props) => {
+const DeleteArticleButton = (props:any) => {
   const { handleSubmit } = useForm();
   const ctx = trpc.useContext()
-
-  const mutation = articleOptimisticUpdates(trpc.article.delete, ctx);
+    console.log(props);
+  const mutation = userArticleOptimisticUpdates(trpc.article.delete, ctx);
   const onSubmit = () => {
-    console.log(props.id);
-    const id = props.id;
-    mutation.mutate({ id });
+    console.log({props})
+    const {userId, articleId} = props;
+    mutation.mutate({ userId, articleId });
   };
   return (
     <>
-      <label htmlFor="my-modal" className="btn">
-        open modal
+      <label htmlFor="my-modal">
+        <AiOutlineDelete className="h-8 w-8" />
       </label>
       {/* Put this part before </body> tag */}
       <input type="checkbox" id="my-modal" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box">
           <h3 className="text-lg font-bold">本当に削除しますか</h3>
-          <div className="flex justify-between mx-12">
+          <div className="mx-12 flex justify-between">
             <form onSubmit={handleSubmit(onSubmit)}>
               <button className="btn-warning btn mt-5">delete</button>
             </form>

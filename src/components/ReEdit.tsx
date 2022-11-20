@@ -8,12 +8,11 @@ import { articleOptimisticUpdates } from "@/utils/article";
 import { v4 as uuidv4 } from "uuid";
 import { ReTiptap } from "./ReTiptap"
 
-export const ReEdit = (props) => {
+export const ReEdit = (props: any) => {
   const { register, handleSubmit, control } = useForm({});
-  const [contentHtml, setContentHtml] = useState("")
+  const [contentHtml, setContentHtml] = useState("");
 
-  console.log({ props })
-
+  console.log({ props });
 
   const { data: categories } = trpc.category.getList.useQuery();
 
@@ -45,8 +44,8 @@ export const ReEdit = (props) => {
     const sendTags = [tag0, tag1, tag2, tag3, tag4].filter((x) => Boolean(x));
 
     const categoryId = categoryCheck(categories, category);
-    const articleId = props.articleId
-    const userId = props.userId
+    const articleId = props.articleId;
+    const userId = props.userId;
 
     const noMatch = categoryId === undefined;
     if (noMatch) {
@@ -63,7 +62,7 @@ export const ReEdit = (props) => {
         publish,
         splitContent,
         articleId,
-        userId
+        userId,
       });
     } else {
       // タイトル文字数のエラーいれる
@@ -82,20 +81,14 @@ export const ReEdit = (props) => {
     return categories;
   };
 
-
-
   return (
     <>
       <div className="w-full ">
         {mutation.isSuccess && (
           <div className="modal modal-open" id="my-modal-2">
             <div className="modal-box">
-              <h3 className="text-lg font-bold">
-                Congratulations random Internet user!
-              </h3>
-              <p className="py-4">
-                更新完了!
-              </p>
+              <h3 className="text-lg font-bold">更新完了!</h3>
+
               <div className="modal-action">
                 <Link href="/" className="btn">
                   HOME
@@ -105,12 +98,12 @@ export const ReEdit = (props) => {
           </div>
         )}
         <div className="ml-5 ">
-          <div className="justify-between flex items-end ">
+          <div className="flex items-end justify-between ">
             <div>
               <label className="label">
                 <span className="label-text">Category</span>
               </label>
-              {props &&
+              {props && (
                 <select
                   defaultValue={props.category.id}
                   className="select-bordered select w-full max-w-xs"
@@ -123,12 +116,17 @@ export const ReEdit = (props) => {
                       </option>
                     );
                   })}
-                </select>}</div>
-            <button className="btn bg-teal-300 border-teal-300 border-8 hover:bg-teal-400 hover:border-teal-400 shadow-xl text-gray-600  font-bold mr-24" onClick={handleSubmit(onSubmit)}>
+                </select>
+              )}
+            </div>
+            <button
+              className="btn mr-24 border-8 border-teal-300 bg-teal-300 font-bold text-gray-600 shadow-xl  hover:border-teal-400 hover:bg-teal-400"
+              onClick={handleSubmit(onSubmit)}
+            >
               投稿
             </button>
           </div>
-          {props &&
+          {props && (
             <div className="flex w-full items-end ">
               <div className="form-control w-full max-w-xs">
                 <label className="label">
@@ -138,7 +136,7 @@ export const ReEdit = (props) => {
                   type="text"
                   placeholder="Title"
                   className="input-bordered input w-full max-w-xs"
-                defaultValue={props.title}
+                  defaultValue={props.title}
                   {...register("title")}
                 />
               </div>
@@ -161,8 +159,8 @@ export const ReEdit = (props) => {
                 />
               </div>
             </div>
-          }
-          {props &&
+          )}
+          {props && (
             <div className="form-control w-full ">
               <label className="label">
                 <span className="label-text">Tag</span>
@@ -205,8 +203,10 @@ export const ReEdit = (props) => {
                 />
               </div>
             </div>
-          }
-          {props && <ReTiptap content={props.content} setContentHtml={setContentHtml} />}
+          )}
+          {props && (
+            <ReTiptap content={props.content} setContentHtml={setContentHtml} />
+          )}
         </div>
       </div>
     </>

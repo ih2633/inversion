@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 
-const FavoriteButton = (props) => {
+const FavoriteButton = (props: any) => {
   const { data: Session } = useSession();
   const [isFavorited, setIsFavorited] = useState(false);
 
@@ -40,12 +40,12 @@ const FavoriteButton = (props) => {
     <>
       <div className="mr-7 flex">
         {isFavorited ? (
-            <button
-              className="text-2xl text-red-300"
-              onClick={() => decSubmit(userId, favoriteId)}
-            >
-              <MdOutlineFavorite />
-            </button>
+          <button
+            className="text-2xl text-red-300"
+            onClick={() => decSubmit(userId, favoriteId)}
+          >
+            <MdOutlineFavorite />
+          </button>
         ) : (
           <button
             className="text-2xl text-red-300"
