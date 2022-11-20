@@ -91,12 +91,7 @@ export const Tiptap: React.FC = () => {
         {mutation.isSuccess && (
           <div className="modal modal-open" id="my-modal-2">
             <div className="modal-box">
-              <h3 className="text-lg font-bold">
-                Congratulations random Internet user!
-              </h3>
-              <p className="py-4">
-                投稿完了!
-              </p>
+              <h3 className="text-lg font-bold">投稿完了!</h3>
               <div className="modal-action">
                 <Link href="/" className="btn">
                   HOME
@@ -106,26 +101,31 @@ export const Tiptap: React.FC = () => {
           </div>
         )}
         <div className="ml-5 ">
-          <div className="justify-between flex items-end ">
+          <div className="flex items-end justify-between ">
             <div>
-            <label className="label">
-              <span className="label-text">Category</span>
-            </label>
-            {categories &&
-              <select
-                defaultValue={categories[0]?.name}
-                className="select-bordered select w-full max-w-xs"
-                {...register("category")}
-              >
-                {categories?.map((category) => {
-                  return (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  );
-                })}
-                </select>}</div>
-            <button className="btn bg-teal-300 border-teal-300 border-8 hover:bg-teal-400 hover:border-teal-400 shadow-xl text-gray-600  font-bold mr-24" onClick={handleSubmit(onSubmit)}>
+              <label className="label">
+                <span className="label-text">Category</span>
+              </label>
+              {categories && (
+                <select
+                  defaultValue={categories[0]?.name}
+                  className="select-bordered select w-full max-w-xs"
+                  {...register("category")}
+                >
+                  {categories?.map((category) => {
+                    return (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              )}
+            </div>
+            <button
+              className="btn mr-24 border-8 border-teal-300 bg-teal-300 font-bold text-gray-600 shadow-xl  hover:border-teal-400 hover:bg-teal-400"
+              onClick={handleSubmit(onSubmit)}
+            >
               投稿
             </button>
           </div>
@@ -199,7 +199,6 @@ export const Tiptap: React.FC = () => {
             </div>
           </div>
           <Editor setContentHtml={setContentHtml} />
-
         </div>
       </div>
     </>

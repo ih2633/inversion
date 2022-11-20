@@ -91,11 +91,9 @@ export const ReEdit = (props) => {
           <div className="modal modal-open" id="my-modal-2">
             <div className="modal-box">
               <h3 className="text-lg font-bold">
-                Congratulations random Internet user!
+                      更新完了!
               </h3>
-              <p className="py-4">
-                更新完了!
-              </p>
+
               <div className="modal-action">
                 <Link href="/" className="btn">
                   HOME
