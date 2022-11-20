@@ -4,7 +4,7 @@ import Image from "next/image";
 import { trpc } from "@/utils/trpc";
 import FavoriteButton from "@/components/article/FavoriteButton";
 
-const Card = (props) => {
+const Card = (props: any) => {
   const createdAt = props.article.createdAt.toLocaleDateString();
   const isSkill = props.article.category.name === "Skill";
 
@@ -36,7 +36,7 @@ const Card = (props) => {
             <div
               className={`${
                 isSkill ? "badge-primary" : "badge-secondary"
-              } badge-outline badge mt-1 mb-2`}
+              } badge badge-outline mt-1 mb-2`}
             >
               {props.article.category.name}
             </div>
