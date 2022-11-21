@@ -1,10 +1,14 @@
-import { type NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { trpc } from "@/utils/trpc";
 import FavoriteButton from "@/components/article/FavoriteButton";
+import type { ArticleWithRelation } from "@/types/article"
 
-const Card = (props: any) => {
+type Props = {
+  article: ArticleWithRelation
+}
+
+
+const Card = (props: Props) => {
   const createdAt = props.article.createdAt.toLocaleDateString();
   const isSkill = props.article.category.name === "Skill";
 

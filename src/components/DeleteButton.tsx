@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import { AiOutlineDelete } from "react-icons/ai";
 import { trpc } from "@/utils/trpc";
 import { userArticleOptimisticUpdates } from "@/utils/article";
+import type {AuthArticleInfo} from "@/types/article"
 
-
-const DeleteArticleButton = (props:any) => {
+const DeleteArticleButton = (props: AuthArticleInfo) => {
   const { handleSubmit } = useForm();
   const ctx = trpc.useContext()
     console.log(props);

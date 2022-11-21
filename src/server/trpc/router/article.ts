@@ -5,7 +5,10 @@ import cuid from "cuid";
 
 export const articleRouter = router({
   /**
-   *
+   * ArticleList publish:true
+   * 
+   * @return article[]
+   * 
    */
   getAllArticles: publicProcedure.query(async ({ ctx }) => {
     try {
@@ -204,12 +207,20 @@ export const articleRouter = router({
           select: { id: true },
         });
 
-        await ctx.prisma.article.create({
+        const categoryId = await ctx.prisma.category.findUnique({
+          where: {
+            id: input.categoryId
+          },
+          select:{id: true}
+        })
+
+        if (userId && categoryId) {
+          await ctx.prisma.article.create({
           data: {
             title: input.title,
             content: input.content,
-            userId: userId?.id,
-            categoryId: input.categoryId,
+            userId: userId.id,
+            categoryId: categoryId.id,
             publish: input.publish,
             splitContent: input.splitContent,
             tags: {
@@ -224,7 +235,8 @@ export const articleRouter = router({
               create: { id: cuid() },
             },
           },
-        });
+          });
+        }
       } catch (error) {
         throw new TRPCError({ code: "BAD_REQUEST" });
       }

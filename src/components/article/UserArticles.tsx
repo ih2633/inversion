@@ -3,9 +3,13 @@ import Link from "next/link";
 import FavoriteButton from "@/components/article/FavoriteButton"
 import { MenuArticleButton } from "../MenuArticleButton";
 import { useSession } from "next-auth/react";
+import type { ArticleWithRelation } from "@/types/article"
 
+type Props = {
+  article: ArticleWithRelation
+}
 
-const UserArticle = (props:any) =>  {
+const UserArticle = (props: Props) =>  {
   const { data: session } = useSession();
   const updatedAt = props.article.updatedAt.toLocaleDateString();
   const isSkill = props.article.category.name === "Skill";
@@ -33,7 +37,7 @@ const UserArticle = (props:any) =>  {
               <ul className="flex space-x-2 text-gray-400">
                 {props.article.tags.map((x) => {
                   return (
-                    <Link key={x.index} href={`/tag/${x.name}`}>
+                    <Link key={x.name} href={`/tag/${x.name}`}>
                       <li>#{x.name}</li>
                     </Link>
                   );

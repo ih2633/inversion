@@ -1,15 +1,10 @@
-import react from "react";
 import { useSession, signIn } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
 import { AiOutlineHome } from "react-icons/ai";
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const { data: session } = useSession();
-  console.log({ session })
-  if (session) {
-    console.log(session?.user?.image)
-  }
 
   return (
     <>
