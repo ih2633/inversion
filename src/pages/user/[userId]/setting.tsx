@@ -1,5 +1,5 @@
 import { type NextPage } from "next";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react"
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";

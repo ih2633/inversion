@@ -1,4 +1,4 @@
-import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineEdit } from "react-icons/ai";
 import Link from "next/link";
 import DeleteArticleButton from "./DeleteButton";
 import type { AuthArticleInfo } from "@/types/article"

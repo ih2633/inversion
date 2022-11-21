@@ -1,4 +1,3 @@
-import { type NextPage } from "next";
 import Link from "next/link";
 import FavoriteButton from "@/components/article/FavoriteButton"
 import { MenuArticleButton } from "../MenuArticleButton";

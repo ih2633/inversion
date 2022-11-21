@@ -1,5 +1,3 @@
-import { trpc } from "../utils/trpc";
-
 export const articleOptimisticUpdates = (router: any, ctx: any) => {
   const mutation = router.useMutation({
     onMutate: () => {

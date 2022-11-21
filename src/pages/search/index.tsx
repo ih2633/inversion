@@ -1,5 +1,4 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useEffect } from "react"
 import { useRouter } from 'next/router'
 import type { SerchWord } from '@/types/article';
 
