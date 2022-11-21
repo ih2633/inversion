@@ -1,26 +1,38 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, type DetailedHTMLProps, type InputHTMLAttributes } from "react";
 import Link from "next/link";
 import { Node } from "@tiptap/core";
 import { tokenize } from "wakachigaki";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { trpc } from "@/utils/trpc";
 import { articleOptimisticUpdates } from "@/utils/article";
 import { v4 as uuidv4 } from "uuid";
 import { ReTiptap } from "./ReTiptap"
+import type { EditArticleInfo } from "@/types/article"
 
-export const ReEdit = (props: any) => {
-  const { register, handleSubmit, control } = useForm({});
+type Props = {
+  userId: string
+  articleId: string
+  publish: boolean
+  title: string
+  category: string
+  content: string
+  tags: Array<{name: string}>
+}
+
+
+
+export const ReEdit = (props: Props) => {
+  const { register, handleSubmit, control  } = useForm<EditArticleInfo>({});
   const [contentHtml, setContentHtml] = useState("");
 
-  console.log({ props });
-
   const { data: categories } = trpc.category.getList.useQuery();
+  console.log({categories})
 
   const ctx = trpc.useContext();
 
-  const mutation = articleOptimisticUpdates(trpc.article.addArticle, ctx);
+  const mutation = articleOptimisticUpdates(trpc.article.updateArticle, ctx);
 
-  const onSubmit = async (data) => {
+  const onSubmit: SubmitHandler<EditArticleInfo> = async (data) => {
     console.log({ data });
 
     let headingId = 0;
@@ -30,23 +42,17 @@ export const ReEdit = (props: any) => {
       return `<h3 id="heading${headingId}">`;
     }) as string;
 
-    // const preSpritContent = content?.replace(/<.+?>/g, "") as string
-    // console.log({ preSpritContent })
-
-    // const wakachi = tokenize(preSpritContent)
-    // const splitContent = wakachi.join(" ")
-
     const wakachi = tokenize(content);
     const preSpritContent = wakachi.join(" ");
 
     const splitContent = preSpritContent?.replace(/<.+?>/g, "") as string;
-    const { title, category, tag0, tag1, tag2, tag3, tag4, publish } = data;
+    const { title, categoryId, tag0, tag1, tag2, tag3, tag4, publish } = data;
     const sendTags = [tag0, tag1, tag2, tag3, tag4].filter((x) => Boolean(x));
 
-    const categoryId = categoryCheck(categories, category);
     const articleId = props.articleId;
     const userId = props.userId;
 
+    console.log("きたか")
     const noMatch = categoryId === undefined;
     if (noMatch) {
       throw new Error("categoryを入力してください");
@@ -68,17 +74,6 @@ export const ReEdit = (props: any) => {
       // タイトル文字数のエラーいれる
       console.error("エラー：");
     }
-  };
-
-  const categoryCheck = (categoriesArray, categoryId) => {
-    const categories = categoriesArray
-      .map((category) => {
-        const id = category.id;
-        return id;
-      })
-      .find((x) => x === categoryId);
-
-    return categories;
   };
 
   return (
@@ -103,11 +98,11 @@ export const ReEdit = (props: any) => {
               <label className="label">
                 <span className="label-text">Category</span>
               </label>
-              {props && (
+              {categories && (
                 <select
-                  defaultValue={props.category.id}
+                  defaultValue={categories[0]?.name}
                   className="select-bordered select w-full max-w-xs"
-                  {...register("category")}
+                  {...register("categoryId")}
                 >
                   {categories?.map((category) => {
                     return (
@@ -121,7 +116,7 @@ export const ReEdit = (props: any) => {
             </div>
             <button
               className="btn mr-24 border-8 border-teal-300 bg-teal-300 font-bold text-gray-600 shadow-xl  hover:border-teal-400 hover:bg-teal-400"
-              onClick={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(onSubmit)}
             >
               投稿
             </button>
@@ -148,12 +143,12 @@ export const ReEdit = (props: any) => {
                   name="publish"
                   control={control}
                   defaultValue={props.publish}
-                  render={({ field }) => (
+                  render={({ field }: any) => (
                     <input
                       {...field}
                       type="checkbox"
                       className="toggle-success toggle h-10 w-16"
-                      checked={props.publish}
+                      defaultChecked={props.publish}
                     />
                   )}
                 />

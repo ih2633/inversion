@@ -1,15 +1,13 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
-}
+generator client {
+  provider = "prisma-client-js"
 
-generator js {
-  provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+}
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model Example {
@@ -22,8 +20,8 @@ model Article {
 
   id         String           @id  @default(cuid())
   title      String
-  content    String           @db.Text
-  splitContent String? @db.Text
+  content    String           
+  splitContent String?
   createdAt  DateTime         @default(now()) 
   updatedAt  DateTime         @default(now()) @updatedAt
   user       User             @relation(fields: [userId], references: [id])
@@ -52,7 +50,7 @@ model Tag {
 model Favorite {
 
   id        String  @id @default(cuid())
-  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  article   Article @relation(fields: [articleId], references: [id])
   articleId String  @unique
   users     User[]
 }
@@ -60,7 +58,7 @@ model Favorite {
 model Profile {
   id              String  @id @default(cuid())
   profileUserName String?
-  profileText     String?  @db.Text
+  profileText     String?
   user            User    @relation(fields: [userId], references: [id])
   userId          String  @unique
 }
@@ -72,12 +70,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?  @db.Text
-  access_token      String?  @db.Text
+  refresh_token     String? // @db.Text
+  access_token      String? // @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?  @db.Text
+  id_token          String? // @db.Text
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 

@@ -2,14 +2,15 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { Node } from "@tiptap/core";
 import { tokenize } from "wakachigaki";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { trpc } from "@/utils/trpc";
 import { articleOptimisticUpdates } from "@/utils/article";
 import { v4 as uuidv4 } from "uuid";
 import { Editor } from "./Editor"
+import type { EditArticleInfo } from "@/types/article"
 
-export const Tiptap: React.FC = () => {
-  const { register, handleSubmit, control } = useForm({});
+export const Tiptap = () => {
+  const { register, handleSubmit, control } = useForm<EditArticleInfo>({});
   const [contentHtml, setContentHtml] = useState("")
 
   const { data: categories } = trpc.category.getList.useQuery();
@@ -18,10 +19,8 @@ export const Tiptap: React.FC = () => {
 
   const mutation = articleOptimisticUpdates(trpc.article.addArticle, ctx);
 
-  const onSubmit = async (data) => {
+  const onSubmit: SubmitHandler<EditArticleInfo> = async (data) => {
     console.log({ data });
-
-    contentHtml
 
     let headingId = 0;
 
@@ -33,12 +32,6 @@ export const Tiptap: React.FC = () => {
     console.log({ content });
     console.log(typeof content);
 
-    // const preSpritContent = content?.replace(/<.+?>/g, "") as string
-    // console.log({ preSpritContent })
-
-    // const wakachi = tokenize(preSpritContent)
-    // const splitContent = wakachi.join(" ")
-
     const wakachi = tokenize(content);
     const preSpritContent = wakachi.join(" ");
 
@@ -46,10 +39,8 @@ export const Tiptap: React.FC = () => {
 
     console.log({ splitContent });
 
-    const { title, category, tag0, tag1, tag2, tag3, tag4, publish } = data;
+    const { title, categoryId, tag0, tag1, tag2, tag3, tag4, publish } = data;
     const sendTags = [tag0, tag1, tag2, tag3, tag4].filter((x) => Boolean(x));
-
-    const categoryId = categoryCheck(categories, category);
 
     const noMatch = categoryId === undefined;
     if (noMatch) {
@@ -71,19 +62,6 @@ export const Tiptap: React.FC = () => {
       console.error("エラー：");
     }
   };
-
-  const categoryCheck = (categoriesArray, categoryId) => {
-    const categories = categoriesArray
-      .map((category) => {
-        const id = category.id;
-        return id;
-      })
-      .find((x) => x === categoryId);
-
-    return categories;
-  };
-
-
 
   return (
     <>
@@ -110,7 +88,7 @@ export const Tiptap: React.FC = () => {
                 <select
                   defaultValue={categories[0]?.name}
                   className="select-bordered select w-full max-w-xs"
-                  {...register("category")}
+                  {...register("categoryId")}
                 >
                   {categories?.map((category) => {
                     return (
@@ -150,7 +128,7 @@ export const Tiptap: React.FC = () => {
                 name="publish"
                 control={control}
                 defaultValue={false}
-                render={({ field }) => (
+                render={({ field }: any) => (
                   <input
                     {...field}
                     type="checkbox"

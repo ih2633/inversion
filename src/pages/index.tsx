@@ -1,7 +1,6 @@
 import { type NextPage } from "next";
 import { useState } from "react";
 import { trpc } from "@/utils/trpc";
-import ArticleForm from "@/components/article/form";
 import Cards from "@/components/article/Cards";
 
 
@@ -42,3 +41,4 @@ const List: NextPage = () => {
 };
 
 export default List;
+
