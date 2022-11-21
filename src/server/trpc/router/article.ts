@@ -177,7 +177,6 @@ export const articleRouter = router({
             },
           },
         });
-        console.log("きてない");
         return article;
       } catch (error) {
         console.log(error);
@@ -200,7 +199,6 @@ export const articleRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log("categoryのtrpcきたよ");
         const userId = await ctx.prisma.user.findUnique({
           where: {
             email: ctx?.session?.user?.email as string | undefined,
@@ -255,7 +253,6 @@ export const articleRouter = router({
     .query(async ({ ctx, input }) => {
       try {
         const search = input.search as string;
-        console.log(search);
         const article = await ctx.prisma.article.findMany({
           where: {
             publish: {
@@ -320,7 +317,6 @@ export const articleRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         const isAuth = input.userId === ctx.session.user.id;
-        console.log("authまできた")
         if (!isAuth) {
           throw new TRPCError({ code: "UNAUTHORIZED" });
         }
@@ -352,7 +348,6 @@ export const articleRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log("categoryのtrpcきたよ");
         const isAuth = input.userId === ctx.session.user.id;
         if (!isAuth) {
           throw new TRPCError({ code: "UNAUTHORIZED" });

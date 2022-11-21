@@ -18,8 +18,6 @@ export const Tiptap = () => {
   const mutation = articleOptimisticUpdates(trpc.article.addArticle, ctx);
 
   const onSubmit: SubmitHandler<EditArticleInfo> = async (data) => {
-    console.log({ data });
-
     let headingId = 0;
 
     const content = contentHtml?.replace(/<h3>/g, () => {
@@ -27,15 +25,10 @@ export const Tiptap = () => {
       return `<h3 id="heading${headingId}">`;
     }) as string;
 
-    console.log({ content });
-    console.log(typeof content);
-
     const wakachi = tokenize(content);
     const preSpritContent = wakachi.join(" ");
 
     const splitContent = preSpritContent?.replace(/<.+?>/g, "") as string;
-
-    console.log({ splitContent });
 
     const { title, categoryId, tag0, tag1, tag2, tag3, tag4, publish } = data;
     const sendTags = [tag0, tag1, tag2, tag3, tag4].filter((x) => Boolean(x));

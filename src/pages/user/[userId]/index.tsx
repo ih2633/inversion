@@ -35,18 +35,14 @@ const UserPage: NextPage = () => {
     return <main>Loading...</main>;
   }
 
-  console.log({ draftArticle });
 
   const showDraft = () => {
     setIsDraft(true);
-    console.log({ isDraft });
   };
 
   const showPublish = () => {
     setIsDraft(false);
   };
-
-  console.log({ user });
 
   return (
     <main className="h-screen ">

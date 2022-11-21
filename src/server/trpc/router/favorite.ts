@@ -20,7 +20,6 @@ export const favoriteRouter = router({
             users: { set: { id: userId } },
           },
         });
-        console.log(article);
       } catch (error) {
         console.log(error);
       }
@@ -44,7 +43,6 @@ export const favoriteRouter = router({
             users: { disconnect: { id: userId } },
           },
         });
-        console.log(article);
       } catch (error) {
         console.log(error);
       }

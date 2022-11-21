@@ -8,17 +8,12 @@ import UserCard from "@/components/UserCard";
 const Article: NextPage = () => {
   const router = useRouter();
 
-
   const articleId = router.query.articleId as string;
-  console.log({ articleId });
 
-  const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({articleId}, {enabled: router.isReady});
+  const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({ articleId }, { enabled: router.isReady });
+  
   const createdAt = article?.createdAt.toLocaleDateString();
-
   const updatedAt = article?.updatedAt.toLocaleDateString();
-
-  console.log({ article });
-
   const isSkill = article?.category?.name === "Skill";
 
   return (

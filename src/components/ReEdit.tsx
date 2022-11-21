@@ -24,14 +24,12 @@ export const ReEdit = (props: Props) => {
   const [contentHtml, setContentHtml] = useState("");
 
   const { data: categories } = trpc.category.getList.useQuery();
-  console.log({categories})
 
   const ctx = trpc.useContext();
 
   const mutation = articleOptimisticUpdates(trpc.article.updateArticle, ctx);
 
   const onSubmit: SubmitHandler<EditArticleInfo> = async (data) => {
-    console.log({ data });
 
     let headingId = 0;
 
@@ -50,7 +48,6 @@ export const ReEdit = (props: Props) => {
     const articleId = props.articleId;
     const userId = props.userId;
 
-    console.log("きたか")
     const noMatch = categoryId === undefined;
     if (noMatch) {
       throw new Error("categoryを入力してください");
