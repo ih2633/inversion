@@ -1,5 +1,10 @@
 
-const SelectCategoryButton = (props: any) => {
+type Props = {
+  selectCategory: string | ((category: string) => void)
+  filterCategory: ((category: string) => void)
+}
+
+const SelectCategoryButton = (props: Props) => {
   return (
     <div className="flex space-x-3">
       <button

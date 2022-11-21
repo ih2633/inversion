@@ -1,9 +1,12 @@
-
-import { useState } from "react";
 import Card from "./Card";
-import Pagenation from "../Pagenation";
+import type { ArticleWithRelation } from "@/types/article"
 
-const Cards = (props: any) => {
+type Props = {
+  articles: ArticleWithRelation[]
+  selectCategory: string | ((category: string) => void) | undefined
+}
+
+const Cards = (props: Props) => {
   return (
     <>
       <div className="space-y-4">

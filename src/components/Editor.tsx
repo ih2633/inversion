@@ -1,8 +1,12 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useState, useEffect } from "react"
+import { useEffect, type Dispatch, type SetStateAction } from "react"
 
-export const Editor = (props: any) => {
+type Props = {
+  setContentHtml: Dispatch<SetStateAction<string>>
+}
+
+export const Editor = (props: Props) => {
   const editor = useEditor({
     extensions: [StarterKit],
     editorProps: {
@@ -17,7 +21,7 @@ export const Editor = (props: any) => {
   });
 
   useEffect(() => {
-    const contentHTML = editor?.getHTML();
+    const contentHTML = editor?.getHTML() as SetStateAction<string>;
     props.setContentHtml(contentHTML);
   });
   if (!editor) return null;

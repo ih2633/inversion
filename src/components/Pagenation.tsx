@@ -1,5 +1,12 @@
 
-const Pagenation = (props: any) => {
+type Props = {
+  page: {
+    skip: string,
+    take: string
+  }
+}
+
+const Pagenation = (props: Props) => {
   const prevSkip = sub(Number(props.page.skip), Number(props.page.take));
   const nextPage = Number(props.page.skip) + Number(props.page.take);
 

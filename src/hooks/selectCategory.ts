@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 
 export const useSelectCategory = () => {
-  const [selectCategory, setSelectCategory] = useState("All");
+  const [selectCategory, setSelectCategory] = useState<string>("All");
 
   const filterCategory = useCallback(
     (category: string) => {
