@@ -97,6 +97,7 @@ export const articleRouter = router({
                 id: true,
                 name: true,
                 image: true,
+                favorites: true,
               },
             },
             tags: {
@@ -273,6 +274,7 @@ export const articleRouter = router({
                 id: true,
                 name: true,
                 image: true,
+                favorites: true,
               },
             },
             tags: {

@@ -1,22 +1,23 @@
 import { useRouter } from 'next/router'
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import Cards from "@/components/article/Cards";
 
 import { trpc } from "@/utils/trpc";
 import { useSelectCategory } from "@/hooks/selectCategory";
 import SelectCategoryButton from "@/components/article/SelectCategoryButton"
+import type { SerchWord } from '@/types/article';
 
 const SerchResults = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<SerchWord>();
   const [selectCategory, filterCategory] = useSelectCategory();
   const router = useRouter()
-  const search = router.query.searchWords
+  const search = router.query.searchWords as string
   console.log({ search })
 
   const { data: articles, isSuccess } = trpc.article.searchWordForContent.useQuery<string>({ search });
   console.log({ articles });
 
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<SerchWord> = (data) => {
     console.log(data);
     const { search } = data;
     router.push({

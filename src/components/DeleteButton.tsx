@@ -1,4 +1,3 @@
-import { type NextPage } from "next";
 import { useForm } from "react-hook-form";
 import { AiOutlineDelete } from "react-icons/ai";
 import { trpc } from "@/utils/trpc";

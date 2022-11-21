@@ -26,7 +26,7 @@ const Editor: NextPage = () => {
       <div className="grid grid-cols-7">
         <div className="col-span-1"></div>
         <div className="col-span-4">
-          {isSuccess &&
+          {isSuccess && article &&
             <ReEdit
               userId={userId} articleId={articleId} publish={article.publish} title={article.title} category={article.category} content={article.content} tags={article.tags} />
           }

@@ -1,14 +1,12 @@
-import { useForm } from "react-hook-form";
-import { useEffect } from "react"
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { useRouter } from 'next/router'
-
-import { trpc } from "@/utils/trpc";
+import type { SerchWord } from '@/types/article';
 
 const SearchArticle = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<SerchWord>();
   const router = useRouter()
 
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<SerchWord> = (data) => {
     console.log(data);
     const { search } = data;
     router.push({

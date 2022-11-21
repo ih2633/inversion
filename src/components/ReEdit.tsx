@@ -1,11 +1,9 @@
-import { useState, useMemo, type DetailedHTMLProps, type InputHTMLAttributes } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { Node } from "@tiptap/core";
 import { tokenize } from "wakachigaki";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { trpc } from "@/utils/trpc";
 import { articleOptimisticUpdates } from "@/utils/article";
-import { v4 as uuidv4 } from "uuid";
 import { ReTiptap } from "./ReTiptap"
 import type { EditArticleInfo } from "@/types/article"
 
@@ -14,7 +12,7 @@ type Props = {
   articleId: string
   publish: boolean
   title: string
-  category: string
+  category: {id: string, name: string}
   content: string
   tags: Array<{name: string}>
 }

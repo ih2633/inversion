@@ -1,11 +1,7 @@
 import { type NextPage } from "next";
-import { useState, useEffect } from "react";
 import { trpc } from "@/utils/trpc";
-import ArticleForm from "@/components/article/form";
 import Cards from "@/components/article/Cards";
-import Navbar from "@/components/Navbar";
 import { useRouter } from "next/router";
-
 import { useSelectCategory } from "@/hooks/selectCategory";
 import SelectCategoryButton from "@/components/article/SelectCategoryButton";
 import Pagenation from "@/components/Pagenation";
@@ -14,7 +10,9 @@ const TagList: NextPage = () => {
   const [selectCategory, filterCategory] = useSelectCategory();
 
   const router = useRouter();
-    const { tagName, skip, take } = router.query;
+  const tagName = router.query.tagName as string;
+  const skip = router.query.skip as string;
+  const take = router.query.take as string;
 
   const page = { skip: skip, take: take };
   console.log(page);

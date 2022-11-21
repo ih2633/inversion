@@ -31,3 +31,7 @@ export type EditArticleInfo = {
   tag4: string;
   title: string;
 };
+
+export type SerchWord = {
+  search: string;
+}
