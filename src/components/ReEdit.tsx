@@ -14,7 +14,7 @@ type Props = {
   articleId: string
   publish: boolean
   title: string
-  category: string
+  category: {id: string, name: string}
   content: string
   tags: Array<{name: string}>
 }

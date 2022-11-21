@@ -1,5 +1,5 @@
 import { type NextPage } from "next";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { trpc } from "@/utils/trpc";
@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import UserArticle from "@/components/article/UserArticles";
 import { AiOutlineSetting } from "react-icons/ai";
 import Link from "next/link";
-import { MenuArticleButton } from "@/components/MenuArticleButton";
 
 const UserPage: NextPage = () => {
   const router = useRouter();
@@ -139,7 +138,7 @@ const UserPage: NextPage = () => {
                               return (
                                 <div key={article.id} className=" ">
                                   <div className=" flex justify-center">
-                                    <UserArticle article={article} />
+                                    <UserArticle article={article} isAuth={isAuth} />
                                   </div>
                                 </div>
                               );

@@ -1,6 +1,6 @@
 import { trpc } from "../utils/trpc";
 
-export const articleOptimisticUpdates = (router, ctx) => {
+export const articleOptimisticUpdates = (router: any, ctx: any) => {
   const mutation = router.useMutation({
     onMutate: () => {
       ctx.article.getAllArticles.cancel();
@@ -19,7 +19,7 @@ export const articleOptimisticUpdates = (router, ctx) => {
   return mutation;
 };
 
-export const userArticleOptimisticUpdates = (router, ctx) => {
+export const userArticleOptimisticUpdates = (router: any, ctx: any) => {
   const mutation = router.useMutation({
     onMutate: () => {
       ctx.user.getUserPublishArticles.cancel();
