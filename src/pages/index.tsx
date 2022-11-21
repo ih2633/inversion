@@ -10,9 +10,6 @@ const List: NextPage = () => {
   const [selectCategory, filterCategory] = useSelectCategory();
 
   const { data: articles, isSuccess } = trpc.article.getAllArticles.useQuery();
-  console.log({ articles });
-
-  console.log({ selectCategory });
 
   return (
     <>

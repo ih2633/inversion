@@ -16,7 +16,6 @@ export const profileRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log("categoryのtrpcきたよ");
         const userId = await ctx.prisma.user.findUnique({
           where: {
             id: input.userId,

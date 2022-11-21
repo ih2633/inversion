@@ -7,7 +7,6 @@ const SearchArticle = () => {
   const router = useRouter()
 
   const onSubmit: SubmitHandler<SerchWord> = (data) => {
-    console.log(data);
     const { search } = data;
     router.push({
       pathname: 'search/[searchWords]',

@@ -1,6 +1,4 @@
 import { type NextPage } from "next";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react"
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
 import { useForm, type SubmitHandler } from "react-hook-form";
@@ -8,15 +6,10 @@ import type { ProfileInfo } from "@/types/user"
 
 
 const SettingProfile: NextPage = () => {
-  const [isAuth, setIsAuth] = useState(false);
-
-
   const router = useRouter();
   const { register, handleSubmit } = useForm<ProfileInfo>({});
-  const { data: session } = useSession();
+
   const userId = router.query.userId as string;
-  console.log({ userId });
-  console.log(session?.user.id)
 
   const mutation = trpc.profile.setProfile.useMutation({
     onSuccess: () => {
@@ -25,18 +18,9 @@ const SettingProfile: NextPage = () => {
   })
 
   const onSubmit: SubmitHandler<ProfileInfo> = (data) => {
-    console.log(data)
-    console.log(isAuth)
     const { name, profile } = data;
     mutation.mutate({ name, profile, userId });
   }
-
-  useEffect(() => {
-    setIsAuth(userId === session?.user.id)
-    console.log(userId)
-    console.log(session?.user.id)
-    console.log({isAuth})
-  },[]) 
 
   return (
     <>

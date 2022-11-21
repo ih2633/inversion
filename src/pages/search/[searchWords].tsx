@@ -12,13 +12,10 @@ const SerchResults = () => {
   const [selectCategory, filterCategory] = useSelectCategory();
   const router = useRouter()
   const search = router.query.searchWords as string
-  console.log({ search })
 
   const { data: articles, isSuccess } = trpc.article.searchWordForContent.useQuery<string>({ search });
-  console.log({ articles });
 
   const onSubmit: SubmitHandler<SerchWord> = (data) => {
-    console.log(data);
     const { search } = data;
     router.push({
       pathname: '/search/[searchWords]',

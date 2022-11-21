@@ -8,20 +8,16 @@ import Pagenation from "@/components/Pagenation";
 
 const TagList: NextPage = () => {
   const [selectCategory, filterCategory] = useSelectCategory();
-
   const router = useRouter();
+  
   const tagName = router.query.tagName as string;
   const skip = router.query.skip as string;
   const take = router.query.take as string;
 
   const page = { skip: skip, take: take };
-  console.log(page);
-
-  console.log(router.query);
-
 
   const { data: articles, isSuccess } = trpc.article.selectArticleTag.useQuery<string>({tagName, skip, take },{enabled: router.isReady});
-  console.log({ articles });
+
 
   return (
     <>

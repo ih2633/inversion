@@ -7,10 +7,8 @@ import type {AuthArticleInfo} from "@/types/article"
 const DeleteArticleButton = (props: AuthArticleInfo) => {
   const { handleSubmit } = useForm();
   const ctx = trpc.useContext()
-    console.log(props);
   const mutation = userArticleOptimisticUpdates(trpc.article.delete, ctx);
   const onSubmit = () => {
-    console.log({props})
     const {userId, articleId} = props;
     mutation.mutate({ userId, articleId });
   };
