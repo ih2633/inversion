@@ -26,7 +26,7 @@ const DeleteArticleButton = (props: AuthArticleInfo) => {
           <h3 className="text-lg font-bold">本当に削除しますか</h3>
           <div className="mx-12 flex justify-between">
             <form onSubmit={handleSubmit(onSubmit)}>
-              <button className="btn-active btn mt-5">delete</button>
+              <button className="btn mt-5">delete</button>
             </form>
             <div className="modal-action">
               <label htmlFor="my-modal" className="btn">
