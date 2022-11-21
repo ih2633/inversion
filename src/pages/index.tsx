@@ -1,5 +1,4 @@
 import { type NextPage } from "next";
-import { useState } from "react";
 import { trpc } from "@/utils/trpc";
 import Cards from "@/components/article/Cards";
 

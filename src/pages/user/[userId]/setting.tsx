@@ -1,9 +1,10 @@
 import { type NextPage } from "next";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react"
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import type { ProfileInfo } from "@/types/user"
 
 
 const SettingProfile: NextPage = () => {
@@ -11,7 +12,7 @@ const SettingProfile: NextPage = () => {
 
 
   const router = useRouter();
-  const { register, handleSubmit } = useForm({});
+  const { register, handleSubmit } = useForm<ProfileInfo>({});
   const { data: session } = useSession();
   const userId = router.query.userId as string;
   console.log({ userId });
@@ -23,7 +24,7 @@ const SettingProfile: NextPage = () => {
     }
   })
 
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<ProfileInfo> = (data) => {
     console.log(data)
     console.log(isAuth)
     const { name, profile } = data;

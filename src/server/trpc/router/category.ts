@@ -1,5 +1,4 @@
-import { z } from "zod";
-import { router, publicProcedure, protectedProcedure } from "../trpc";
+import { router, publicProcedure } from "../trpc";
 
 export const categoryRouter = router({
   getList: publicProcedure.query(async ({ ctx }) => {

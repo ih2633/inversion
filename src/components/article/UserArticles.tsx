@@ -1,12 +1,12 @@
-import { type NextPage } from "next";
 import Link from "next/link";
 import FavoriteButton from "@/components/article/FavoriteButton"
 import { MenuArticleButton } from "../MenuArticleButton";
 import { useSession } from "next-auth/react";
-import type { ArticleWithRelation } from "@/types/article"
+import type { UserWithArticleRelation } from "@/types/user"
 
 type Props = {
-  article: ArticleWithRelation
+  article: UserWithArticleRelation
+  isAuth: boolean | undefined
 }
 
 const UserArticle = (props: Props) =>  {
