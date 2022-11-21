@@ -58,7 +58,13 @@ const FavoriteButton = (props: Props) => {
           >
             <MdOutlineFavoriteBorder />
           </button>
-        ) : (<div></div>)}
+        ) : ( <button
+          className="text-2xl text-red-300"
+            onClick={() => incSubmit(userId, favoriteId)}
+            disabled
+        >
+          <MdOutlineFavoriteBorder />
+        </button>)}
         <p className="ml-6 text-red-300">{props.favorite._count.users}</p>
       </div>
     </>

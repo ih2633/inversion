@@ -20,12 +20,7 @@ const TagList: NextPage = () => {
   console.log(router.query);
 
 
-  const { data: articles, isSuccess } =
-    trpc.article.selectArticleTag.useQuery<string>({
-      tagName,
-      skip,
-      take,
-    });
+  const { data: articles, isSuccess } = trpc.article.selectArticleTag.useQuery<string>({tagName, skip, take },{enabled: router.isReady});
   console.log({ articles });
 
   return (
