@@ -7,10 +7,9 @@ import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db/client";
 
 export const authOptions: NextAuthOptions = {
-
   callbacks: {
     async session({ session, user }) {
-        session.user.id = user.id as string;
+      session.user.id = user.id as string;
       return session;
     },
   },
@@ -18,9 +17,10 @@ export const authOptions: NextAuthOptions = {
   providers: [
     GitHubProvider({
       clientId: env.GITHUB_ID,
-      clientSecret: env.GITHUB_SECRET ,
+      clientSecret: env.GITHUB_SECRET,
     }),
   ],
+  secret: "g4p3SpBD1mdMpp4OJC7S5JGDuFX7m0Fwi89ei+fx7us=",
 };
 
 export default NextAuth(authOptions);
