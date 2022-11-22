@@ -1,7 +1,7 @@
 import { useSession, signIn } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
-import { AiOutlineHome } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineSearch } from "react-icons/ai";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -10,17 +10,18 @@ const Navbar = () => {
     <>
       <div className="flex h-20 items-center justify-between border-b-2">
         <Link href="/">
-
           <AiOutlineHome className="w-16 h-16 text-slate-500 hover:text-slate-800 ml-24 hover:bg-gray-200 p-2 rounded-xl" />
         </Link>
-        {session ? (
-          <div className="mr-20 flex space-x-7">
-            <Link href="/editor" className="btn-accent btn">
-              Edit
-            </Link>
+        <div className="flex space-x-7 mr-20 items-center">
+          <Link href="/search">
+            <AiOutlineSearch className="w-16 h-16 text-slate-500 hover:text-slate-800 ml-24 hover:bg-gray-200 p-2 rounded-xl" />
+          </Link>
+          {session && <Link href="/edit" className="btn-accent btn">
+            Edit
+          </Link>}
+          {session ? (
             <div className="avatar ">
-              <div className=" w-12 rounded-full shadow-lg ring ring-offset-2 ring-offset-base-100 ">
-
+              <div className="h-12 w-12 rounded-full shadow-lg ring ring-offset-2 ring-offset-base-100 ">
                 <Link href={`/user/${session.user.id}`}>
                   <Image
                     className="rounded-full"
@@ -30,12 +31,11 @@ const Navbar = () => {
                   />
                 </Link>
               </div>
-            </div> </div>
-        ) : (
-          <button className="btn btn-info text-gray-100 mr-20" onClick={()=> signIn()}>SingIn</button>
-        )}
-
-
+            </div>
+          ) : (
+            <button className="btn btn-info text-gray-100 mr-20 my-auto" onClick={() => signIn()}>SingIn</button>
+          )}
+        </div>
       </div>
     </>
   );

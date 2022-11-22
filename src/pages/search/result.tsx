@@ -1,25 +1,74 @@
 import { useRouter } from 'next/router'
 import { useForm, type SubmitHandler } from "react-hook-form";
 import Cards from "@/components/article/Cards";
-
+import { useEffect, useState } from "react";
 import { trpc } from "@/utils/trpc";
 import { useSelectCategory } from "@/hooks/selectCategory";
 import SelectCategoryButton from "@/components/article/SelectCategoryButton"
-import type { SerchWord } from '@/types/article';
+import type { SearchWords } from '@/types/article';
+import Pagenation from "@/components/Pagenation";
+
+type ResultInfo = {
+  searchWords: string
+  skip: string
+  take: string
+}
+
+type PagenationInfo = {
+  skip: string
+  take: string
+}
+
+const initData = {
+  searchWords: "",
+  skip: "0",
+  take: ""
+}
+
+const initPagenationData = {
+  skip: "0",
+  take: ""
+}
+
+const isPageInfo = (data: unknown): data is ResultInfo => {
+  if (data == null) {
+    return false;
+  }
+  const d = data as Record<string, unknown>
+  return typeof d.searchWords === "string";
+}
 
 const SerchResult = () => {
-  const { register, handleSubmit } = useForm<SerchWord>();
+  const { register, handleSubmit } = useForm<SearchWords>();
   const [selectCategory, filterCategory] = useSelectCategory();
+
+  const [resultInfo, setResultInfo] = useState<ResultInfo>(initData);
+  const [pagenationInfo, setPagenationInfo] = useState<PagenationInfo>(initPagenationData)
+  const [isReady, setIsReady] = useState<boolean>(false)
+
   const router = useRouter()
-  const search = router.query.searchWords as string
 
-  const { data: articles, isSuccess } = trpc.article.searchWordForContent.useQuery<string>({ search });
+  useEffect(() => {
+    if (router.isReady) {
+      const query = router.query
+      console.log(query)
+      if (isPageInfo(query)) {
+        setResultInfo(query)
+        setPagenationInfo({ skip: query.skip, take: query.take })
+        setIsReady(true)
+      }
+    }
+  }, [router])
 
-  const onSubmit: SubmitHandler<SerchWord> = (data) => {
-    const { search } = data;
+
+
+  const { data: articles, isSuccess, isLoading } = trpc.article.searchWordForContent.useQuery<ResultInfo>(resultInfo, { enabled: isReady });
+
+  const onSubmit: SubmitHandler<SearchWords> = (data) => {
+    const { searchWords } = data;
     router.push({
-      pathname: '/search/[searchWords]',
-      query: { searchWords: search }
+      pathname: "/search/result",
+      query: { searchWords: searchWords, skip: 0, take: 20 }
     })
   };
 
@@ -37,7 +86,7 @@ const SerchResult = () => {
                   type="text"
                   placeholder="Search"
                   className="input-bordered input w-full max-w-xs"
-                  {...register("search")}
+                  {...register("searchWords")}
                 />
               </div>
               <button className="btn-outline btn-info btn" type="submit">
@@ -47,23 +96,23 @@ const SerchResult = () => {
           </form>
         </div>
       </div>
-      <p>{search}</p>
       <div className="grid grid-cols-7 bg-gray-100">
         <div className="col-span-1">
-          <div className="mt-24">
-
-          </div>
+          <div className="mt-24"></div>
         </div>
         <div className="col-span-4 border-x-2">
           <div className="m-12">
             <div className="mb-4 flex items-center space-x-5">
-              <p className=" text-xl">新着記事</p>
+              <p className=" text-xl">#{resultInfo.searchWords} 検索結果</p>
               <SelectCategoryButton selectCategory={selectCategory} filterCategory={filterCategory} />
             </div>
             {isSuccess && articles && (
               <Cards articles={articles} selectCategory={selectCategory} />
             )}
+            {isLoading && <div className="animate-spin h-10 w-10 border-4 border-info rounded-full border-t-transparent"></div>}
+            {!articles && !isLoading && <div>Not Data</div>}
           </div>
+          <Pagenation page={pagenationInfo} />
         </div>
         <div className="col-span-2"></div>
       </div>

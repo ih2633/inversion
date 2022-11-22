@@ -32,6 +32,6 @@ export type EditArticleInfo = {
   title: string;
 };
 
-export type SerchWord = {
-  search: string;
-}
+export type SearchWords = {
+  searchWords: string;
+};
