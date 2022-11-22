@@ -12,11 +12,11 @@ const Navbar = () => {
         <Link href="/">
           <AiOutlineHome className="w-16 h-16 text-slate-500 hover:text-slate-800 ml-24 hover:bg-gray-200 p-2 rounded-xl" />
         </Link>
-        <div className="flex space-x-7 mr-20">
+        <div className="flex space-x-7 mr-20 items-center">
           <Link href="/search">
             <AiOutlineSearch className="w-16 h-16 text-slate-500 hover:text-slate-800 ml-24 hover:bg-gray-200 p-2 rounded-xl" />
           </Link>
-          {session && <Link href="/editor" className="btn-accent btn">
+          {session && <Link href="/edit" className="btn-accent btn">
             Edit
           </Link>}
           {session ? (
