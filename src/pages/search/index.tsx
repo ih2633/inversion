@@ -9,8 +9,8 @@ const SearchArticle = () => {
   const onSubmit: SubmitHandler<SearchWords> = (data) => {
     const { searchWords } = data;
     router.push({
-      pathname: 'search/[searchWords]?skip=0&take=20',
-      query: { searchWords: searchWords }
+      pathname: "/search/q",
+      query: { searchWords: searchWords, skip: 0, take: 20 }
     })
   
   };
