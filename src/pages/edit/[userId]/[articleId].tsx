@@ -9,7 +9,7 @@ const ReEditor: NextPage = () => {
   const userId = router.query.userId as string
   const articleId = router.query.articleId as string
 
-  const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({ userId, articleId },{enabled: router.isReady});
+  const { data: article, isSuccess } = trpc.article.getReEditArticle.useQuery({ userId, articleId },{enabled: router.isReady});
 
   return (
     <>
