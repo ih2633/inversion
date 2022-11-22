@@ -12,8 +12,8 @@ const UserPage: NextPage = () => {
   const router = useRouter();
   const [isAuth, setIsAuth] = useState(false);
   const [isDraft, setIsDraft] = useState(false);
-
   const { data: session, status } = useSession();
+  
   const userId = router.query.userId as string;
   const sessionId = session?.user.id;
 
