@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import { trpc } from "@/utils/trpc";
 import { useSelectCategory } from "@/hooks/selectCategory";
 import SelectCategoryButton from "@/components/article/SelectCategoryButton"
-import type { SerchWord } from '@/types/article';
+import type { SearchWords } from '@/types/article';
 import Pagenation from "@/components/Pagenation";
 
 type ResultInfo = {
-  search: string
+  searchWords: string
   skip: string
   take: string
 }
@@ -20,7 +20,7 @@ type PagenationInfo = {
 }
 
 const initData = {
-  search: "",
+  searchWords: "",
   skip: "0",
   take: ""
 }
@@ -39,7 +39,7 @@ const isPageInfo = (data: unknown): data is ResultInfo => {
 }
 
 const SerchResult = () => {
-  const { register, handleSubmit } = useForm<SerchWord>();
+  const { register, handleSubmit } = useForm<SearchWords>();
   const [selectCategory, filterCategory] = useSelectCategory();
 
   const [resultInfo, setResultInfo] = useState<ResultInfo>(initData);
@@ -64,11 +64,11 @@ const SerchResult = () => {
 
   const { data: articles, isSuccess, isLoading } = trpc.article.searchWordForContent.useQuery<ResultInfo>(resultInfo, { enabled: isReady });
 
-  const onSubmit: SubmitHandler<SerchWord> = (data) => {
-    const { search } = data;
+  const onSubmit: SubmitHandler<SearchWords> = (data) => {
+    const { searchWords } = data;
     router.push({
-      pathname: '/search/[searchWords]',
-      query: { searchWords: search }
+      pathname: 'search/[searchWords]?skip=0&take=20',
+      query: { searchWords: searchWords }
     })
   };
 
@@ -86,7 +86,7 @@ const SerchResult = () => {
                   type="text"
                   placeholder="Search"
                   className="input-bordered input w-full max-w-xs"
-                  {...register("search")}
+                  {...register("searchWords")}
                 />
               </div>
               <button className="btn-outline btn-info btn" type="submit">
@@ -103,7 +103,7 @@ const SerchResult = () => {
         <div className="col-span-4 border-x-2">
           <div className="m-12">
             <div className="mb-4 flex items-center space-x-5">
-              <p className=" text-xl">#{resultInfo.search} 検索結果</p>
+              <p className=" text-xl">#{resultInfo.searchWords} 検索結果</p>
               <SelectCategoryButton selectCategory={selectCategory} filterCategory={filterCategory} />
             </div>
             {isSuccess && articles && (

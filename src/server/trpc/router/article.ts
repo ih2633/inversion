@@ -300,19 +300,23 @@ export const articleRouter = router({
   searchWordForContent: publicProcedure
     .input(
       z.object({
-        search: z.string(),
+        searchWords: z.string(),
+        skip: z.string(),
+        take: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
       try {
-        const search = input.search as string;
+        const {searchWords, skip, take} = input
         const article = await ctx.prisma.article.findMany({
+          skip: Number(skip),
+          take: Number(take),
           where: {
             publish: {
               equals: true,
             },
             splitContent: {
-              contains: search,
+              contains: searchWords,
             },
           },
           orderBy: {
