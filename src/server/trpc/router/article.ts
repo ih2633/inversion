@@ -6,9 +6,9 @@ import cuid from "cuid";
 export const articleRouter = router({
   /**
    * ArticleList publish:true
-   * 
+   *
    * @return article[]
-   * 
+   *
    */
   getAllArticles: publicProcedure.query(async ({ ctx }) => {
     try {
@@ -135,7 +135,60 @@ export const articleRouter = router({
   getArticleById: publicProcedure
     .input(
       z.object({
-        userId: z.string().optional(),
+        articleId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const { articleId } = input;
+        const article = await ctx.prisma.article.findUnique({
+          where: { id: articleId },
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+            tags: {
+              select: {
+                name: true,
+              },
+            },
+            category: {
+              select: {
+                name: true,
+                id: true,
+              },
+            },
+            favorite: {
+              include: {
+                users: {
+                  select: { id: true },
+                },
+                _count: {
+                  select: {
+                    users: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+        return article;
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+
+  /**
+   *
+   */
+  getReEditArticle: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
         articleId: z.string(),
       })
     )
@@ -208,32 +261,32 @@ export const articleRouter = router({
 
         const categoryId = await ctx.prisma.category.findUnique({
           where: {
-            id: input.categoryId
+            id: input.categoryId,
           },
-          select:{id: true}
-        })
+          select: { id: true },
+        });
 
         if (userId && categoryId) {
           await ctx.prisma.article.create({
-          data: {
-            title: input.title,
-            content: input.content,
-            userId: userId.id,
-            categoryId: categoryId.id,
-            publish: input.publish,
-            splitContent: input.splitContent,
-            tags: {
-              connectOrCreate: input.sendTags.map((x) => {
-                return {
-                  where: { name: x },
-                  create: { name: x },
-                };
-              }),
+            data: {
+              title: input.title,
+              content: input.content,
+              userId: userId.id,
+              categoryId: categoryId.id,
+              publish: input.publish,
+              splitContent: input.splitContent,
+              tags: {
+                connectOrCreate: input.sendTags.map((x) => {
+                  return {
+                    where: { name: x },
+                    create: { name: x },
+                  };
+                }),
+              },
+              favorite: {
+                create: { id: cuid() },
+              },
             },
-            favorite: {
-              create: { id: cuid() },
-            },
-          },
           });
         }
       } catch (error) {
