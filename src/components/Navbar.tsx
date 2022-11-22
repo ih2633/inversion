@@ -12,12 +12,12 @@ const Navbar = () => {
         <Link href="/">
           <AiOutlineHome className="w-16 h-16 text-slate-500 hover:text-slate-800 ml-24 hover:bg-gray-200 p-2 rounded-xl" />
         </Link>
-        <div className="mr-20 flex space-x-7">
+        <div className="flex space-x-7">
           <Link href="/search">
             <AiOutlineSearch className="w-16 h-16 text-slate-500 hover:text-slate-800 ml-24 hover:bg-gray-200 p-2 rounded-xl" />
           </Link>
           {session ? (
-            <>
+            <div className="mr-20 flex ">
               <Link href="/editor" className="btn-accent btn">
                 Edit
               </Link>
@@ -32,10 +32,9 @@ const Navbar = () => {
                     />
                   </Link>
                 </div>
-              </div>
-            </>
+              </div>     </div>
           ) : (
-            <button className="btn btn-info text-gray-100 mr-20" onClick={() => signIn()}>SingIn</button>
+            <button className="btn btn-info text-gray-100 mr-20 my-auto" onClick={() => signIn()}>SingIn</button>
           )}
         </div>
       </div>
