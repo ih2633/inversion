@@ -110,16 +110,18 @@ export const ReEdit = (props: Props) => {
               )}
             </div>
 
-            {mutation.isLoading ?
-              <div className="flex justify-center mt-32">
-                <div className="animate-spin h-10 w-10 border-4 border-info rounded-full border-t-transparent"></div>
-              </div> : <button
-                className="btn mr-24 border-8 border-teal-300 bg-teal-300 font-bold text-gray-600 shadow-xl  hover:border-teal-400 hover:bg-teal-400"
+            {mutation.isLoading ? (
+              <div className="mt-32 flex justify-center">
+                <div className="h-10 w-10 animate-spin rounded-full border-4 border-info border-t-transparent"></div>
+              </div>
+            ) : (
+              <button
+                className="btn-glass btn mr-24 "
                 onSubmit={handleSubmit(onSubmit)}
               >
                 更新
               </button>
-            }
+            )}
           </div>
           {props && (
             <div className="flex w-full items-end ">

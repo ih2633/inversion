@@ -44,7 +44,7 @@ export const ReTiptap = (props: Props) => {
       <div className="mt-32 ml-6">
         <div className=" flex flex-col space-y-3">
           <button
-            className="h-12 w-24 rounded-xl  border-2 border-gray-400"
+            className="btn-glass btn"
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
             }
@@ -52,28 +52,10 @@ export const ReTiptap = (props: Props) => {
             見出し
           </button>
           <button
-            className="h-12 w-24 rounded-xl border-2 border-gray-400"
+            className="btn-glass btn "
             onClick={() => editor.chain().focus().toggleBulletList().run()}
           >
             リスト
-          </button>
-          <button
-            className="h-12 w-24 rounded-xl border-2 border-gray-400"
-            onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          >
-            コードブロック
-          </button>
-          <button
-            className="h-12 w-24 rounded-xl border-2 border-gray-400"
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-          >
-            打ち消し線
-          </button>
-          <button
-            className="h-12 w-24 rounded-xl border-2 border-gray-400"
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-          >
-            斜体
           </button>
         </div>
       </div>
