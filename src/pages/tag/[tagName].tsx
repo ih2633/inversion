@@ -56,7 +56,7 @@ const TagList: NextPage = () => {
     }
   }, [router])
 
-  const { data: articles, isSuccess } = trpc.article.selectArticleTag.useQuery<ResultInfo>(resultInfo, { enabled: isReady });
+  const { data: articles, isSuccess, isLoading } = trpc.article.selectArticleTag.useQuery<ResultInfo>(resultInfo, { enabled: isReady });
 
 
   return (
@@ -80,6 +80,8 @@ const TagList: NextPage = () => {
                 selectCategory={selectCategory}
               />
             )}
+            {isLoading && <div className="animate-spin h-10 w-10 border-4 border-info rounded-full border-t-transparent"></div>}
+            {!articles && !isLoading && <div>Not Data</div>}
           </div>
           <Pagenation page={pagenationInfo} />
         </div>
