@@ -44,7 +44,7 @@ export const ReTiptap = (props: Props) => {
       <div className="mt-32 ml-6">
         <div className=" flex flex-col space-y-3">
           <button
-            className="glass btn"
+            className="glass btn w-24"
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
             }
@@ -52,7 +52,7 @@ export const ReTiptap = (props: Props) => {
             見出し
           </button>
           <button
-            className="glass btn "
+            className="glass btn  w-24"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
           >
             リスト
