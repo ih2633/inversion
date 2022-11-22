@@ -96,7 +96,7 @@ export const Tiptap = () => {
               <div className="h-10 w-10 animate-spin rounded-full border-4 border-info border-t-transparent"></div>
             ) : (
               <button
-                className="btn-glass btn mr-24 "
+                className="glass btn mr-24 "
                 onClick={handleSubmit(onSubmit)}
               >
                 投稿
