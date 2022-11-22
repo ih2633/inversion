@@ -12,17 +12,16 @@ const Navbar = () => {
         <Link href="/">
           <AiOutlineHome className="w-16 h-16 text-slate-500 hover:text-slate-800 ml-24 hover:bg-gray-200 p-2 rounded-xl" />
         </Link>
-        <div className="flex space-x-7">
+        <div className="flex space-x-7 mr-20">
           <Link href="/search">
             <AiOutlineSearch className="w-16 h-16 text-slate-500 hover:text-slate-800 ml-24 hover:bg-gray-200 p-2 rounded-xl" />
           </Link>
+          {session && <Link href="/editor" className="btn-accent btn">
+            Edit
+          </Link>}
           {session ? (
-            <div className="mr-20 flex ">
-              <Link href="/editor" className="btn-accent btn">
-                Edit
-              </Link>
               <div className="avatar ">
-                <div className=" w-12 rounded-full shadow-lg ring ring-offset-2 ring-offset-base-100 ">
+                <div className="h-12 w-12 rounded-full shadow-lg ring ring-offset-2 ring-offset-base-100 ">
                   <Link href={`/user/${session.user.id}`}>
                     <Image
                       className="rounded-full"
@@ -32,7 +31,7 @@ const Navbar = () => {
                     />
                   </Link>
                 </div>
-              </div>     </div>
+              </div>    
           ) : (
             <button className="btn btn-info text-gray-100 mr-20 my-auto" onClick={() => signIn()}>SingIn</button>
           )}
