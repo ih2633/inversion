@@ -23,14 +23,8 @@ const Article = () => {
       setIsSetData(true)
     }
   }, [article])
-
-
-
-  console.log({articleId})
-  
   
   const isSkill = article?.category?.name === "Skill";
-
 
   return (
     <>
