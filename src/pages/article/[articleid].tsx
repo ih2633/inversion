@@ -6,18 +6,14 @@ import { useRouter } from "next/router";
 import Toc from "@/components/Toc";
 import UserCard from "@/components/UserCard";
 
-const Article: NextPage = () => {
+const Article = () => {
   const router = useRouter();
   const [createdAt, setCreatedAt] = useState<string>("")
   const [updatedAt, setUpdatedAt] = useState<string>("")
   const [isSetData, setIsSetData] = useState<boolean>(false)
 
   const articleId = router.query.articleId as string;
-
-  const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({ articleId }, { enabled: router.isReady });
-  
-  const isSkill = article?.category?.name === "Skill";
-
+  const { data: article } = trpc.article.getArticleById.useQuery({ articleId }, { enabled: router.isReady });
   useEffect(() => {
     if (article) {
       const createdAt = article.createdAt.toLocaleDateString();
@@ -26,7 +22,15 @@ const Article: NextPage = () => {
       setUpdatedAt(updatedAt)
       setIsSetData(true)
     }
-  },[article])
+  }, [article])
+
+
+
+  console.log({articleId})
+  
+  
+  const isSkill = article?.category?.name === "Skill";
+
 
   return (
     <>

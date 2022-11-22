@@ -7,7 +7,7 @@ import { useSelectCategory } from "@/hooks/selectCategory";
 import SelectCategoryButton from "@/components/article/SelectCategoryButton"
 import type { SerchWord } from '@/types/article';
 
-const SerchResults = () => {
+const SerchResult = () => {
   const { register, handleSubmit } = useForm<SerchWord>();
   const [selectCategory, filterCategory] = useSelectCategory();
   const router = useRouter()
@@ -71,4 +71,4 @@ const SerchResults = () => {
   )
 }
 
-export default SerchResults
+export default SerchResult

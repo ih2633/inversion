@@ -4,7 +4,7 @@ import { ReEdit } from "@/components/ReEdit";
 import { trpc } from "@/utils/trpc";
 
 
-const Editor: NextPage = () => {
+const ReEditor: NextPage = () => {
   const router = useRouter();
   const userId = router.query.userId as string
   const articleId = router.query.articleId as string
@@ -26,4 +26,4 @@ const Editor: NextPage = () => {
     </>
   );
 };
-export default Editor;
+export default ReEditor;
