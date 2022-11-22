@@ -75,7 +75,9 @@ const Article = () => {
                     </div>
                   </>
                 ) : (
-                  <div>Not Data</div>
+                    <div className="flex justify-center mt-32">
+                      <div className="animate-spin h-10 w-10 border-4 border-info rounded-full border-t-transparent"></div>
+                    </div>
                 )}
               </div>
               <div className="col-span-2 mx-4 ">
