@@ -23,7 +23,7 @@ export async function getStaticProps(
     ctx: {session:null, prisma},
     transformer: superjson,
   });
-  const userId = context.params?.userId.toString() as string;
+  const userId = context.params?.userId as string;
 
   await ssg.user.getUserPublishArticles.prefetch({ userId })
 
@@ -35,7 +35,7 @@ export async function getStaticProps(
     revalidate: 1
   }
 }
-
+  
 export const getStaticPaths: GetStaticPaths = async () => {
   const users = await prisma.user.findMany({
     select: {
@@ -46,7 +46,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: users?.map((user) => ({
       params: {
-        id: user.id,
+        userId: user.id,
       },
     })),
     fallback: 'blocking',
