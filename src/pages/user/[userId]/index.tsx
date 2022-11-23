@@ -1,5 +1,6 @@
-import { type NextPage } from "next";
+import type { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { useState, useEffect } from "react";
+import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { trpc } from "@/utils/trpc";
@@ -7,19 +8,62 @@ import { useRouter } from "next/router";
 import UserArticle from "@/components/article/UserArticles";
 import { AiOutlineSetting } from "react-icons/ai";
 import Link from "next/link";
+import { appRouter } from '@/server/trpc/router/_app';
+import { createContext } from '@/server/trpc/context';
+import superjson from 'superjson';
 
-const UserPage: NextPage = () => {
-  const router = useRouter();
+export async function getStaticProps(
+  context: GetStaticPropsContext<{ userId: string }>
+) {
+  const ssg = await createProxySSGHelpers({
+    router: appRouter,
+    ctx: createContext(),
+    transformer: superjson,
+  });
+  const userId = context.params?.userId as string;
+  
+  await ssg.user.getUserPublishArticles.prefetch({userId})
+
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+      userId,
+    },
+    revalidate: 1
+  }
+}
+
+export async function getStaticPaths() {
+  const users = await prisma?.user.findMany({
+    select: {
+      id: true,
+    },
+  });
+
+  return {
+    paths: users?.map((user) => ({
+      params: {
+        id: user.id,
+      },
+    })),
+    fallback: 'blocking',
+  };
+}
+
+const UserPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+  // const router = useRouter();
   const [isAuth, setIsAuth] = useState(false);
   const [isDraft, setIsDraft] = useState(false);
   const { data: session, status } = useSession();
   
-  const userId = router.query.userId as string;
+  // const userId = router.query.userId as string;
+  const { userId } = props;
+
   const sessionId = session?.user.id;
 
   const { data: user, isSuccess } = trpc.user.getUserPublishArticles.useQuery(
     { userId },
-    { enabled: router.isReady }
+    // { enabled: router.isReady }
   );
   const { data: draftArticle, isSuccess: draftSuccess } =
     trpc.user.getUserAllArticles.useQuery({ userId }, { enabled: isAuth });
