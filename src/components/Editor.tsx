@@ -40,7 +40,7 @@ export const Editor = (props: Props) => {
       <div className="mt-32 ml-6">
         <div className=" flex flex-col space-y-3">
           <button
-            className="btn btn-outline"
+            className="btn btn-outline w-24"
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
             }
@@ -48,7 +48,7 @@ export const Editor = (props: Props) => {
             見出し
           </button>
           <button
-            className="btn btn-outline"
+            className="btn btn-outline w-24"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
           >
             リスト
