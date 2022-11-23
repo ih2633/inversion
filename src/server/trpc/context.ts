@@ -30,14 +30,13 @@ export const createContext = async (opts?: CreateNextContextOptions) => {
   const res = opts?.res;
 
   // Get the session from the server using the unstable_getServerSession wrapper function
-  if (!req || !res) {
-    return;
-  }
-  const session = await getServerAuthSession({ req, res });
+  if (req && res) {
+    const session = await getServerAuthSession({ req, res });
 
-  return await createContextInner({
-    session,
-  });
+    return await createContextInner({
+      session,
+    });
+  }
 };
 
 export type Context = inferAsyncReturnType<typeof createContext>;
