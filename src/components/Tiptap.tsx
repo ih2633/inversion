@@ -81,7 +81,7 @@ export const Tiptap = () => {
                   className="select-bordered select w-full max-w-xs"
                   {...register("categoryId")}
                 >
-                  {categories?.map((category) => {
+                  {categories?.map((category: { name: string, id: string }) => {
                     return (
                       <option key={category.id} value={category.id}>
                         {category.name}

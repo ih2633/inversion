@@ -12,7 +12,7 @@ export const favoriteRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         const { userId, favoriteId } = input;
-        const article = await ctx.prisma.favorite.update({
+        await ctx.prisma.favorite.update({
           where: {
             id: favoriteId,
           },
@@ -35,7 +35,7 @@ export const favoriteRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         const { userId, favoriteId } = input;
-        const article = await ctx.prisma.favorite.update({
+        await ctx.prisma.favorite.update({
           where: {
             id: favoriteId,
           },

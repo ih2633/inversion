@@ -1,25 +1,72 @@
-import { type NextPage } from "next";
+import type {
+  GetStaticPaths,
+  GetStaticPropsContext,
+  InferGetStaticPropsType, } from "next";
 import { useState, useEffect } from "react";
+import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { trpc } from "@/utils/trpc";
-import { useRouter } from "next/router";
 import UserArticle from "@/components/article/UserArticles";
 import { AiOutlineSetting } from "react-icons/ai";
 import Link from "next/link";
+import { appRouter } from '@/server/trpc/router/_app';
+import superjson from 'superjson';
+import type { UserWithArticleRelation } from "@/types/user"
+import { prisma } from "@/server/db/client";
 
-const UserPage: NextPage = () => {
-  const router = useRouter();
+export async function getStaticProps(
+  context: GetStaticPropsContext<{ userId: string }>
+) {
+  const ssg = await createProxySSGHelpers({
+    router: appRouter,
+    ctx: {session:null, prisma},
+    transformer: superjson,
+  });
+  const userId = context.params?.userId as string;
+
+  await ssg.user.getUserPublishArticles.prefetch({ userId })
+
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+      userId,
+    },
+    revalidate: 1
+  }
+}
+  
+export const getStaticPaths: GetStaticPaths = async () => {
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+    },
+  });
+
+  return {
+    paths: users?.map((user) => ({
+      params: {
+        userId: user.id,
+      },
+    })),
+    fallback: 'blocking',
+  };
+}
+
+const UserPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+  // const router = useRouter();
   const [isAuth, setIsAuth] = useState(false);
   const [isDraft, setIsDraft] = useState(false);
   const { data: session, status } = useSession();
-  
-  const userId = router.query.userId as string;
+
+  // const userId = router.query.userId as string;
+  const { userId } = props;
+
   const sessionId = session?.user.id;
 
   const { data: user, isSuccess } = trpc.user.getUserPublishArticles.useQuery(
     { userId },
-    { enabled: router.isReady }
+    // { enabled: router.isReady }
   );
   const { data: draftArticle, isSuccess: draftSuccess } =
     trpc.user.getUserAllArticles.useQuery({ userId }, { enabled: isAuth });
@@ -121,24 +168,24 @@ const UserPage: NextPage = () => {
                     {isSuccess ? (
                       <div className=" space-y-3 text-center">
                         {isDraft && draftSuccess
-                          ? draftArticle?.articles.map((article) => {
-                              return (
-                                <div key={article.id} className=" ">
-                                  <div className=" flex justify-center">
-                                    <UserArticle article={article} isAuth={isAuth}/>
-                                  </div>
+                          ? draftArticle?.articles.map((article: UserWithArticleRelation) => {
+                            return (
+                              <div key={article.id} className=" ">
+                                <div className=" flex justify-center">
+                                  <UserArticle article={article} isAuth={isAuth} />
                                 </div>
-                              );
-                            })
-                          : user?.articles.map((article) => {
-                              return (
-                                <div key={article.id} className=" ">
-                                  <div className=" flex justify-center">
-                                    <UserArticle article={article} isAuth={isAuth} />
-                                  </div>
+                              </div>
+                            );
+                          })
+                          : user?.articles.map((article: UserWithArticleRelation) => {
+                            return (
+                              <div key={article.id} className=" ">
+                                <div className=" flex justify-center">
+                                  <UserArticle article={article} isAuth={isAuth} />
                                 </div>
-                              );
-                            })}
+                              </div>
+                            );
+                          })}
                       </div>
                     ) : (
                       <div></div>
