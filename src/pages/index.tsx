@@ -12,7 +12,7 @@ import { prisma } from "@/server/db/client";
 import { useSelectCategory } from "@/hooks/selectCategory";
 import SelectCategoryButton from "@/components/article/SelectCategoryButton";
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps() {
   const ssg = createProxySSGHelpers({
     router: appRouter,
     ctx: { session: null, prisma },
@@ -33,7 +33,7 @@ const List = (
 ) => {
   const [selectCategory, filterCategory] = useSelectCategory();
 
-  const { data: articles, isSuccess } = trpc.article.getAllArticles.useQuery();
+  const { data: articles } = trpc.article.getAllArticles.useQuery();
 
   return (
     <>
