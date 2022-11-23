@@ -3,11 +3,9 @@ import type {
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from "next";
-import { useState, useEffect } from "react";
 import { createProxySSGHelpers } from "@trpc/react-query/ssg";
 import ReactHtmlParser from "react-html-parser";
 import { trpc } from "@/utils/trpc";
-import { useRouter } from "next/router";
 import { appRouter } from "@/server/trpc/router/_app";
 import Toc from "@/components/Toc";
 import UserCard from "@/components/UserCard";
@@ -53,14 +51,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Article = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
-  // const [createdAt, setCreatedAt] = useState<string>("")
-  // const [updatedAt, setUpdatedAt] = useState<string>("")
-  // const [isSetData, setIsSetData] = useState<boolean>(false)
-
   const { articleId } = props;
-  const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({
-    articleId,
-  });
+  const { data: article } = trpc.article.getArticleById.useQuery({articleId});
 
   const createdAt = article?.createdAt.toLocaleDateString();
   const updatedAt = article?.updatedAt.toLocaleDateString();

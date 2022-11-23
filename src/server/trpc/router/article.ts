@@ -18,7 +18,6 @@ export const articleRouter = router({
         where: {
           publish: true,
         },
-
         orderBy: {
           createdAt: "desc",
         },

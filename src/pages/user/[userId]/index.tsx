@@ -54,20 +54,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 const UserPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
-  // const router = useRouter();
   const [isAuth, setIsAuth] = useState(false);
   const [isDraft, setIsDraft] = useState(false);
   const { data: session, status } = useSession();
 
-  // const userId = router.query.userId as string;
   const { userId } = props;
 
   const sessionId = session?.user.id;
 
-  const { data: user, isSuccess } = trpc.user.getUserPublishArticles.useQuery(
-    { userId },
-    // { enabled: router.isReady }
-  );
+  const { data: user, isSuccess } = trpc.user.getUserPublishArticles.useQuery({ userId });
   const { data: draftArticle, isSuccess: draftSuccess } =
     trpc.user.getUserAllArticles.useQuery({ userId }, { enabled: isAuth });
 
@@ -164,7 +159,6 @@ const UserPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               <div className=" mt-4 text-center">
                 <div className="flex flex-wrap ">
                   <div className="w-full px-4 ">
-                    {/* kokoniireru */}
                     {isSuccess ? (
                       <div className=" space-y-3 text-center">
                         {isDraft && draftSuccess
