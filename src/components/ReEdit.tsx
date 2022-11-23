@@ -111,9 +111,7 @@ export const ReEdit = (props: Props) => {
             </div>
 
             {mutation.isLoading ? (
-              <div className="mt-32 flex justify-center">
                 <div className="h-10 w-10 animate-spin rounded-full border-4 border-info border-t-transparent"></div>
-              </div>
             ) : (
               <button
                   className="btn mr-24 btn-outline btn-success"
