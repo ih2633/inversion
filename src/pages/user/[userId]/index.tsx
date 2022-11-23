@@ -23,7 +23,7 @@ export async function getStaticProps(
     ctx: {session:null, prisma},
     transformer: superjson,
   });
-  const userId = context.params?.userId as string;
+  const userId = context.params?.userId.toString() as string;
 
   await ssg.user.getUserPublishArticles.prefetch({ userId })
 
