@@ -1,29 +1,70 @@
-import { type NextPage } from "next";
+import type {
+  GetStaticPaths,
+  GetStaticPropsContext,
+  InferGetStaticPropsType,
+} from "next";
 import { useState, useEffect } from "react";
+import { createProxySSGHelpers } from "@trpc/react-query/ssg";
 import ReactHtmlParser from "react-html-parser";
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
+import { appRouter } from "@/server/trpc/router/_app";
 import Toc from "@/components/Toc";
 import UserCard from "@/components/UserCard";
+import { prisma } from "@/server/db/client";
+import superjson from "superjson";
 
-const Article = () => {
-  const router = useRouter();
-  const [createdAt, setCreatedAt] = useState<string>("")
-  const [updatedAt, setUpdatedAt] = useState<string>("")
-  const [isSetData, setIsSetData] = useState<boolean>(false)
+export async function getStaticProps(
+  context: GetStaticPropsContext<{ articleId: string }>
+) {
+  const ssg = await createProxySSGHelpers({
+    router: appRouter,
+    ctx: { session: null, prisma },
+    transformer: superjson,
+  });
+  const articleId = context.params?.articleId as string;
 
-  const articleId = router.query.articleId as string;
-  const { data: article } = trpc.article.getArticleById.useQuery({ articleId }, { enabled: router.isReady });
-  useEffect(() => {
-    if (article) {
-      const createdAt = article.createdAt.toLocaleDateString();
-      const updatedAt = article.updatedAt.toLocaleDateString();
-      setCreatedAt(createdAt)
-      setUpdatedAt(updatedAt)
-      setIsSetData(true)
-    }
-  }, [article])
-  
+  await ssg.article.getArticleById.prefetch({ articleId });
+
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+      articleId,
+    },
+    revalidate: 1,
+  };
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const articles = await prisma.article.findMany({
+    select: {
+      id: true,
+    },
+  });
+
+  return {
+    paths: articles?.map((x: { id: string }) => ({
+      params: {
+        articleId: x.id,
+      },
+    })),
+    fallback: "blocking",
+  };
+};
+
+const Article = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+  // const [createdAt, setCreatedAt] = useState<string>("")
+  // const [updatedAt, setUpdatedAt] = useState<string>("")
+  // const [isSetData, setIsSetData] = useState<boolean>(false)
+
+  const { articleId } = props;
+  const { data: article, isSuccess } = trpc.article.getArticleById.useQuery({
+    articleId,
+  });
+
+  const createdAt = article?.createdAt.toLocaleDateString();
+  const updatedAt = article?.updatedAt.toLocaleDateString();
+
   const isSkill = article?.category?.name === "Skill";
 
   return (
@@ -31,7 +72,7 @@ const Article = () => {
       <div className="h-screen w-screen bg-violet-50 text-gray-700">
         <div className=" container mx-auto">
           <div className="mx-auto">
-            {isSetData && article && (
+            {article && (
               <>
                 <p className="p-7 text-center text-4xl font-extrabold">
                   {article.title}
@@ -40,7 +81,7 @@ const Article = () => {
             )}
             <div className="mt-3 grid grid-cols-6">
               <div className="col-span-4 w-full">
-                {isSetData && article  ? (
+                {article ? (
                   <>
                     <div className=" mx-auto w-full whitespace-pre-wrap break-words rounded-2xl bg-white p-8 focus:outline-none">
                       <div className="flex items-center justify-between">
@@ -69,13 +110,13 @@ const Article = () => {
                     </div>
                   </>
                 ) : (
-                    <div className="flex justify-center mt-32">
-                      <div className="animate-spin h-10 w-10 border-4 border-info rounded-full border-t-transparent"></div>
-                    </div>
+                  <div className="mt-32 flex justify-center">
+                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-info border-t-transparent"></div>
+                  </div>
                 )}
               </div>
               <div className="col-span-2 mx-4 ">
-                {isSetData && article && (
+                {article && (
                   <div className="sticky top-10  ">
                     <UserCard user={article.user} />
                     <Toc />
