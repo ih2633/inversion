@@ -20,6 +20,9 @@ export const userRouter = router({
               where: {
                 publish: true,
               },
+              orderBy: {
+                createdAt: "desc",
+              },
               select: {
                 title: true,
                 id: true,
@@ -80,6 +83,9 @@ export const userRouter = router({
             articles: {
               where: {
                 publish: false,
+              },
+              orderBy: {
+                createdAt: "desc",
               },
               select: {
                 title: true,
