@@ -307,7 +307,7 @@ export const articleRouter = router({
     )
     .query(async ({ ctx, input }) => {
       try {
-        const {searchWords, skip, take} = input
+        const { searchWords, skip, take } = input;
         const article = await ctx.prisma.article.findMany({
           skip: Number(skip),
           take: Number(take),
@@ -426,9 +426,6 @@ export const articleRouter = router({
                   create: { name: x },
                 };
               }),
-            },
-            favorite: {
-              create: { id: cuid() },
             },
           },
         });
