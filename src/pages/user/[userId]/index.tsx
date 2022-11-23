@@ -1,4 +1,7 @@
-import type { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import type {
+  GetStaticPaths,
+  GetStaticPropsContext,
+  InferGetStaticPropsType, } from "next";
 import { useState, useEffect } from "react";
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import Image from "next/image";
@@ -11,18 +14,19 @@ import Link from "next/link";
 import { appRouter } from '@/server/trpc/router/_app';
 import { createContext } from '@/server/trpc/context';
 import superjson from 'superjson';
+import type { UserWithArticleRelation } from "@/types/user"
 
 export async function getStaticProps(
   context: GetStaticPropsContext<{ userId: string }>
 ) {
   const ssg = await createProxySSGHelpers({
     router: appRouter,
-    ctx: createContext(),
+    ctx: await createContext(),
     transformer: superjson,
   });
   const userId = context.params?.userId as string;
-  
-  await ssg.user.getUserPublishArticles.prefetch({userId})
+
+  await ssg.user.getUserPublishArticles.prefetch({ userId })
 
   return {
     props: {
@@ -33,7 +37,7 @@ export async function getStaticProps(
   }
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths = async () => {
   const users = await prisma?.user.findMany({
     select: {
       id: true,
@@ -55,7 +59,7 @@ const UserPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [isAuth, setIsAuth] = useState(false);
   const [isDraft, setIsDraft] = useState(false);
   const { data: session, status } = useSession();
-  
+
   // const userId = router.query.userId as string;
   const { userId } = props;
 
@@ -165,24 +169,24 @@ const UserPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                     {isSuccess ? (
                       <div className=" space-y-3 text-center">
                         {isDraft && draftSuccess
-                          ? draftArticle?.articles.map((article) => {
-                              return (
-                                <div key={article.id} className=" ">
-                                  <div className=" flex justify-center">
-                                    <UserArticle article={article} isAuth={isAuth}/>
-                                  </div>
+                          ? draftArticle?.articles.map((article: UserWithArticleRelation) => {
+                            return (
+                              <div key={article.id} className=" ">
+                                <div className=" flex justify-center">
+                                  <UserArticle article={article} isAuth={isAuth} />
                                 </div>
-                              );
-                            })
-                          : user?.articles.map((article) => {
-                              return (
-                                <div key={article.id} className=" ">
-                                  <div className=" flex justify-center">
-                                    <UserArticle article={article} isAuth={isAuth} />
-                                  </div>
+                              </div>
+                            );
+                          })
+                          : user?.articles.map((article: UserWithArticleRelation) => {
+                            return (
+                              <div key={article.id} className=" ">
+                                <div className=" flex justify-center">
+                                  <UserArticle article={article} isAuth={isAuth} />
                                 </div>
-                              );
-                            })}
+                              </div>
+                            );
+                          })}
                       </div>
                     ) : (
                       <div></div>

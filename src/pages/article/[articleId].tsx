@@ -58,7 +58,7 @@ const Article = () => {
                       </div>
                       <div className=" prose-sm prose tracking-wider sm:prose lg:prose-xl xl:prose-3xl">
                         <div className="flex space-x-2 text-gray-400">
-                          {article.tags.map((x) => {
+                          {article.tags.map((x: { name: string }) => {
                             return <p key={x.name}>#{x.name}</p>;
                           })}
                         </div>
