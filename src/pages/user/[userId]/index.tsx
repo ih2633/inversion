@@ -7,21 +7,20 @@ import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { trpc } from "@/utils/trpc";
-import { useRouter } from "next/router";
 import UserArticle from "@/components/article/UserArticles";
 import { AiOutlineSetting } from "react-icons/ai";
 import Link from "next/link";
 import { appRouter } from '@/server/trpc/router/_app';
-import { createContext } from '@/server/trpc/context';
 import superjson from 'superjson';
 import type { UserWithArticleRelation } from "@/types/user"
+import { prisma } from "@/server/db/client";
 
 export async function getStaticProps(
   context: GetStaticPropsContext<{ userId: string }>
 ) {
   const ssg = await createProxySSGHelpers({
     router: appRouter,
-    ctx: await createContext(),
+    ctx: {session:null, prisma},
     transformer: superjson,
   });
   const userId = context.params?.userId as string;
@@ -37,8 +36,8 @@ export async function getStaticProps(
   }
 }
 
-export const getStaticPaths = async () => {
-  const users = await prisma?.user.findMany({
+export const getStaticPaths: GetStaticPaths = async () => {
+  const users = await prisma.user.findMany({
     select: {
       id: true,
     },
