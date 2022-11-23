@@ -116,8 +116,8 @@ export const ReEdit = (props: Props) => {
               </div>
             ) : (
               <button
-                className="glass btn mr-24 "
-                onSubmit={handleSubmit(onSubmit)}
+                  className="btn mr-24 btn-outline btn-success"
+                  onClick={handleSubmit(onSubmit)}
               >
                 更新
               </button>
