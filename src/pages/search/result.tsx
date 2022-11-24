@@ -76,8 +76,8 @@ const SerchResult = () => {
     <>
       <div className="w-screen">
         <div className="mx-auto w-4/5 ">
-          <form onSubmit={handleSubmit(onSubmit)} >
-            <div className="mx-auto w-4/5 flex items-end space-x-4">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="mx-auto flex w-4/5 items-end space-x-4">
               <div className="form-control w-full max-w-xs  ">
                 <label className="label">
                   <span className="label-text">Search</span>
@@ -96,20 +96,25 @@ const SerchResult = () => {
           </form>
         </div>
       </div>
-      <div className="grid grid-cols-7 bg-gray-100">
+      <div className="grid bg-gray-100 lg:grid-cols-7">
         <div className="col-span-1">
           <div className="mt-24"></div>
         </div>
-        <div className="col-span-4 border-x-2">
+        <div className="col-span-4  border-x-2 md:mx-auto md:w-4/5">
           <div className="m-12">
             <div className="mb-4 flex items-center space-x-5">
               <p className=" text-xl">#{resultInfo.searchWords} 検索結果</p>
-              <SelectCategoryButton selectCategory={selectCategory} filterCategory={filterCategory} />
+              <SelectCategoryButton
+                selectCategory={selectCategory}
+                filterCategory={filterCategory}
+              />
             </div>
             {isSuccess && articles && (
               <Cards articles={articles} selectCategory={selectCategory} />
             )}
-            {isLoading && <div className="animate-spin h-10 w-10 border-4 border-info rounded-full border-t-transparent"></div>}
+            {isLoading && (
+              <div className="h-10 w-10 animate-spin rounded-full border-4 border-info border-t-transparent"></div>
+            )}
             {!articles && !isLoading && <div>Not Data</div>}
           </div>
           <Pagenation page={pagenationInfo} />
@@ -117,7 +122,7 @@ const SerchResult = () => {
         <div className="col-span-2"></div>
       </div>
     </>
-  )
+  );
 }
 
 export default SerchResult

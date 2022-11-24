@@ -71,7 +71,7 @@ const Article = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                 </p>
               </>
             )}
-            <div className="mt-3 grid grid-cols-6">
+            <div className="mt-3 grid lg:grid-cols-6">
               <div className="col-span-4 w-full">
                 {article ? (
                   <>
@@ -80,7 +80,7 @@ const Article = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                         <div
                           className={`${
                             isSkill ? "badge-primary" : "badge-secondary"
-                          } badge-outline badge h-8 w-20`}
+                          } badge badge-outline h-8 w-20`}
                         >
                           {article?.category?.name}
                         </div>

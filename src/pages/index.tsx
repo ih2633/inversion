@@ -37,11 +37,11 @@ const List = (
 
   return (
     <>
-      <div className="grid grid-cols-7 bg-gray-100">
+      <div className="grid lg:grid-cols-7 bg-gray-100">
         <div className="col-span-1">
           <div className="mt-24"></div>
         </div>
-        <div className="col-span-4 border-x-2">
+        <div className="col-span-4 md:w-4/5 md:mx-auto border-x-2">
           <div className="m-12">
             <div className="mb-4 flex items-center space-x-5">
               <p className=" text-xl">新着記事</p>
