@@ -5,7 +5,7 @@ import type { AuthArticleInfo } from "@/types/article"
 
 export const MenuArticleButton = (props: AuthArticleInfo) => {
   return (
-    <div className="flex space-x-4">
+    <div className="flex md:space-x-4">
       <Link
         href={`/edit/${props.userId}/${props.articleId}`}
         className="rounded-xl p-2 hover:bg-gray-200"

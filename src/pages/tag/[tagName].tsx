@@ -61,14 +61,11 @@ const TagList: NextPage = () => {
 
   return (
     <>
-      <div className="grid bg-gray-100 lg:grid-cols-7">
-        <div className="col-span-1">
-          <div className="mt-24"></div>
-        </div>
-        <div className="col-span-4 border-x-2 md:mx-auto md:w-4/5">
-          <div className="m-12">
+      <div className="bg-gray-100 ">
+        <div className="md:w-3/5 mx-auto">
+
             <div className="mb-4 items-center space-x-5">
-              <p className="prose-xl prose mb-5">
+              <p className="prose-xl prose my-4">
                 #{resultInfo.tagName} 検索結果
               </p>
               <SelectCategoryButton
@@ -86,8 +83,6 @@ const TagList: NextPage = () => {
           </div>
           <Pagenation page={pagenationInfo} />
         </div>
-        <div className="col-span-2"></div>
-      </div>
     </>
   );
 };

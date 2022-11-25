@@ -74,10 +74,10 @@ const SerchResult = () => {
 
   return (
     <>
-      <div className="w-screen">
-        <div className="mx-auto w-4/5 ">
+      <div className="">
+        <div className=" bg-green-200">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mx-auto flex w-4/5 items-end space-x-4">
+            <div className="flex w-4/5 items-end  mx-auto md:justify-center">
               <div className="form-control w-full max-w-xs  ">
                 <label className="label">
                   <span className="label-text">Search</span>
@@ -89,21 +89,17 @@ const SerchResult = () => {
                   {...register("searchWords")}
                 />
               </div>
-              <button className="btn-outline btn-info btn" type="submit">
+              <button className="btn-outline btn-info btn ml-4" type="submit">
                 submit
               </button>
             </div>
           </form>
         </div>
       </div>
-      <div className="grid bg-gray-100 lg:grid-cols-7">
-        <div className="col-span-1">
-          <div className="mt-24"></div>
-        </div>
-        <div className="col-span-4  border-x-2 md:mx-auto md:w-4/5">
-          <div className="m-12">
-            <div className="mb-4 flex items-center space-x-5">
-              <p className=" text-xl">#{resultInfo.searchWords} 検索結果</p>
+      <div className=" bg-gray-100 ">
+        <div className="md:w-3/5 mx-auto">
+            <div className="my-4 md:mx-auto ml-4 md:flex md:items-center space-x-5">
+              <p className=" text-xl mb-2">#{resultInfo.searchWords} 検索結果</p>
               <SelectCategoryButton
                 selectCategory={selectCategory}
                 filterCategory={filterCategory}
@@ -119,8 +115,6 @@ const SerchResult = () => {
           </div>
           <Pagenation page={pagenationInfo} />
         </div>
-        <div className="col-span-2"></div>
-      </div>
     </>
   );
 }

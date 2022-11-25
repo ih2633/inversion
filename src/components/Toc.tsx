@@ -19,13 +19,9 @@ export default function Toc() {
       scrollSmoothDuration: 420,
       headingsOffset: 40,
       collapseDepth: 0,
-      
     });
-
     return () => tocbot.destroy();
   }, []);
-
-
 
   return (
     <>

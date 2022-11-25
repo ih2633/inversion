@@ -42,7 +42,7 @@ const FavoriteButton = (props: Props) => {
 
   return (
     <>
-      <div className="mr-7 flex">
+      <div className="mr-4 flex">
 
         {userId && favoriteId ? isFavorited ? (
           <button
@@ -65,7 +65,7 @@ const FavoriteButton = (props: Props) => {
         >
           <MdOutlineFavoriteBorder />
         </button>)}
-        <p className="ml-6 text-red-300">{props.favorite._count.users}</p>
+        <p className="ml-1 text-red-300">{props.favorite._count.users}</p>
       </div>
     </>
   );
