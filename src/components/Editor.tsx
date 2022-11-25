@@ -27,18 +27,18 @@ export const Editor = (props: Props) => {
   if (!editor) return null;
 
   return (
-    <div className=" md:flex">
+    <div className="md:flex">
       <div className=" w-full">
         <label className="label">
           <span className="label-text">Content</span>{" "}
         </label>
         <EditorContent
-          className="h-screen overflow-y-scroll border-2"
+          className="h-80 md:h-screen overflow-y-scroll border-2"
           editor={editor}
         />
       </div>
-      <div className="mt-32 ml-6">
-        <div className=" flex flex-col space-y-3">
+      <div className="mt-8 md:mt-32 ml-6">
+        <div className=" flex md:flex-col space-x-3 md:space-y-3">
           <button
             className="btn btn-outline w-24"
             onClick={() =>

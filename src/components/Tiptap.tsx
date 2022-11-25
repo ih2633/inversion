@@ -4,12 +4,12 @@ import { tokenize } from "wakachigaki";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { trpc } from "@/utils/trpc";
 import { articleOptimisticUpdates } from "@/utils/article";
-import { Editor } from "./Editor"
-import type { EditArticleInfo } from "@/types/article"
+import { Editor } from "./Editor";
+import type { EditArticleInfo } from "@/types/article";
 
 export const Tiptap = () => {
   const { register, handleSubmit, control } = useForm<EditArticleInfo>({});
-  const [contentHtml, setContentHtml] = useState("")
+  const [contentHtml, setContentHtml] = useState("");
 
   const { data: categories } = trpc.category.getList.useQuery();
 
@@ -69,7 +69,7 @@ export const Tiptap = () => {
             </div>
           </div>
         )}
-        <div className="ml-5 ">
+        <div className="mx-5 ">
           <div className="flex items-end justify-between ">
             <div>
               <label className="label">
@@ -81,7 +81,7 @@ export const Tiptap = () => {
                   className="select-bordered select w-full max-w-xs"
                   {...register("categoryId")}
                 >
-                  {categories?.map((category: { name: string, id: string }) => {
+                  {categories?.map((category: { name: string; id: string }) => {
                     return (
                       <option key={category.id} value={category.id}>
                         {category.name}
@@ -96,7 +96,7 @@ export const Tiptap = () => {
               <div className="h-10 w-10 animate-spin rounded-full border-4 border-info border-t-transparent"></div>
             ) : (
               <button
-                  className="btn mr-24 btn-outline btn-success"
+                className="btn-success btn-outline btn md:mr-24"
                 onClick={handleSubmit(onSubmit)}
               >
                 投稿
@@ -139,7 +139,7 @@ export const Tiptap = () => {
             <label className="label">
               <span className="label-text">Tag</span>
             </label>
-            <div className="flex">
+            <div className="grid grid-cols-3 md:flex">
               <input
                 type="text"
                 placeholder="Tag"

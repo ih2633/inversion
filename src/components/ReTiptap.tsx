@@ -31,20 +31,20 @@ export const ReTiptap = (props: Props) => {
   if (!editor) return null;
 
   return (
-    <div className=" flex">
+    <div className="md:flex">
       <div className=" w-full">
         <label className="label">
           <span className="label-text">Content</span>{" "}
         </label>
         <EditorContent
-          className="h-screen overflow-y-scroll border-2"
+          className="h-80 overflow-y-scroll border-2 md:h-screen"
           editor={editor}
         />
       </div>
-      <div className="mt-32 ml-6">
-        <div className=" flex flex-col space-y-3">
+      <div className="mt-8 ml-6 md:mt-32">
+        <div className=" flex space-x-3 md:flex-col md:space-y-3">
           <button
-            className="btn btn-outline w-24"
+            className="btn-outline btn w-24"
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
             }
@@ -52,7 +52,7 @@ export const ReTiptap = (props: Props) => {
             見出し
           </button>
           <button
-            className="btn btn-outline w-24"
+            className="btn-outline btn w-24"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
           >
             リスト
