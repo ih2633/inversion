@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function UserCard(props: any) {
   return (
     <>
-      <div className="rounded-xl bg-white p-5">
+      <div className="rounded-xl  bg-white p-5">
         <div className="flex items-center">
           <div className="avatar ">
             <div className=" w-16 rounded-full shadow-md">

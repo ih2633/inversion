@@ -17,10 +17,10 @@ const UserArticle = (props: Props) =>  {
 
   return (
     <>
-      <div className="flex w-4/5 rounded-xl border-2 border-gray-50 bg-white py-3 px-4 shadow-lg">
-        <div className="ml-7 flex w-full flex-col text-left">
+      <div className="flex md:w-4/5 rounded-xl border-2 border-gray-50 bg-white py-3 px-4 shadow-lg">
+        <div className="flex flex-col text-left md:w-full">
           <div className="flex justify-between ">
-            <div className="flex flex-col">
+            <div className="flex flex-col w-64 md:w-4/5">
               <div
                 className={`${
                   isSkill ? "badge-primary" : "badge-secondary"
@@ -30,15 +30,15 @@ const UserArticle = (props: Props) =>  {
               </div>
               <Link
                 href={`/article/${props.article.id}`}
-                className="text-xl font-semibold"
+                className="mb-2 text-xl md:text-xl font-bold break-words whitespace-normal truncate max-h-20"
               >
                 {props.article.title}
               </Link>
-              <ul className="flex space-x-2 text-gray-400">
+              <ul className="mb-1 space-x-2 text-gray-400 grid grid-cols-3">
                 {props.article.tags.map((x) => {
                   return (
                     <Link key={x.name} href={`/tag/${x.name}`}>
-                      <li>#{x.name}</li>
+                      <li className="truncate ">#{x.name}</li>
                     </Link>
                   );
                 })}
@@ -46,7 +46,7 @@ const UserArticle = (props: Props) =>  {
             </div>
 
             {session && (
-              <div className="my-auto mr-10">
+              <div className="my-auto ">
                 <MenuArticleButton
                   userId={props.article.userId}
                   articleId={props.article.id}

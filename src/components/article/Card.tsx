@@ -15,12 +15,11 @@ const Card = (props: Props) => {
   return (
     <>
       <section
-        className={` items-start rounded-xl bg-gradient-to-r
-      ${
-        isSkill
-          ? " from-rose-400 via-fuchsia-500  to-indigo-500"
-          : " from-amber-400 via-emerald-400  to-teal-500"
-      } pb-2 shadow-lg`}
+        className={` items-start rounded-xl bg-gradient-to-r w-full
+      ${isSkill
+            ? " from-rose-400 via-fuchsia-500  to-indigo-500"
+            : " from-amber-400 via-emerald-400  to-teal-500"
+          } pb-2 shadow-lg`}
       >
         <span className="flex rounded-xl bg-white px-4 py-2 font-semibold text-black">
           <div className="my-auto">
@@ -36,32 +35,32 @@ const Card = (props: Props) => {
             </div>
           </div>
 
-          <div className="ml-7 flex w-full flex-col justify-between">
+          <div className="ml-7 flex  flex-col w-64 md:w-4/5">
             <div
-              className={`${
-                isSkill ? "badge-primary" : "badge-secondary"
-              } badge badge-outline mt-1 mb-2`}
+              className={`${isSkill ? "badge-primary" : "badge-secondary"
+                } badge badge-outline mt-1 mb-2`}
             >
               {props.article.category.name}
             </div>
             <Link
               href={`/article/${props.article.id}`}
-              className="mb-2 text-xl font-semibold"
+              className="mb-2 text-xl md:text-xl font-bold break-words whitespace-normal truncate max-h-20"
             >
               {props.article.title}
             </Link>
-            <ul className="flex space-x-2 text-gray-400">
+            <ul className="mb-1 space-x-2 text-gray-400 grid grid-cols-3">
               {props.article.tags.map((x) => {
                 return (
                   // ページネーションの修正予定あり
-                  <Link key={x.name} href={`/tag/${x.name}?skip=0&take=20`}>
-                    <li>#{x.name}</li>
-                  </Link>
+                  <div key={x.name}>
+                    <Link href={`/tag/${x.name}?skip=0&take=20`}>
+                      <li className="truncate " >#{x.name}</li>
+                    </Link></div>
                 );
               })}
             </ul>
-            <div className=" flex justify-between ">
-              <div>
+            <div className=" flex justify-between w-full ">
+              <div className="flex items-end">
                 <Link
                   href={`/user/${props.article.user.id}`}
                   className="text-gray-600"
@@ -71,7 +70,7 @@ const Card = (props: Props) => {
               </div>
               <div className="flex items-center">
                 <FavoriteButton favorite={props.article.favorite} />
-                <p className="prose-md prose mr-12  tracking-wider text-gray-500">
+                <p className="prose-md prose md:mr-12  tracking-wider text-gray-500">
                   {createdAt}
                 </p>
               </div>

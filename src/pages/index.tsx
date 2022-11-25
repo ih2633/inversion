@@ -36,28 +36,24 @@ const List = (
   const { data: articles } = trpc.article.getAllArticles.useQuery();
 
   return (
-    <>
-      <div className="grid grid-cols-7 bg-gray-100">
-        <div className="col-span-1">
+    <div className="">
+        {/* <div className="col-span-1">
           <div className="mt-24"></div>
-        </div>
-        <div className="col-span-4 border-x-2">
-          <div className="m-12">
-            <div className="mb-4 flex items-center space-x-5">
-              <p className=" text-xl">新着記事</p>
-              <SelectCategoryButton
-                selectCategory={selectCategory}
-                filterCategory={filterCategory}
-              />
-            </div>
-            {props && articles && (
-              <Cards articles={articles} selectCategory={selectCategory} />
-            )}
+        </div> */}
+        <div className="md:w-3/5 mx-auto">
+          <div className=" flex items-center my-3 ml-3 md:justify-center space-x-5">
+            <p className=" text-xl">新着記事</p>
+            <SelectCategoryButton
+              selectCategory={selectCategory}
+              filterCategory={filterCategory}
+            />
           </div>
+          {props && articles && (
+            <Cards articles={articles} selectCategory={selectCategory} />
+          )}
         </div>
-        <div className="col-span-2"></div>
+        {/* <div className="col-span-2"></div> */}
       </div>
-    </>
   );
 };
 

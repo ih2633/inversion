@@ -11,7 +11,7 @@ const Pagenation = (props: Props) => {
   const nextPage = Number(props.page.skip) + Number(props.page.take);
 
   return (
-    <div className="btn-group mt-12 grid grid-cols-2">
+    <div className="btn-group mt-10 grid grid-cols-2 mx-3">
       <a
         href={`?skip=${prevSkip}&take=${props.page.take}`}
         className="btn-outline btn"

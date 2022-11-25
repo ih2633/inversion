@@ -241,7 +241,7 @@ export const articleRouter = router({
   addArticle: protectedProcedure
     .input(
       z.object({
-        title: z.string(),
+        title: z.string().max(100),
         content: z.string(),
         categoryId: z.string(),
         sendTags: z.array(z.string()),
@@ -392,7 +392,7 @@ export const articleRouter = router({
   updateArticle: protectedProcedure
     .input(
       z.object({
-        title: z.string(),
+        title: z.string().max(100),
         content: z.string(),
         categoryId: z.string(),
         sendTags: z.array(z.string()),

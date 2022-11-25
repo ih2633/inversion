@@ -61,17 +61,17 @@ const Article = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
   return (
     <>
-      <div className="h-screen w-screen bg-violet-50 text-gray-700">
+      <div className="min-h-screen w-screen bg-violet-50 text-gray-700">
         <div className=" container mx-auto">
           <div className="mx-auto">
             {article && (
               <>
-                <p className="p-7 text-center text-4xl font-extrabold">
+                <p className="p-7 text-center text-4xl font-extrabold break-words whitespace-normal truncate h-28">
                   {article.title}
                 </p>
               </>
             )}
-            <div className="mt-3 grid grid-cols-6">
+            <div className="mt-3 grid lg:grid-cols-6">
               <div className="col-span-4 w-full">
                 {article ? (
                   <>
@@ -80,7 +80,7 @@ const Article = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                         <div
                           className={`${
                             isSkill ? "badge-primary" : "badge-secondary"
-                          } badge-outline badge h-8 w-20`}
+                          } badge badge-outline h-8 w-20`}
                         >
                           {article?.category?.name}
                         </div>
@@ -107,9 +107,9 @@ const Article = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                   </div>
                 )}
               </div>
-              <div className="col-span-2 mx-4 ">
+              <div className="md:col-span-2 md:mx-4 w-full md:grid hidden ">
                 {article && (
-                  <div className="sticky top-10  ">
+                  <div className="md:sticky md:top-10">
                     <UserCard user={article.user} />
                     <Toc />
                   </div>
