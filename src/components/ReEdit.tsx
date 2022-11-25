@@ -73,12 +73,11 @@ export const ReEdit = (props: Props) => {
 
   return (
     <>
-      <div className="w-full ">
+      <div className="">
         {mutation.isSuccess && (
           <div className="modal modal-open" id="my-modal-2">
             <div className="modal-box">
               <h3 className="text-lg font-bold">更新完了!</h3>
-
               <div className="modal-action">
                 <Link href="/" className="btn">
                   HOME
@@ -87,7 +86,7 @@ export const ReEdit = (props: Props) => {
             </div>
           </div>
         )}
-        <div className="ml-5 ">
+        <div className="mx-5 ">
           <div className="flex items-end justify-between ">
             <div>
               <label className="label">
@@ -99,7 +98,7 @@ export const ReEdit = (props: Props) => {
                   className="select-bordered select w-full max-w-xs"
                   {...register("categoryId")}
                 >
-                  {categories?.map((category:{name:string, id:string}) => {
+                  {categories?.map((category: { name: string; id: string }) => {
                     return (
                       <option key={category.id} value={category.id}>
                         {category.name}
@@ -111,11 +110,11 @@ export const ReEdit = (props: Props) => {
             </div>
 
             {mutation.isLoading ? (
-                <div className="h-10 w-10 animate-spin rounded-full border-4 border-info border-t-transparent"></div>
+              <div className="h-10 w-10 animate-spin rounded-full border-4 border-info border-t-transparent"></div>
             ) : (
               <button
-                  className="btn mr-24 btn-outline btn-success"
-                  onClick={handleSubmit(onSubmit)}
+                className="btn-success btn-outline btn mr-24"
+                onClick={handleSubmit(onSubmit)}
               >
                 更新
               </button>
@@ -160,7 +159,7 @@ export const ReEdit = (props: Props) => {
               <label className="label">
                 <span className="label-text">Tag</span>
               </label>
-              <div className="flex">
+              <div className="grid grid-cols-3 md:flex">
                 <input
                   type="text"
                   placeholder="Tag"

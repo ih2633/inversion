@@ -58,7 +58,6 @@ const TagList: NextPage = () => {
 
   const { data: articles, isSuccess, isLoading } = trpc.article.selectArticleTag.useQuery<ResultInfo>(resultInfo, { enabled: isReady });
 
-
   return (
     <>
       <div className="bg-gray-100 ">
