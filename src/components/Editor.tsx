@@ -27,7 +27,7 @@ export const Editor = (props: Props) => {
   if (!editor) return null;
 
   return (
-    <div className=" flex">
+    <div className=" md:flex">
       <div className=" w-full">
         <label className="label">
           <span className="label-text">Content</span>{" "}

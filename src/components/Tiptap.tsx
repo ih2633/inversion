@@ -56,7 +56,7 @@ export const Tiptap = () => {
 
   return (
     <>
-      <div className="w-full ">
+      <div className="">
         {mutation.isSuccess && (
           <div className="modal modal-open" id="my-modal-2">
             <div className="modal-box">
