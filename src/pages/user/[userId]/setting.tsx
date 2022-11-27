@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import type { ProfileInfo } from "@/types/user"
 
-
 const SettingProfile: NextPage = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm<ProfileInfo>({});

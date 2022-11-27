@@ -17,8 +17,6 @@ type Props = {
   tags: Array<{name: string}>
 }
 
-
-
 export const ReEdit = (props: Props) => {
   const { register, handleSubmit, control  } = useForm<EditArticleInfo>({});
   const [contentHtml, setContentHtml] = useState("");

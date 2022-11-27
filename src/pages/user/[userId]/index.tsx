@@ -79,7 +79,6 @@ const UserPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
     return <main>Loading...</main>;
   }
 
-
   const showDraft = () => {
     setIsDraft(true);
   };

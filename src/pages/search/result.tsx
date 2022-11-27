@@ -60,8 +60,6 @@ const SerchResult = () => {
     }
   }, [router])
 
-
-
   const { data: articles, isSuccess, isLoading } = trpc.article.searchWordForContent.useQuery<ResultInfo>(resultInfo, { enabled: isReady });
 
   const onSubmit: SubmitHandler<SearchWords> = (data) => {

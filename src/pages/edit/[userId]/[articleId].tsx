@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { ReEdit } from "@/components/ReEdit";
 import { trpc } from "@/utils/trpc";
 
-
 const ReEditor: NextPage = () => {
   const router = useRouter();
   const userId = router.query.userId as string
