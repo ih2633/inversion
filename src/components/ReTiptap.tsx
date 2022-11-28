@@ -7,7 +7,6 @@ type Props = {
   content: string
 }
 
-
 export const ReTiptap = (props: Props) => {
   const editor = useEditor({
     extensions: [StarterKit],

@@ -15,8 +15,6 @@ const SearchArticle = () => {
   
   };
 
-
-
   return (
     <>
       <div className="w-screen">

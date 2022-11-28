@@ -1,6 +1,4 @@
 
-
-
 const SelectCategoryButton = (props: any) => {
   return (
     <div className="flex space-x-3">

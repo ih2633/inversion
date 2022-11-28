@@ -7,7 +7,6 @@ type Props = {
   article: ArticleWithRelation
 }
 
-
 const Card = (props: Props) => {
   const createdAt = props.article.createdAt.toLocaleDateString();
   const isSkill = props.article.category.name === "Skill";

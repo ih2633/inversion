@@ -14,7 +14,6 @@ const UserArticle = (props: Props) =>  {
   const updatedAt = props.article.updatedAt.toLocaleDateString();
   const isSkill = props.article.category.name === "Skill";
 
-
   return (
     <>
       <div className="flex md:w-4/5 rounded-xl border-2 border-gray-50 bg-white py-3 px-4 shadow-lg">
