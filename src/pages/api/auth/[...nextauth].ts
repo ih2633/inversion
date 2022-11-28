@@ -13,10 +13,9 @@ export const authOptions: NextAuthOptions = {
       if (account) {
         token.accessToken = account.access_token;
       }
-      return token
-    }
-    ,
-    async session({ session, user, token}) {
+      return token;
+    },
+    async session({ session, user, token }) {
       session.user.id = user.id as string;
       session.accessToken = token.accessToken as string;
       return session;
@@ -27,6 +26,17 @@ export const authOptions: NextAuthOptions = {
     GitHubProvider({
       clientId: env.GITHUB_ID,
       clientSecret: env.GITHUB_SECRET,
+    }),
+    GoogleProvider({
+      clientId: env.GOOGLE_ID,
+      clientSecret: env.GOOGLE_SECRET,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
     }),
   ],
   secret: "g4p3SpBD1mdMpp4OJC7S5JGDuFX7m0Fwi89ei+fx7us=",

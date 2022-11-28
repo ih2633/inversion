@@ -10,7 +10,6 @@ declare module "next-auth" {
       /** The user's postal address. */
       id: string;
     } & DefaultSession["user"];
-    accessToken: string;
   }
 
   interface JWT {
