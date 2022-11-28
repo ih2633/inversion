@@ -14,7 +14,6 @@ export const articleRouter = router({
     try {
       const articles = await ctx.prisma.article.findMany({
         take: 15,
-        // 開発中のみコメントアウト
         where: {
           publish: true,
         },
