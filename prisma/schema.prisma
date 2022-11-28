@@ -80,7 +80,6 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  accessToken  String   @db.Text
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
