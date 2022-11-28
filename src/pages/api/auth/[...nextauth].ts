@@ -28,10 +28,6 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GITHUB_ID,
       clientSecret: env.GITHUB_SECRET,
     }),
-    GoogleProvider({
-      clientId: env.GOOGLE_ID,
-      clientSecret: env.GOOGLE_SECRET,
-    }),
   ],
   secret: "g4p3SpBD1mdMpp4OJC7S5JGDuFX7m0Fwi89ei+fx7us=",
 };
