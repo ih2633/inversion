@@ -6,11 +6,9 @@ import type {
 import { useState, useEffect } from "react";
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import Image from "next/image";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { trpc } from "@/utils/trpc";
 import UserArticle from "@/components/article/UserArticles";
-import { AiOutlineSetting, AiOutlineMore } from "react-icons/ai";
-import Link from "next/link";
 import { appRouter } from '@/server/trpc/router/_app';
 import superjson from 'superjson';
 import type { UserWithArticleRelation } from "@/types/user"
@@ -59,8 +57,6 @@ const UserPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [isAuth, setIsAuth] = useState(false);
   const [isDraft, setIsDraft] = useState(false);
   const { data: session, status } = useSession();
-
-  console.log(session)
 
   const { userId } = props;
 
