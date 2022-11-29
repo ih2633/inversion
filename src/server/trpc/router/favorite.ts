@@ -17,7 +17,11 @@ export const favoriteRouter = router({
             id: favoriteId,
           },
           data: {
-            users: { set: { id: userId } },
+            users: {
+              connect: {
+                id: userId,
+              },
+            },
           },
         });
       } catch (error) {
