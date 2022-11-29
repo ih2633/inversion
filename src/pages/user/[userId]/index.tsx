@@ -60,6 +60,8 @@ const UserPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [isDraft, setIsDraft] = useState(false);
   const { data: session, status } = useSession();
 
+  console.log(session)
+
   const { userId } = props;
 
   const sessionId = session?.user.id;
