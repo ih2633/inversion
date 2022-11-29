@@ -1,7 +1,7 @@
 import Link from "next/link";
 import FavoriteButton from "@/components/article/FavoriteButton"
 import { MenuArticleButton } from "../MenuArticleButton";
-import { useSession } from "next-auth/react";
+
 import type { UserWithArticleRelation } from "@/types/user"
 
 type Props = {
@@ -10,7 +10,6 @@ type Props = {
 }
 
 const UserArticle = (props: Props) =>  {
-  const { data: session } = useSession();
   const updatedAt = props.article.updatedAt.toLocaleDateString();
   const isSkill = props.article.category.name === "Skill";
 
@@ -44,7 +43,7 @@ const UserArticle = (props: Props) =>  {
               </ul>
             </div>
 
-            {session && (
+            {props.isAuth && (
               <div className="my-auto ">
                 <MenuArticleButton
                   userId={props.article.userId}

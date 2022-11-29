@@ -41,7 +41,7 @@ export const ReTiptap = (props: Props) => {
         />
       </div>
       <div className="mt-8 ml-6 md:mt-32">
-        <div className=" flex space-x-3 md:flex-col md:space-y-3">
+        <div className=" flex space-x-3 md:flex-col md:space-x-0 md:space-y-3">
           <button
             className="btn-outline btn w-24"
             onClick={() =>

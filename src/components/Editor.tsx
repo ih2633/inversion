@@ -38,7 +38,7 @@ export const Editor = (props: Props) => {
         />
       </div>
       <div className="mt-8 md:mt-32 ml-6">
-        <div className=" flex md:flex-col space-x-3 md:space-y-3">
+        <div className=" flex md:flex-col space-x-3 md:space-x-0 md:space-y-3">
           <button
             className="btn btn-outline w-24"
             onClick={() =>
